@@ -91,8 +91,8 @@ function notice() {
       break;
 
       case "toggle":
-      if (talkedRecently.has(msg.author.id)) {
-        msg.channel.send("Wait 1 minute before getting typing this again. - " + msg.author);
+      if (talkedRecently.has(message.author.id)) {
+        message.channel.send("Wait 1 minute before getting typing this again. - " + message.author);
       } else {
 
         toggle();
@@ -121,7 +121,7 @@ function notice() {
       reachable: true
     }
 
-    officeLights[messageArray[1] -1].setState(lampObject);
+    officeLights[messageArray[1] -1].setState(stateObject);
     break;
 
     default:
