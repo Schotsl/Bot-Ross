@@ -100,8 +100,21 @@ bot.on("message", async message => {
 
     break;
 
+    case "set":
+    if (isNaN(messageArray[1] && isNaN(messageArray[2]))) return message.channel.send("Please provide a number and off/on");
+    if (!(messageArray[2] == "off" || messageArray[2] == "on")) return message.channel.send("Please provide a number and off/on");
+    let state = messageArray[2] == "off" ? false : true;
+    console.log(state);
+    officeLights[messageArray[1] -1].setState(state);
+    break;
+
     default:
     message.channel.send(botoptions.default);
+    break;
+
+//remove this later.
+    case "test":
+    officeLights[0].setState(false);
     break;
   }
 })
