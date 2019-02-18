@@ -104,35 +104,24 @@ function notice() {
           talkedRecently.delete(message.author.id);
         }, 60000);
       }
-    break;
+      break;
 
-    case "set":
-    if (isNaN(messageArray[1] && isNaN(messageArray[2]))) return message.channel.send("Please provide a number and off/on");
-    if (!(messageArray[2] == "off" || messageArray[2] == "on")) return message.channel.send("Please provide a number and off/on");
-    let state = messageArray[2] == "off" ? false : true;
+      case "set":
+      if (isNaN(messageArray[1] && isNaN(messageArray[2]))) return message.channel.send("Please provide a number and off/on");
+      if (!(messageArray[2] == "off" || messageArray[2] == "on")) return message.channel.send("Please provide a number and off/on");
+      let state = messageArray[2] == "off" ? false : true;
 
-    let stateObject = {
-      on: state,
-      bri: 240,
-      ct: 500,
-      alert: 'none',
-      colormode: 'ct',
-      mode: 'homeautomation',
-      reachable: true
+      let stateObject = {
+        on: state
+      }
+
+      officeLights[messageArray[1] -1].setState(stateObject);
+      break;
+
+      default:
+      message.channel.send(botoptions.default);
+      break;
     }
-
-    officeLights[messageArray[1] -1].setState(stateObject);
-    break;
-
-    default:
-    message.channel.send(botoptions.default);
-    break;
-
-//remove this later.
-    case "test":
-    officeLights[0].setState(false);
-    break;
-  }
-})
+  })
 
   bot.login(botoptions.token);
