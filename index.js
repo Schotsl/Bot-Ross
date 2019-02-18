@@ -39,13 +39,13 @@ function permissionlookup(permission, message) {
 }
 
 bot.on("ready", async () => {
-  console.log(`Bot is ready. ${bot.user.username}`);
+  report.log(`Bot is ready. ${bot.user.username}`);
 
 try {
       let link = await bot.generateInvite(["ADMINISTRATOR"]);
-      console.log(link);
+      report.log(link);
     } catch(e) {
-        console.log(e.stack);
+        report.log(e.stack);
     }
 });
 

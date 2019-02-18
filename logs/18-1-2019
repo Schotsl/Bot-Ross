@@ -38,3 +38,55 @@
 22:28:13.590 [LOG]: Light 12 has been turned on
 22:28:13.597 [LOG]: Light 13 has been turned on
 22:28:13.605 [LOG]: Light 13 has been turned on
+22:32:7.588 [LOG]: Light 10 is on
+22:32:9.103 [LOG]: Light 11 is on
+22:32:9.111 [LOG]: Light 12 is on
+22:32:9.118 [LOG]: Light 13 is on
+22:32:9.125 [LOG]: Light 13 is on
+22:32:9.136 [LOG]: Light 10 has been turned off
+22:32:9.191 [LOG]: Light 11 has been turned off
+22:32:9.197 [LOG]: Light 12 has been turned off
+22:32:9.203 [LOG]: Light 13 has been turned off
+22:32:9.211 [ERROR]: Api Error: parameter, ct, is not modifiable. Device is set to off.
+22:32:23.698 [LOG]: Light 10 is off
+22:32:25.165 [LOG]: Light 11 is off
+22:32:25.173 [LOG]: Light 12 is off
+22:32:25.181 [LOG]: Light 13 is off
+22:32:25.189 [LOG]: Light 13 is off
+22:32:25.199 [LOG]: Light 10 has been turned on
+22:32:25.251 [LOG]: Light 11 has been turned on
+22:32:25.267 [LOG]: Light 12 has been turned on
+22:32:25.275 [LOG]: Light 13 has been turned on
+22:32:25.284 [LOG]: Light 13 has been turned on
+22:33:34.517 [LOG]: Light 10 is on
+22:33:35.929 [LOG]: Light 11 is on
+22:33:35.936 [LOG]: Light 12 is on
+22:33:35.943 [LOG]: Light 13 is on
+22:33:35.949 [LOG]: Light 13 is on
+22:33:35.996 [LOG]: Light 10 has been turned off
+22:33:36.7 [LOG]: Light 11 has been turned off
+22:33:36.24 [LOG]: Light 12 has been turned off
+22:33:36.40 [LOG]: Light 13 has been turned off
+22:33:36.54 [ERROR]: Api Error: parameter, ct, is not modifiable. Device is set to off.
+22:33:42.731 [LOG]: Light 10 is off
+22:33:44.222 [LOG]: Light 11 is off
+22:33:44.234 [LOG]: Light 12 is off
+22:33:44.241 [LOG]: Light 13 is off
+22:33:44.250 [LOG]: Light 13 is off
+22:33:44.263 [LOG]: Light 10 has been turned on
+22:33:44.317 [LOG]: Light 11 has been turned on
+22:33:44.324 [LOG]: Light 12 has been turned on
+22:33:44.330 [LOG]: Light 13 has been turned on
+22:33:44.338 [LOG]: Light 13 has been turned on
+22:35:42.245 [LOG]: Light 10 is on
+22:35:43.750 [LOG]: Light 11 is on
+22:35:43.759 [LOG]: Light 12 is on
+22:35:43.768 [LOG]: Light 13 is on
+22:35:43.777 [LOG]: Light 13 is on
+22:35:43.845 [LOG]: Light 10 has been turned off
+22:35:43.852 [LOG]: Light 11 has been turned off
+22:35:43.860 [LOG]: Light 12 has been turned off
+22:35:43.868 [LOG]: Light 13 has been turned off
+22:35:43.877 [ERROR]: Api Error: parameter, ct, is not modifiable. Device is set to off.
+22:35:44.688 [LOG]: Bot is ready. HellBot
+22:35:44.852 [LOG]: https://discordapp.com/oauth2/authorize?client_id=377052343264608256&permissions=8&scope=bot
