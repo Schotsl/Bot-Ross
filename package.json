@@ -1,0 +1,12 @@
+{
+  "name": "revuse",
+  "version": "1.0.0",
+  "description": "The sickest of Discord bots",
+  "main": "index.js",
+  "author": "Sjors van Holst & Wouter de Bruijn",
+  "license": "MIT",
+  "dependencies": {
+    "discord.js": "^11.4.2",
+    "node-hue-api": "^2.4.4"
+  }
+}

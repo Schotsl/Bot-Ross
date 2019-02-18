@@ -1,0 +1,40 @@
+22:8:26.721 [LOG]: Light 10 is on
+22:8:29.46 [LOG]: Light 11 is on
+22:8:29.54 [LOG]: Light 12 is on
+22:8:29.61 [LOG]: Light 13 is on
+22:8:29.69 [LOG]: Light 13 is on
+22:8:29.77 [LOG]: Light 10 has been turned off
+22:8:29.91 [LOG]: Light 11 has been turned off
+22:8:29.107 [LOG]: Light 12 has been turned off
+22:8:29.125 [LOG]: Light 13 has been turned off
+22:8:29.134 [ERROR]: Api Error: parameter, ct, is not modifiable. Device is set to off.
+22:11:40.4 [LOG]: Light 10 is off
+22:11:41.492 [LOG]: Light 11 is off
+22:11:41.500 [LOG]: Light 12 is off
+22:11:41.507 [LOG]: Light 13 is off
+22:11:41.515 [LOG]: Light 13 is off
+22:11:41.522 [LOG]: Light 10 has been turned on
+22:11:41.536 [LOG]: Light 11 has been turned on
+22:11:41.550 [LOG]: Light 12 has been turned on
+22:11:41.593 [LOG]: Light 13 has been turned on
+22:11:41.600 [LOG]: Light 13 has been turned on
+22:27:53.462 [LOG]: Light 10 is on
+22:27:54.952 [LOG]: Light 11 is on
+22:27:54.959 [LOG]: Light 12 is on
+22:27:54.967 [LOG]: Light 13 is on
+22:27:54.974 [LOG]: Light 13 is on
+22:27:54.987 [LOG]: Light 10 has been turned off
+22:27:55.1 [LOG]: Light 11 has been turned off
+22:27:55.50 [LOG]: Light 12 has been turned off
+22:27:55.56 [LOG]: Light 13 has been turned off
+22:27:55.63 [ERROR]: Api Error: parameter, ct, is not modifiable. Device is set to off.
+22:28:12.26 [LOG]: Light 10 is off
+22:28:13.494 [LOG]: Light 11 is off
+22:28:13.501 [LOG]: Light 12 is off
+22:28:13.508 [LOG]: Light 13 is off
+22:28:13.515 [LOG]: Light 13 is off
+22:28:13.526 [LOG]: Light 10 has been turned on
+22:28:13.583 [LOG]: Light 11 has been turned on
+22:28:13.590 [LOG]: Light 12 has been turned on
+22:28:13.597 [LOG]: Light 13 has been turned on
+22:28:13.605 [LOG]: Light 13 has been turned on

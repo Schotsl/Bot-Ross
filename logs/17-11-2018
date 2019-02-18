@@ -1,0 +1,515 @@
+12:32:40.38 [LOG]: TEst
+12:32:40.48 [ERROR]: ERRORORORO!
+12:32:41.467 [LOG]: TEst
+12:32:41.478 [ERROR]: ERRORORORO!
+12:32:42.816 [LOG]: TEst
+12:32:42.827 [ERROR]: ERRORORORO!
+12:34:12.433 [LOG]: Started
+16:50:50.605 [LOG]: Started
+16:59:49.493 [LOG]: Started
+17:0:1.452 [LOG]: Started
+17:0:19.467 [LOG]: Started
+17:1:8.297 [LOG]: Started
+17:1:45.54 [LOG]: Started
+17:2:46.556 [LOG]: Started
+17:4:34.541 [LOG]: Started
+17:4:35.858 [LOG]: [object Object]
+17:4:36.3 [LOG]: [object Object]
+17:4:37.112 [LOG]: [object Object]
+17:4:37.169 [LOG]: [object Object]
+17:4:37.641 [LOG]: [object Object]
+17:4:37.696 [LOG]: [object Object]
+17:4:38.8 [LOG]: [object Object]
+17:4:38.73 [LOG]: [object Object]
+17:4:38.312 [LOG]: [object Object]
+17:4:38.360 [LOG]: [object Object]
+17:4:38.568 [LOG]: [object Object]
+17:4:38.624 [LOG]: [object Object]
+17:4:38.776 [LOG]: [object Object]
+17:4:38.831 [LOG]: [object Object]
+17:4:39.16 [LOG]: [object Object]
+17:4:39.84 [LOG]: [object Object]
+17:4:40.760 [LOG]: [object Object]
+17:4:40.815 [LOG]: [object Object]
+17:4:52.83 [LOG]: Started
+17:4:53.619 [LOG]: undefined
+17:4:53.699 [LOG]: undefined
+17:4:54.568 [LOG]: undefined
+17:4:54.622 [LOG]: undefined
+17:4:54.848 [LOG]: undefined
+17:4:54.897 [LOG]: undefined
+17:4:55.48 [LOG]: undefined
+17:4:55.103 [LOG]: undefined
+17:5:3.846 [LOG]: Started
+17:5:8.199 [LOG]: undefined
+17:5:8.319 [LOG]: undefined
+17:7:26.333 [LOG]: Started
+17:7:41.335 [LOG]: Started
+17:8:37.774 [LOG]: Started
+17:9:9.896 [LOG]: Started
+18:29:22.644 [LOG]: Started
+18:29:43.211 [LOG]: Started
+18:29:43.222 [LOG]: Test
+18:31:13.952 [LOG]: A
+18:31:13.963 [LOG]: Started
+19:45:32.179 [LOG]: Light 13 is on
+19:46:43.387 [LOG]: Light 13 is on
+19:46:55.208 [LOG]: Light 13 is on
+19:46:55.242 [LOG]: Light 13 has been turned undefined
+19:47:17.354 [LOG]: Light 13 has been turned undefined
+19:47:39.723 [LOG]: Light 13 has been turned undefined
+19:48:21.755 [LOG]: Light 13 has been turned off
+19:48:24.387 [LOG]: Light 13 has been turned off
+19:48:42.116 [LOG]: Light 13 is on
+19:48:42.148 [LOG]: Light 13 has been turned off
+19:48:44.903 [LOG]: Light 13 is on
+19:48:44.928 [LOG]: Light 13 has been turned off
+19:48:47.72 [LOG]: Light 13 is on
+19:48:47.113 [LOG]: Light 13 has been turned off
+19:51:48.10 [LOG]: Light 13 is on
+19:54:9.775 [LOG]: Light 13 is on
+19:55:23.663 [LOG]: Light 13 is on
+19:55:23.703 [LOG]: Light 13 has been turned on
+19:55:25.486 [LOG]: Light 13 is off
+19:55:25.515 [LOG]: Light 13 has been turned on
+19:55:28.80 [LOG]: Light 13 is on
+19:55:28.112 [LOG]: Light 13 has been turned on
+19:55:30.453 [LOG]: Light 13 is off
+19:55:30.485 [LOG]: Light 13 has been turned on
+19:56:4.896 [LOG]: Light 13 is on
+19:57:14.738 [LOG]: Light 13 is on
+19:57:14.762 [LOG]: Light 13 has been turned on
+19:57:17.906 [LOG]: Light 13 is on
+19:57:17.932 [LOG]: Light 13 has been turned on
+19:57:20.448 [LOG]: Light 13 is on
+19:57:20.474 [LOG]: Light 13 has been turned on
+19:58:54.366 [LOG]: Light 13 is on
+19:58:54.396 [LOG]: Light 13 has been turned off
+19:58:56.557 [LOG]: Light 13 is off
+19:58:56.594 [LOG]: Light 13 has been turned on
+19:58:59.212 [LOG]: Light 13 is on
+19:58:59.244 [LOG]: Light 13 has been turned off
+19:59:17.234 [LOG]: Light 5 is on
+19:59:17.283 [LOG]: Light 5 has been turned off
+19:59:20.510 [LOG]: Light 5 is off
+19:59:20.560 [LOG]: Light 5 has been turned on
+19:59:22.31 [LOG]: Light 5 is on
+19:59:22.76 [LOG]: Light 5 has been turned off
+19:59:23.403 [LOG]: Light 5 is off
+19:59:23.454 [LOG]: Light 5 has been turned on
+19:59:35.398 [LOG]: Light 5 is on
+19:59:35.446 [LOG]: Light 5 has been turned off
+19:59:38.662 [LOG]: Light 5 is off
+19:59:38.709 [LOG]: Light 5 has been turned on
+19:59:40.420 [LOG]: Light 5 is on
+19:59:40.471 [LOG]: Light 5 has been turned off
+20:0:8.616 [LOG]: Light 5 is off
+20:0:8.674 [LOG]: Light 5 has been turned on
+20:2:0.778 [LOG]: Light 5 is on
+20:2:0.824 [LOG]: Light 5 has been turned off
+20:2:2.33 [LOG]: Light 5 is off
+20:2:2.87 [LOG]: Light 5 has been turned on
+20:2:3.334 [LOG]: Light 5 is on
+20:2:3.383 [LOG]: Light 5 has been turned off
+20:2:4.579 [LOG]: Light 5 is off
+20:2:4.634 [LOG]: Light 5 has been turned on
+20:2:5.762 [LOG]: Light 5 is on
+20:2:5.810 [LOG]: Light 5 has been turned off
+20:2:7.984 [LOG]: Light 5 is off
+20:2:8.34 [LOG]: Light 5 has been turned on
+20:32:59.634 [LOG]: Light 5 is on
+20:32:59.705 [LOG]: Light 5 has been turned off
+20:33:2.848 [LOG]: Light 5 is off
+20:33:2.923 [LOG]: Light 5 has been turned on
+21:5:22.685 [LOG]: [object Object]
+21:5:22.700 [LOG]: [object Object]
+21:5:22.710 [LOG]: [object Object]
+21:5:22.721 [LOG]: [object Object]
+21:5:22.731 [LOG]: [object Object]
+21:5:22.744 [LOG]: [object Object]
+21:5:22.755 [LOG]: [object Object]
+21:5:22.765 [LOG]: [object Object]
+21:5:22.778 [LOG]: [object Object]
+21:5:22.788 [LOG]: [object Object]
+21:5:22.798 [LOG]: [object Object]
+21:5:22.811 [LOG]: [object Object]
+21:5:22.822 [LOG]: [object Object]
+21:5:22.833 [LOG]: [object Object]
+21:6:43.618 [LOG]: 1
+21:6:43.632 [LOG]: 2
+21:6:43.643 [LOG]: 3
+21:6:43.654 [LOG]: 4
+21:6:43.665 [LOG]: 5
+21:6:43.676 [LOG]: 6
+21:6:43.686 [LOG]: 7
+21:6:43.697 [LOG]: 8
+21:6:43.706 [LOG]: 9
+21:6:43.714 [LOG]: 10
+21:6:43.724 [LOG]: 11
+21:6:43.733 [LOG]: 12
+21:6:43.743 [LOG]: 13
+21:6:43.753 [LOG]: 14
+21:7:1.638 [LOG]: 1
+21:7:1.663 [LOG]: Yron table lamp
+21:7:1.680 [LOG]: 2
+21:7:1.698 [LOG]: Sjors bedroom lamp
+21:7:1.715 [LOG]: 3
+21:7:1.734 [LOG]: Sjors hallway lamp
+21:7:1.752 [LOG]: 4
+21:7:1.769 [LOG]: Livingroom couch lamp
+21:7:1.787 [LOG]: 5
+21:7:1.804 [LOG]: Table ceiling lamp
+21:7:1.823 [LOG]: 6
+21:7:1.841 [LOG]: Table ceiling lamp
+21:7:1.859 [LOG]: 7
+21:7:1.876 [LOG]: Table ceiling lamp
+21:7:1.892 [LOG]: 8
+21:7:1.910 [LOG]: Yron ceiling lamp
+21:7:1.928 [LOG]: 9
+21:7:1.945 [LOG]: Yron closet lamp
+21:7:1.963 [LOG]: 10
+21:7:1.980 [LOG]: Sjors office lamp
+21:7:1.999 [LOG]: 11
+21:7:2.17 [LOG]: Sjors office lamp
+21:7:2.34 [LOG]: 12
+21:7:2.52 [LOG]: Sjors office lamp
+21:7:2.72 [LOG]: 13
+21:7:2.89 [LOG]: Sjors office lamp
+21:7:2.106 [LOG]: 14
+21:7:2.123 [LOG]: Sjors bedroom lamp
+21:53:16.95 [LOG]: 1
+21:53:16.109 [LOG]: [object Object]
+21:53:16.117 [LOG]: 2
+21:53:16.125 [LOG]: [object Object]
+21:53:16.134 [LOG]: 3
+21:53:16.141 [LOG]: [object Object]
+21:53:16.149 [LOG]: 4
+21:53:16.156 [LOG]: [object Object]
+21:53:16.163 [LOG]: 5
+21:53:16.171 [LOG]: [object Object]
+21:53:16.179 [LOG]: 6
+21:53:16.189 [LOG]: [object Object]
+21:53:16.196 [LOG]: 7
+21:53:16.205 [LOG]: [object Object]
+21:53:16.212 [LOG]: 8
+21:53:16.221 [LOG]: [object Object]
+21:53:16.229 [LOG]: 9
+21:53:16.241 [LOG]: [object Object]
+21:53:16.251 [LOG]: 10
+21:53:16.259 [LOG]: [object Object]
+21:53:16.268 [LOG]: 11
+21:53:16.276 [LOG]: [object Object]
+21:53:16.286 [LOG]: 12
+21:53:16.293 [LOG]: [object Object]
+21:53:16.304 [LOG]: 13
+21:53:16.312 [LOG]: [object Object]
+21:53:16.322 [LOG]: 14
+21:53:16.332 [LOG]: [object Object]
+21:53:45.620 [LOG]: 1
+21:53:45.632 [LOG]: {"id":"1","state":{"on":false,"bri":91,"ct":343,"alert":"none","colormode":"ct","mode":"homeautomation","reachable":true},"swupdate":{"state":"noupdates","lastinstall":"2018-12-01T14:01:33"},"type":"Color temperature light","name":"Yron table lamp","modelid":"LTW010","manufacturername":"Philips","productname":"Hue ambiance lamp","capabilities":{"certified":true,"control":{"mindimlevel":1000,"maxlumen":806,"ct":{"min":153,"max":454}},"streaming":{"renderer":false,"proxy":false}},"config":{"archetype":"sultanbulb","function":"functional","direction":"omnidirectional","startup":{"mode":"safety","configured":true}},"uniqueid":"00:17:88:01:04:d3:30:b9-0b","swversion":"1.46.13_r26312","swconfigid":"7A2E82CC","productid":"Philips-LTW010-1-A19CTv2"}
+21:53:45.642 [LOG]: 2
+21:53:45.649 [LOG]: {"id":"2","state":{"on":false,"bri":144,"ct":443,"alert":"none","colormode":"ct","mode":"homeautomation","reachable":true},"swupdate":{"state":"noupdates","lastinstall":"2018-12-01T14:01:16"},"type":"Color temperature light","name":"Sjors bedroom lamp","modelid":"LTW010","manufacturername":"Philips","productname":"Hue ambiance lamp","capabilities":{"certified":true,"control":{"mindimlevel":1000,"maxlumen":806,"ct":{"min":153,"max":454}},"streaming":{"renderer":false,"proxy":false}},"config":{"archetype":"sultanbulb","function":"functional","direction":"omnidirectional","startup":{"mode":"safety","configured":true}},"uniqueid":"00:17:88:01:04:e3:66:05-0b","swversion":"1.46.13_r26312","swconfigid":"7A2E82CC","productid":"Philips-LTW010-1-A19CTv2"}
+21:53:45.659 [LOG]: 3
+21:53:45.669 [LOG]: {"id":"3","state":{"on":false,"bri":126,"ct":366,"alert":"none","colormode":"ct","mode":"homeautomation","reachable":true},"swupdate":{"state":"noupdates","lastinstall":"2018-12-01T14:01:22"},"type":"Color temperature light","name":"Sjors hallway lamp","modelid":"LTW010","manufacturername":"Philips","productname":"Hue ambiance lamp","capabilities":{"certified":true,"control":{"mindimlevel":1000,"maxlumen":806,"ct":{"min":153,"max":454}},"streaming":{"renderer":false,"proxy":false}},"config":{"archetype":"sultanbulb","function":"functional","direction":"omnidirectional","startup":{"mode":"safety","configured":true}},"uniqueid":"00:17:88:01:04:e3:6b:c5-0b","swversion":"1.46.13_r26312","swconfigid":"7A2E82CC","productid":"Philips-LTW010-1-A19CTv2"}
+21:53:45.679 [LOG]: 4
+21:53:45.688 [LOG]: {"id":"4","state":{"on":false,"bri":254,"ct":343,"alert":"none","colormode":"ct","mode":"homeautomation","reachable":true},"swupdate":{"state":"noupdates","lastinstall":"2018-12-01T14:01:54"},"type":"Color temperature light","name":"Livingroom couch lamp","modelid":"LTW010","manufacturername":"Philips","productname":"Hue ambiance lamp","capabilities":{"certified":true,"control":{"mindimlevel":1000,"maxlumen":806,"ct":{"min":153,"max":454}},"streaming":{"renderer":false,"proxy":false}},"config":{"archetype":"sultanbulb","function":"functional","direction":"omnidirectional","startup":{"mode":"safety","configured":true}},"uniqueid":"00:17:88:01:04:e1:c5:f5-0b","swversion":"1.46.13_r26312","swconfigid":"7A2E82CC","productid":"Philips-LTW010-1-A19CTv2"}
+21:53:45.700 [LOG]: 5
+21:53:45.710 [LOG]: {"id":"5","state":{"on":false,"bri":144,"ct":443,"alert":"none","colormode":"ct","mode":"homeautomation","reachable":true},"swupdate":{"state":"noupdates","lastinstall":"2018-12-01T14:01:44"},"type":"Color temperature light","name":"Table ceiling lamp","modelid":"LTW010","manufacturername":"Philips","productname":"Hue ambiance lamp","capabilities":{"certified":true,"control":{"mindimlevel":1000,"maxlumen":806,"ct":{"min":153,"max":454}},"streaming":{"renderer":false,"proxy":false}},"config":{"archetype":"sultanbulb","function":"functional","direction":"omnidirectional","startup":{"mode":"safety","configured":true}},"uniqueid":"00:17:88:01:04:e2:a5:f5-0b","swversion":"1.46.13_r26312","swconfigid":"7A2E82CC","productid":"Philips-LTW010-1-A19CTv2"}
+21:53:45.723 [LOG]: 6
+21:53:45.734 [LOG]: {"id":"6","state":{"on":false,"bri":144,"ct":443,"alert":"none","colormode":"ct","mode":"homeautomation","reachable":true},"swupdate":{"state":"noupdates","lastinstall":"2018-12-01T14:02:14"},"type":"Color temperature light","name":"Table ceiling lamp","modelid":"LTW010","manufacturername":"Philips","productname":"Hue ambiance lamp","capabilities":{"certified":true,"control":{"mindimlevel":1000,"maxlumen":806,"ct":{"min":153,"max":454}},"streaming":{"renderer":false,"proxy":false}},"config":{"archetype":"sultanbulb","function":"functional","direction":"omnidirectional","startup":{"mode":"safety","configured":true}},"uniqueid":"00:17:88:01:03:03:24:72-0b","swversion":"1.46.13_r26312","swconfigid":"7A2E82CC","productid":"Philips-LTW010-1-A19CTv2"}
+21:53:45.747 [LOG]: 7
+21:53:45.757 [LOG]: {"id":"7","state":{"on":false,"bri":144,"ct":443,"alert":"none","colormode":"ct","mode":"homeautomation","reachable":true},"swupdate":{"state":"noupdates","lastinstall":"2018-12-01T14:02:09"},"type":"Color temperature light","name":"Table ceiling lamp","modelid":"LTW010","manufacturername":"Philips","productname":"Hue ambiance lamp","capabilities":{"certified":true,"control":{"mindimlevel":1000,"maxlumen":806,"ct":{"min":153,"max":454}},"streaming":{"renderer":false,"proxy":false}},"config":{"archetype":"sultanbulb","function":"functional","direction":"omnidirectional","startup":{"mode":"safety","configured":true}},"uniqueid":"00:17:88:01:03:da:f5:2c-0b","swversion":"1.46.13_r26312","swconfigid":"7A2E82CC","productid":"Philips-LTW010-1-A19CTv2"}
+21:53:45.771 [LOG]: 8
+21:53:45.782 [LOG]: {"id":"8","state":{"on":false,"bri":0,"ct":346,"alert":"none","colormode":"ct","mode":"homeautomation","reachable":false},"swupdate":{"state":"noupdates","lastinstall":"2018-12-13T21:00:04"},"type":"Color temperature light","name":"Yron ceiling lamp","modelid":"LTW012","manufacturername":"Philips","productname":"Hue ambiance candle","capabilities":{"certified":true,"control":{"mindimlevel":2000,"maxlumen":450,"ct":{"min":153,"max":454}},"streaming":{"renderer":false,"proxy":false}},"config":{"archetype":"candlebulb","function":"decorative","direction":"omnidirectional","startup":{"mode":"safety","configured":true}},"uniqueid":"00:17:88:01:02:9b:51:dc-0b","swversion":"1.46.13_r26312","swconfigid":"5E2017D8","productid":"Philips-LTW012-1-E14CTv1"}
+21:53:45.794 [LOG]: 9
+21:53:45.805 [LOG]: {"id":"9","state":{"on":false,"bri":92,"ct":343,"alert":"none","colormode":"ct","mode":"homeautomation","reachable":true},"swupdate":{"state":"noupdates","lastinstall":"2018-12-01T14:01:59"},"type":"Color temperature light","name":"Yron closet lamp","modelid":"LTW010","manufacturername":"Philips","productname":"Hue ambiance lamp","capabilities":{"certified":true,"control":{"mindimlevel":1000,"maxlumen":806,"ct":{"min":153,"max":454}},"streaming":{"renderer":false,"proxy":false}},"config":{"archetype":"sultanbulb","function":"functional","direction":"omnidirectional","startup":{"mode":"safety","configured":true}},"uniqueid":"00:17:88:01:03:7b:27:b9-0b","swversion":"1.46.13_r26312","swconfigid":"7A2E82CC","productid":"Philips-LTW010-1-A19CTv2"}
+21:53:45.818 [LOG]: 10
+21:53:45.829 [LOG]: {"id":"10","state":{"on":true,"bri":254,"ct":366,"alert":"none","colormode":"ct","mode":"homeautomation","reachable":true},"swupdate":{"state":"noupdates","lastinstall":"2018-12-01T14:01:38"},"type":"Color temperature light","name":"Sjors office lamp","modelid":"LTW013","manufacturername":"Philips","productname":"Hue ambiance spot","capabilities":{"certified":true,"control":{"mindimlevel":1000,"maxlumen":250,"ct":{"min":153,"max":454}},"streaming":{"renderer":false,"proxy":false}},"config":{"archetype":"spotbulb","function":"functional","direction":"downwards","startup":{"mode":"safety","configured":true}},"uniqueid":"00:17:88:01:04:c1:90:b0-0b","swversion":"1.46.13_r26312","swconfigid":"1742FA88","productid":"Philips-LTW013-1-GU10CTv1"}
+21:53:45.840 [LOG]: 11
+21:53:45.848 [LOG]: {"id":"11","state":{"on":true,"bri":254,"ct":366,"alert":"none","colormode":"ct","mode":"homeautomation","reachable":true},"swupdate":{"state":"noupdates","lastinstall":"2018-12-01T14:01:11"},"type":"Color temperature light","name":"Sjors office lamp","modelid":"LTW013","manufacturername":"Philips","productname":"Hue ambiance spot","capabilities":{"certified":true,"control":{"mindimlevel":1000,"maxlumen":250,"ct":{"min":153,"max":454}},"streaming":{"renderer":false,"proxy":false}},"config":{"archetype":"spotbulb","function":"functional","direction":"downwards","startup":{"mode":"safety","configured":true}},"uniqueid":"00:17:88:01:04:c1:91:8f-0b","swversion":"1.46.13_r26312","swconfigid":"1742FA88","productid":"Philips-LTW013-1-GU10CTv1"}
+21:53:45.861 [LOG]: 12
+21:53:45.872 [LOG]: {"id":"12","state":{"on":true,"bri":254,"ct":366,"alert":"none","colormode":"ct","mode":"homeautomation","reachable":true},"swupdate":{"state":"noupdates","lastinstall":"2018-12-01T14:01:00"},"type":"Color temperature light","name":"Sjors office lamp","modelid":"LTW013","manufacturername":"Philips","productname":"Hue ambiance spot","capabilities":{"certified":true,"control":{"mindimlevel":1000,"maxlumen":250,"ct":{"min":153,"max":454}},"streaming":{"renderer":false,"proxy":false}},"config":{"archetype":"spotbulb","function":"functional","direction":"downwards","startup":{"mode":"safety","configured":true}},"uniqueid":"00:17:88:01:04:a9:f2:f4-0b","swversion":"1.46.13_r26312","swconfigid":"1742FA88","productid":"Philips-LTW013-1-GU10CTv1"}
+21:53:45.886 [LOG]: 13
+21:53:45.896 [LOG]: {"id":"13","state":{"on":true,"bri":254,"ct":366,"alert":"none","colormode":"ct","mode":"homeautomation","reachable":true},"swupdate":{"state":"noupdates","lastinstall":"2018-12-01T14:01:28"},"type":"Color temperature light","name":"Sjors office lamp","modelid":"LTW013","manufacturername":"Philips","productname":"Hue ambiance spot","capabilities":{"certified":true,"control":{"mindimlevel":1000,"maxlumen":250,"ct":{"min":153,"max":454}},"streaming":{"renderer":false,"proxy":false}},"config":{"archetype":"spotbulb","function":"functional","direction":"downwards","startup":{"mode":"safety","configured":true}},"uniqueid":"00:17:88:01:04:a9:f2:c5-0b","swversion":"1.46.13_r26312","swconfigid":"1742FA88","productid":"Philips-LTW013-1-GU10CTv1"}
+21:53:45.909 [LOG]: 14
+21:53:45.920 [LOG]: {"id":"14","state":{"on":false,"bri":144,"ct":443,"alert":"none","colormode":"ct","mode":"homeautomation","reachable":true},"swupdate":{"state":"noupdates","lastinstall":"2018-12-01T14:01:48"},"type":"Color temperature light","name":"Sjors bedroom lamp","modelid":"LTW010","manufacturername":"Philips","productname":"Hue ambiance lamp","capabilities":{"certified":true,"control":{"mindimlevel":1000,"maxlumen":806,"ct":{"min":153,"max":454}},"streaming":{"renderer":false,"proxy":false}},"config":{"archetype":"sultanbulb","function":"functional","direction":"omnidirectional","startup":{"mode":"safety","configured":true}},"uniqueid":"00:17:88:01:03:db:b1:fe-0b","swversion":"1.46.13_r26312","swconfigid":"7A2E82CC","productid":"Philips-LTW010-1-A19CTv2"}
+22:50:1.200 [LOG]: Light 10 is on
+22:50:1.218 [LOG]: Light 11 is on
+22:50:1.248 [LOG]: Light 12 is on
+22:50:1.263 [LOG]: Light 12 is on
+22:50:1.301 [LOG]: Light 11 has been turned off
+22:50:1.313 [LOG]: Light 10 has been turned off
+22:50:1.325 [LOG]: Light 12 has been turned off
+22:50:11.814 [LOG]: Light 10 is off
+22:50:11.830 [LOG]: Light 11 is off
+22:50:11.839 [LOG]: Light 12 is off
+22:50:11.850 [LOG]: Light 12 is off
+22:50:11.884 [LOG]: Light 10 has been turned on
+22:50:11.892 [LOG]: Light 11 has been turned on
+22:50:11.954 [LOG]: Light 12 has been turned on
+22:50:11.961 [LOG]: Light 12 has been turned on
+22:50:13.862 [LOG]: Light 10 is on
+22:50:13.877 [LOG]: Light 11 is on
+22:50:13.887 [LOG]: Light 12 is on
+22:50:13.897 [LOG]: Light 12 is on
+22:50:13.923 [LOG]: Light 10 has been turned off
+22:50:13.933 [LOG]: Light 11 has been turned off
+22:50:13.954 [LOG]: Light 12 has been turned off
+22:50:50.302 [LOG]: Light 10 is off
+22:50:50.316 [LOG]: Light 11 is off
+22:50:50.325 [LOG]: Light 12 is off
+22:50:50.339 [LOG]: Light 12 is off
+22:50:50.358 [LOG]: Light 10 has been turned on
+22:50:50.403 [LOG]: Light 11 has been turned on
+22:50:50.411 [LOG]: Light 12 has been turned on
+22:50:50.419 [LOG]: Light 12 has been turned on
+22:50:52.327 [LOG]: Light 10 is on
+22:50:52.343 [LOG]: Light 11 is on
+22:50:52.355 [LOG]: Light 12 is on
+22:50:52.623 [LOG]: Light 10 has been turned off
+22:50:52.635 [LOG]: Light 11 has been turned off
+22:50:52.677 [LOG]: Light 12 has been turned off
+22:50:52.685 [LOG]: Light 12 is off
+22:50:52.715 [LOG]: Light 12 has been turned on
+22:50:56.530 [LOG]: Light 10 is off
+22:50:56.548 [LOG]: Light 11 is off
+22:50:56.558 [LOG]: Light 12 is on
+22:50:56.569 [LOG]: Light 12 is on
+22:50:56.593 [LOG]: Light 10 has been turned on
+22:50:56.888 [LOG]: Light 11 has been turned on
+22:50:56.897 [LOG]: Light 12 has been turned off
+22:50:58.895 [LOG]: Light 10 is on
+22:50:58.912 [LOG]: Light 11 is on
+22:50:58.920 [LOG]: Light 12 is off
+22:50:58.930 [LOG]: Light 12 is off
+22:50:58.959 [LOG]: Light 10 has been turned off
+22:50:58.995 [LOG]: Light 11 has been turned off
+22:50:59.4 [LOG]: Light 12 has been turned on
+22:50:59.12 [LOG]: Light 12 has been turned on
+22:51:2.236 [LOG]: Light 10 is off
+22:51:2.251 [LOG]: Light 11 is off
+22:51:2.261 [LOG]: Light 12 is on
+22:51:2.274 [LOG]: Light 12 is on
+22:51:2.289 [LOG]: Light 10 has been turned on
+22:51:2.394 [LOG]: Light 11 has been turned on
+22:51:2.411 [LOG]: Light 12 has been turned off
+22:51:4.105 [LOG]: Light 10 is on
+22:51:4.122 [LOG]: Light 11 is on
+22:51:4.132 [LOG]: Light 12 is off
+22:51:4.143 [LOG]: Light 12 is off
+22:51:4.161 [LOG]: Light 10 has been turned off
+22:51:4.182 [LOG]: Light 11 has been turned off
+22:51:4.197 [LOG]: Light 12 has been turned on
+22:51:4.216 [LOG]: Light 12 has been turned on
+22:51:22.186 [LOG]: Light 10 is on
+22:51:22.201 [LOG]: Light 11 is on
+22:51:22.209 [LOG]: Light 12 is on
+22:51:22.224 [LOG]: Light 12 is on
+22:51:22.263 [LOG]: Light 10 has been turned off
+22:51:22.286 [LOG]: Light 11 has been turned off
+22:51:22.295 [LOG]: Light 12 has been turned off
+22:52:21.112 [LOG]: Light 10 is off
+22:52:21.132 [LOG]: Light 11 is off
+22:52:21.142 [LOG]: Light 12 is off
+22:52:21.170 [LOG]: Light 12 is off
+22:52:21.464 [LOG]: Light 10 has been turned on
+22:52:21.493 [LOG]: Light 11 has been turned on
+22:52:21.505 [LOG]: Light 12 has been turned on
+22:52:21.525 [LOG]: Light 12 has been turned on
+22:52:25.23 [LOG]: Light 10 is on
+22:52:25.43 [LOG]: Light 11 is on
+22:52:25.90 [LOG]: Light 12 is on
+22:52:25.102 [LOG]: Light 12 is on
+22:52:25.265 [LOG]: Light 10 has been turned off
+22:52:25.277 [LOG]: Light 11 has been turned off
+22:52:25.291 [LOG]: Light 12 has been turned off
+22:52:30.212 [LOG]: Light 10 is off
+22:52:30.227 [LOG]: Light 11 is off
+22:52:30.270 [LOG]: Light 12 is off
+22:52:30.569 [LOG]: Light 10 has been turned on
+22:52:30.608 [LOG]: Light 11 has been turned on
+22:52:30.617 [LOG]: Light 12 has been turned on
+22:52:30.756 [LOG]: Light 12 is off
+22:52:30.793 [LOG]: Light 12 has been turned on
+22:53:51.828 [LOG]: Light 10 is on
+22:53:51.847 [LOG]: Light 11 is on
+22:53:51.855 [LOG]: Light 12 is on
+22:53:51.878 [LOG]: Light 12 is on
+22:53:51.889 [LOG]: Light 10 has been turned off
+22:53:51.920 [LOG]: Light 11 has been turned off
+22:53:51.936 [LOG]: Light 12 has been turned off
+22:54:32.395 [LOG]: Light 10 is off
+22:54:32.487 [LOG]: Light 10 has been turned on
+22:54:32.496 [LOG]: Light 11 is off
+22:54:32.545 [LOG]: Light 11 has been turned on
+22:54:32.575 [LOG]: Light 12 is off
+22:54:32.612 [LOG]: Light 12 has been turned on
+22:54:32.659 [LOG]: Light 12 is on
+22:54:32.711 [LOG]: Light 12 has been turned off
+22:54:35.906 [LOG]: Light 10 is on
+22:54:35.946 [LOG]: Light 10 has been turned off
+22:54:35.958 [LOG]: Light 11 is on
+22:54:36.14 [LOG]: Light 11 has been turned off
+22:54:36.48 [LOG]: Light 12 is off
+22:54:36.79 [LOG]: Light 12 has been turned on
+22:54:36.152 [LOG]: Light 12 is on
+22:54:36.193 [LOG]: Light 12 has been turned off
+22:54:39.528 [LOG]: Light 10 is off
+22:54:39.615 [LOG]: Light 11 is off
+22:54:39.634 [LOG]: Light 10 has been turned on
+22:54:39.675 [LOG]: Light 11 has been turned on
+22:54:39.697 [LOG]: Light 12 is off
+22:54:39.732 [LOG]: Light 12 has been turned on
+22:54:39.758 [LOG]: Light 12 is on
+22:54:39.834 [LOG]: Light 12 has been turned off
+22:54:49.927 [LOG]: Light 10 is on
+22:54:49.975 [LOG]: Light 10 has been turned off
+22:54:50.15 [LOG]: Light 11 is on
+22:54:50.83 [LOG]: Light 11 has been turned off
+22:54:50.118 [LOG]: Light 12 is off
+22:54:50.399 [LOG]: Light 12 is off
+22:54:50.439 [LOG]: Light 12 has been turned on
+22:54:53.159 [LOG]: Light 12 has been turned on
+22:54:54.791 [LOG]: Light 10 is off
+22:54:54.805 [LOG]: Light 11 is off
+22:54:54.834 [LOG]: Light 12 is on
+22:54:54.845 [LOG]: Light 10 has been turned on
+22:54:54.863 [LOG]: Light 11 has been turned on
+22:54:54.921 [LOG]: Light 12 has been turned off
+22:54:54.929 [LOG]: Light 12 is off
+22:54:57.991 [LOG]: Light 12 has been turned on
+22:55:3.674 [LOG]: Light 10 is on
+22:55:3.717 [LOG]: Light 10 has been turned off
+22:55:3.756 [LOG]: Light 11 is on
+22:55:3.801 [LOG]: Light 11 has been turned off
+22:55:3.850 [LOG]: Light 12 is on
+22:55:3.887 [LOG]: Light 12 has been turned off
+22:55:3.971 [LOG]: Light 12 is off
+22:55:4.3 [LOG]: Light 12 has been turned on
+22:56:50.724 [LOG]: Light 10 is off
+22:56:50.766 [LOG]: Light 10 has been turned on
+22:56:50.825 [LOG]: Light 11 is off
+22:56:50.865 [LOG]: Light 11 has been turned on
+22:56:50.935 [LOG]: Light 12 is on
+22:56:51.193 [LOG]: Light 12 is on
+22:56:51.255 [LOG]: Light 12 has been turned off
+22:57:9.447 [LOG]: Light 10 is off
+22:57:9.552 [LOG]: Light 10 has been turned on
+22:57:9.564 [LOG]: Light 11 is off
+22:57:9.652 [LOG]: Light 11 has been turned on
+22:57:9.668 [LOG]: Light 12 is off
+22:57:9.706 [LOG]: Light 12 has been turned on
+22:57:9.987 [LOG]: Light 12 is on
+22:57:10.24 [LOG]: Light 12 has been turned off
+22:57:45.589 [LOG]: Light 10 is on
+22:57:45.636 [LOG]: Light 10 has been turned off
+22:57:45.675 [LOG]: Light 11 is on
+22:57:45.710 [LOG]: Light 11 has been turned off
+22:57:45.760 [LOG]: Light 12 is off
+22:57:45.796 [LOG]: Light 12 has been turned on
+22:57:45.862 [LOG]: Light 12 is on
+22:57:45.901 [LOG]: Light 12 has been turned off
+22:57:50.365 [LOG]: Light 10 is off
+22:57:50.402 [LOG]: Light 10 has been turned on
+22:57:50.458 [LOG]: Light 11 is off
+22:57:50.502 [LOG]: Light 11 has been turned on
+22:57:50.534 [LOG]: Light 12 is off
+22:57:50.583 [LOG]: Light 12 has been turned on
+22:57:50.687 [LOG]: Light 12 is on
+22:57:50.738 [LOG]: Light 12 has been turned off
+22:57:55.67 [LOG]: Light 10 is on
+22:57:55.129 [LOG]: Light 10 has been turned off
+22:57:55.163 [LOG]: Light 11 is on
+22:57:55.243 [LOG]: Light 11 has been turned off
+22:57:55.286 [LOG]: Light 12 is off
+22:57:55.323 [LOG]: Light 12 has been turned on
+22:57:55.342 [LOG]: Light 12 is on
+22:57:55.395 [LOG]: Light 12 has been turned off
+22:58:21.657 [LOG]: Light 10 is off
+22:58:21.709 [LOG]: Light 10 has been turned on
+22:58:21.771 [LOG]: Light 11 is off
+22:58:21.809 [LOG]: Light 11 has been turned on
+22:58:21.860 [LOG]: Light 12 is off
+22:58:21.907 [LOG]: Light 12 has been turned on
+22:58:21.942 [LOG]: Light 12 is on
+22:58:21.971 [LOG]: Light 12 has been turned off
+22:58:28.718 [LOG]: Light 10 is on
+22:58:28.773 [LOG]: Light 10 has been turned off
+22:58:28.815 [LOG]: Light 11 is on
+22:58:28.853 [LOG]: Light 11 has been turned off
+22:58:28.918 [LOG]: Light 12 is off
+22:58:28.950 [LOG]: Light 12 has been turned on
+22:58:29.19 [LOG]: Light 12 is on
+22:58:29.63 [LOG]: Light 12 has been turned off
+22:58:40.395 [LOG]: Light 10 is off
+22:58:40.434 [LOG]: Light 10 has been turned on
+22:58:40.494 [LOG]: Light 11 is off
+22:58:40.527 [LOG]: Light 11 has been turned on
+22:58:40.586 [LOG]: Light 12 is off
+22:58:40.628 [LOG]: Light 12 has been turned on
+22:58:40.678 [LOG]: Light 12 is on
+22:58:40.711 [LOG]: Light 12 has been turned off
+22:58:42.762 [LOG]: Light 10 is on
+22:58:42.817 [LOG]: Light 10 has been turned off
+22:58:42.844 [LOG]: Light 11 is on
+22:58:42.877 [LOG]: Light 11 has been turned off
+22:58:42.966 [LOG]: Light 12 is off
+22:58:43.11 [LOG]: Light 12 has been turned on
+22:58:43.58 [LOG]: Light 12 is on
+22:58:43.127 [LOG]: Light 12 has been turned off
+22:58:45.302 [LOG]: Light 10 is off
+22:58:45.358 [LOG]: Light 10 has been turned on
+22:58:45.379 [LOG]: Light 11 is off
+22:58:45.413 [LOG]: Light 11 has been turned on
+22:58:45.476 [LOG]: Light 12 is off
+22:58:45.510 [LOG]: Light 12 has been turned on
+22:58:45.598 [LOG]: Light 12 is on
+22:58:45.646 [LOG]: Light 12 has been turned off
+22:58:48.964 [LOG]: Light 10 is on
+22:58:49.6 [LOG]: Light 10 has been turned off
+22:58:49.45 [LOG]: Light 11 is on
+22:58:49.80 [LOG]: Light 11 has been turned off
+22:58:49.111 [LOG]: Light 12 is off
+22:58:49.146 [LOG]: Light 12 has been turned on
+22:58:49.219 [LOG]: Light 12 is on
+22:58:52.312 [LOG]: Light 12 has been turned off
+23:2:53.438 [LOG]: Light 10 is off
+23:2:53.487 [LOG]: Light 10 has been turned on
+23:2:53.518 [LOG]: Light 11 is off
+23:2:53.555 [LOG]: Light 11 has been turned on
+23:2:53.622 [LOG]: Light 12 is off
+23:2:53.671 [LOG]: Light 12 has been turned on
+23:2:53.709 [LOG]: Light 12 is on
+23:2:53.769 [LOG]: Light 12 has been turned off
+23:3:6.659 [LOG]: Light 10 is on
+23:3:6.720 [LOG]: Light 10 has been turned off
+23:3:7.624 [LOG]: Light 11 is on
+23:3:7.673 [LOG]: Light 11 has been turned off
+23:3:8.621 [LOG]: Light 12 is off
+23:3:8.653 [LOG]: Light 12 has been turned on
+23:3:9.612 [LOG]: Light 12 is on
+23:3:9.668 [LOG]: Light 12 has been turned off
+23:3:22.828 [LOG]: Light 10 is off
+23:3:22.880 [LOG]: Light 10 has been turned on
+23:3:23.792 [LOG]: Light 11 is off
+23:3:23.835 [LOG]: Light 11 has been turned on
+23:3:24.801 [LOG]: Light 12 is off
+23:3:24.837 [LOG]: Light 12 has been turned on
+23:3:25.775 [LOG]: Light 13 is off
+23:3:25.808 [LOG]: Light 13 has been turned on
+23:3:32.215 [LOG]: Light 10 is on
+23:3:32.230 [LOG]: Light 11 is on
+23:3:32.238 [LOG]: Light 12 is on
+23:3:32.259 [LOG]: Light 13 is on
+23:3:32.275 [LOG]: Light 10 has been turned off
+23:3:32.287 [LOG]: Light 11 has been turned off
+23:3:32.310 [LOG]: Light 12 has been turned off
+23:3:32.326 [LOG]: Light 13 has been turned off
+23:3:46.894 [LOG]: Light 10 is off
+23:3:46.908 [LOG]: Light 11 is off
+23:3:46.917 [LOG]: Light 12 is off
+23:3:46.928 [LOG]: Light 13 is off
+23:3:46.972 [LOG]: Light 10 has been turned on
+23:3:46.988 [LOG]: Light 11 has been turned on
+23:3:47.24 [LOG]: Light 12 has been turned on
+23:3:47.37 [LOG]: Light 13 has been turned on

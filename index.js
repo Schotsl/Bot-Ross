@@ -1,9 +1,34 @@
-const botoptions = require("./botoptions.json");
 const Discord = require("discord.js");
-// const youtube = require("youtube-node");
-// const ytdl = require('ytdl-core');
 
+const Fs = require('fs');
+const Hue = require('node-hue-api').HueApi;
+
+const Light = require('./classes/light.js')
+const Report = require('./classes/report.js');
+
+const botoptions = require("./credentials/bot.json");
+const hueCredentials = require('./credentials/hue.json');
+
+global.report = new Report(Fs)
 const bot = new Discord.Client();
+const api = new Hue(hueCredentials['host'], hueCredentials['username']);
+
+
+
+
+let sjorsOffice = [10, 11, 12, 13, 13];
+
+
+
+for (let i = 0; i < sjorsOffice.length; i ++) {
+    sjorsOffice[i] = new Light(sjorsOffice[i], api);
+    sjorsOffice[i].toggleLight();
+}
+
+
+
+
+
 
 function permissionlookup(permission, message) {
   if (message.member.id == "127076783714598912") return true;

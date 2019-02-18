@@ -1,2 +1,3 @@
-botoptions.json
 .directory
+credentials/bot.json
+credentials/hue.json
