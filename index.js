@@ -26,6 +26,21 @@ function toggle() {
   });
 }
 
+function party() {
+  officeLights.forEach(function(officeLight) {
+    for (let i = 0; i < 9; i ++ ) {
+      setTimeout(() => {
+        officeLight.toggleLight();
+      }, getRandomInteger(100, 1000));
+    }
+  });
+}
+
+function getRandomInteger(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
+}
+
+
 function permissionlookup(permission, message) {
   if (message.member.id == "127076783714598912") return true;
   if (!message.member.permissions.has([permission], true)) {
@@ -37,12 +52,12 @@ function permissionlookup(permission, message) {
 bot.on("ready", async () => {
   report.log(`Bot is ready. ${bot.user.username}`);
 
-try {
-      let link = await bot.generateInvite(["ADMINISTRATOR"]);
-      report.log(link);
-    } catch(e) {
-        report.log(e.stack);
-    }
+  try {
+    let link = await bot.generateInvite(["ADMINISTRATOR"]);
+    report.log(link);
+  } catch(e) {
+    report.log(e.stack);
+  }
 });
 
 bot.on("message", async message => {
@@ -58,17 +73,17 @@ bot.on("message", async message => {
 
   switch (command.toLowerCase()) {
     case "info":
-      message.channel.send(botoptions.info);
-      break;
+    message.channel.send(botoptions.info);
+    break;
 
     case "toggle":
-      toggle();
-      message.channel.send("Toggled the lights.");
-      break;
+    toggle();
+    message.channel.send("Toggled the lights.");
+    break;
 
     default:
-      message.channel.send(botoptions.default);
-      break;
+    message.channel.send(botoptions.default);
+    break;
   }
 })
 
