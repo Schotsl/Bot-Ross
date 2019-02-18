@@ -38,58 +38,70 @@ function party() {
   });
 }
 
-function getRandomInteger(min, max) {
-  return Math.floor(Math.random() * (max - min)) + min;
-}
+function notice() {
+  let oldStatus = new Array();
+  officeLights.forEach(function(officeLight) {
+    oldStatus.push(officeLigh.getState());
+  })
 
+  //Actually do stuff
 
-function permissionlookup(permission, message) {
-  if (message.member.id == "127076783714598912") return true;
-  if (!message.member.permissions.has([permission], true)) {
-    message.channel.send(`<@${message.author.id}> You dont have permissions to do that! You need **${permission.toLowerCase()}**.`);
-    return false;
+  officeLights.forEach(function(officeLight, index) {
+    officeLight.setState(oldStatus[index]);
+  })}
+
+  function getRandomInteger(min, max) {
+    return Math.floor(Math.random() * (max - min)) + min;
   }
-}
 
-bot.on("ready", async () => {
-  report.log(`Bot is ready. ${bot.user.username}`);
 
-  try {
-    let link = await bot.generateInvite(["ADMINISTRATOR"]);
-    report.log(link);
-  } catch(e) {
-    report.log(e.stack);
+  function permissionlookup(permission, message) {
+    if (message.member.id == "127076783714598912") return true;
+    if (!message.member.permissions.has([permission], true)) {
+      message.channel.send(`<@${message.author.id}> You dont have permissions to do that! You need **${permission.toLowerCase()}**.`);
+      return false;
+    }
   }
-});
 
-bot.on("message", async message => {
-  if(message.author.bot) return;
-  if((message.channel.type) === "dm") return;
+  bot.on("ready", async () => {
+    report.log(`Bot is ready. ${bot.user.username}`);
 
-  if(!message.content.startsWith(botoptions.prefix)) return;
+    try {
+      let link = await bot.generateInvite(["ADMINISTRATOR"]);
+      report.log(link);
+    } catch(e) {
+      report.log(e.stack);
+    }
+  });
 
-  let messageArray = message.content.split(" ");
-  let command = messageArray[0];
+  bot.on("message", async message => {
+    if(message.author.bot) return;
+    if((message.channel.type) === "dm") return;
 
-  command = command.substring(1);
+    if(!message.content.startsWith(botoptions.prefix)) return;
 
-  switch (command.toLowerCase()) {
-    case "info":
-    message.channel.send(botoptions.info);
-    break;
+    let messageArray = message.content.split(" ");
+    let command = messageArray[0];
 
-    case "party":
-    party();
-    break;
+    command = command.substring(1);
+
+    switch (command.toLowerCase()) {
+      case "info":
+      message.channel.send(botoptions.info);
+      break;
 
     case "toggle":
     if (talkedRecently.has(message.author.id)) {
       message.channel.send("Wait 1 minute before getting typing this again. - " + message.author);
     } else {
 
-      toggle();
-      message.channel.send("Toggled the lights.");
+      case "toggle":
+      if (talkedRecently.has(msg.author.id)) {
+        msg.channel.send("Wait 1 minute before getting typing this again. - " + msg.author);
+      } else {
 
+        toggle();
+        message.channel.send("Toggled the lights.");
 
       talkedRecently.add(message.author.id);
       setTimeout(() => {
@@ -98,7 +110,12 @@ bot.on("message", async message => {
       }, 60000);
     }
 
-    break;
+        talkedRecently.add(msg.author.id);
+        setTimeout(() => {
+          // Removes the user from the set after a minute
+          talkedRecently.delete(msg.author.id);
+        }, 60000);
+      }
 
     case "set":
     if (isNaN(messageArray[1] && isNaN(messageArray[2]))) return message.channel.send("Please provide a number and off/on");
@@ -119,4 +136,4 @@ bot.on("message", async message => {
   }
 })
 
-bot.login(botoptions.token);
+  bot.login(botoptions.token);
