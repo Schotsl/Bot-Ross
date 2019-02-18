@@ -78,6 +78,10 @@ bot.on("message", async message => {
     message.channel.send(botoptions.info);
     break;
 
+    case "party":
+    party();
+    break;
+
     case "toggle":
     if (talkedRecently.has(msg.author.id)) {
       msg.channel.send("Wait 1 minute before getting typing this again. - " + msg.author);
