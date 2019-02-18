@@ -2,4 +2,4 @@
 credentials/bot.json
 credentials/hue.json
 node_modules
-logs/
+logs/*
