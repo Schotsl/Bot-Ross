@@ -90,9 +90,10 @@ function notice() {
       message.channel.send(botoptions.info);
       break;
 
-      case "party":
-      party();
-      break;
+    case "toggle":
+    if (talkedRecently.has(message.author.id)) {
+      message.channel.send("Wait 1 minute before getting typing this again. - " + message.author);
+    } else {
 
       case "toggle":
       if (talkedRecently.has(msg.author.id)) {
@@ -102,6 +103,12 @@ function notice() {
         toggle();
         message.channel.send("Toggled the lights.");
 
+      talkedRecently.add(message.author.id);
+      setTimeout(() => {
+        // Removes the user from the set after a minute
+        talkedRecently.delete(message.author.id);
+      }, 60000);
+    }
 
         talkedRecently.add(msg.author.id);
         setTimeout(() => {
