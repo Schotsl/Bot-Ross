@@ -15,14 +15,18 @@ const api = new Hue(hueCredentials['host'], hueCredentials['username']);
 
 
 
+let officeLightsId = [10, 11, 12, 13];
+let officeLights = new Array();
 
-let sjorsOffice = [10, 11, 12, 13, 13];
+officeLightsId.forEach(function(officeLightId) {
+  officeLights.push(new Light(officeLightId, api));
+});
 
 
-
-for (let i = 0; i < sjorsOffice.length; i ++) {
-    sjorsOffice[i] = new Light(sjorsOffice[i], api);
-    sjorsOffice[i].toggleLight();
+function toggle() {
+  officeLights.forEach(function(officeLight) {
+    officeLight.toggleLight();
+  });
 }
 
 
@@ -63,6 +67,10 @@ bot.on("message", async message => {
   switch (command.toLowerCase()) {
     case "info":
       message.channel.send(botoptions.info);
+      break;
+
+    case "toggle":
+      toggle();
       break;
 
     default:
