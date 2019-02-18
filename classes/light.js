@@ -4,10 +4,10 @@ module.exports = class Light {
     this.hue = hue;
   }
 
-  toggleLight() {
+  toggleLight(callback) {
     this.getState((currentState) => {
       currentState.on = !currentState.on;
-      this.setState(currentState);
+      this.setState(currentState, callback);
     });
   }
 
