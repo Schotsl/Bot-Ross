@@ -1,3 +1,5 @@
+const talkedRecently = new Set();
+
 const Discord = require("discord.js");
 
 const Fs = require('fs');
@@ -77,8 +79,21 @@ bot.on("message", async message => {
     break;
 
     case "toggle":
-    toggle();
-    message.channel.send("Toggled the lights.");
+    if (talkedRecently.has(msg.author.id)) {
+      msg.channel.send("Wait 1 minute before getting typing this again. - " + msg.author);
+    } else {
+
+      toggle();
+      message.channel.send("Toggled the lights.");
+
+
+      talkedRecently.add(msg.author.id);
+      setTimeout(() => {
+        // Removes the user from the set after a minute
+        talkedRecently.delete(msg.author.id);
+      }, 60000);
+    }
+
     break;
 
     default:
