@@ -13,8 +13,6 @@ global.report = new Report(Fs)
 const bot = new Discord.Client();
 const api = new Hue(hueCredentials['host'], hueCredentials['username']);
 
-
-
 let officeLightsId = [10, 11, 12, 13];
 let officeLights = new Array();
 
@@ -22,17 +20,11 @@ officeLightsId.forEach(function(officeLightId) {
   officeLights.push(new Light(officeLightId, api));
 });
 
-
 function toggle() {
   officeLights.forEach(function(officeLight) {
     officeLight.toggleLight();
   });
 }
-
-
-
-
-
 
 function permissionlookup(permission, message) {
   if (message.member.id == "127076783714598912") return true;
@@ -54,7 +46,7 @@ try {
 });
 
 bot.on("message", async message => {
-  if(message.author.bot) return; //check if bot, if it is stopcode.
+  if(message.author.bot) return;
   if((message.channel.type) === "dm") return;
 
   if(!message.content.startsWith(botoptions.prefix)) return;
@@ -71,6 +63,7 @@ bot.on("message", async message => {
 
     case "toggle":
       toggle();
+      message.channel.send("Toggled the lights.");
       break;
 
     default:
