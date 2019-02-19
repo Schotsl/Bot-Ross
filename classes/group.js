@@ -7,11 +7,7 @@ module.exports = class Group {
   getGroup(callback) {
     this.hue.getGroup(this.id)
       .then((currentLight) => {
-        // let currentState = currentLight.state;
-        // let lightStateString = currentState.on ? 'on' : 'off';
-        //
-        // report.log(`Light ${this.id} is ${lightStateString}`);
-        console.log(currentLight);
+        report.log(`Group ${this.id}'s state has been requested`);
         if (callback) callback(currentState);
       })
       .fail((error) => report.error(error))
@@ -21,10 +17,7 @@ module.exports = class Group {
   setGroup(newState, callback) {
     this.hue.setGroupLightState(this.id, newState)
       .then((currentLight) => {
-        // let currentState = currentLight.state;
-        // let lightStateString = newState.on ? 'on' : 'off';
-        //
-        // report.log(`Light ${this.id} has been turned ${lightStateString}`);
+        report.log(`Group ${this.id}'s state has been requested`);
         if (callback) callback(currentState);
       })
       .fail((error) => report.error(error))
