@@ -1,10 +1,15 @@
 const talkedRecently = new Set();
 
+//Hue packages
+const Hue = require('node-hue-api');
+const Api = require('node-hue-api').HueApi;
+const LightState = require('node-hue-api').lightState;
+
+//Other packages
+const Fs = require('fs');
 const Discord = require("discord.js");
 
-const Fs = require('fs');
-const Hue = require('node-hue-api').HueApi;
-
+//Custom classes
 const Light = require('./classes/light.js')
 const Group = require('./classes/group.js');
 const Report = require('./classes/report.js');
@@ -14,7 +19,7 @@ const hueCredentials = require('./credentials/hue.json');
 
 global.report = new Report(Fs)
 const bot = new Discord.Client();
-const api = new Hue(hueCredentials['host'], hueCredentials['username']);
+const api = new Api(hueCredentials['host'], hueCredentials['username']);
 
 let officeLightsId = [10, 11, 12, 13];
 let officeLights = new Array();
@@ -53,9 +58,8 @@ function getRandomInteger(min, max) {
 }
 
 function groupTemp(value, group) {
-  let data = {
-    ct: value
-  }
+  let data = LightState.create().ct(value);
+
   group.setGroup(data);
 }
 
@@ -103,18 +107,20 @@ bot.on("message", async message => {
       if (!(messageArray[2] == "off" || messageArray[2] == "on")) return message.channel.send("Please provide a number and off/on");
       let state = messageArray[2] == "off" ? false : true;
 
-      let stateObject = {
-        on: state,
-      }
+      let stateObject = lightState.create();
+      stateObject.on();
+
       officeLights[messageArray[1] -1].setState(stateObject);
       break;
 
       case "temp":
       if (isNaN(messageArray[1])) {
-        if (messageArray[1] == "warm") return groupTemp(400, officeGroups[0]);
-        if (messageArray[1] == "cold") return groupTemp(253, officeGroups[0]);
-        if (messageArray[1] == "ice") return groupTemp(153, officeGroups[0]);
-        if (messageArray[1] == "hot") return groupTemp(500, officeGroups[0]);
+        let newColorTemp = LightState.create();
+
+        if (messageArray[1] == "warm") officeGroups[0].setGroup(newColorTemp.ct(400));
+        else if (messageArray[1] == "ice") officeGroups[0].setGroup(newColorTemp.ct(153));
+        else if (messageArray[1] == "hot") officeGroups[0].setGroup(newColorTemp.ct(500));
+        else if (messageArray[1] == "cold") officeGroups[0].setGroup(newColorTemp.ct(253));
       }
       message.channel.send("Changing color temp...");
       break;
