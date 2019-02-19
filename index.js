@@ -77,7 +77,7 @@ function getRandomInteger(min, max) {
 
 bot.on("ready", function() {
   report.log(`Bot is ready. ${bot.user.username}`);
-  report.log(`Invite link ${await bot.generateInvite(["ADMINISTRATOR"])}`);
+  // report.log(`Invite link ${await bot.generateInvite(["ADMINISTRATOR"])}`);
 });
 
 bot.on("message", function(message) {
