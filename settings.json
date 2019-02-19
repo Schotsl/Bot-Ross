@@ -2,6 +2,7 @@
   "prefix": ".",
   "default": "Could not find that command.",
   "timeout": 60000,
+  "opusers": ["127076783714598912", "219765969571151872"],
   "errors": {
     "temp": "Please provide warm, cold, hot, ice or a number between 0 and 500.",
     "bri": "Please provide bright, dim or a number between 0 and 255."
