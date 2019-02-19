@@ -9,8 +9,10 @@ const Light = require('./classes/light.js')
 const Report = require('./classes/report.js');
 const Group = require('./classes/group.js');
 
-const botoptions = require("./credentials/bot.json");
+const botoptions = require("./credentials/authkeys.json");
 const hueCredentials = require('./credentials/hue.json');
+
+const settings = require('./settings.json');
 
 global.report = new Report(Fs)
 const bot = new Discord.Client();
@@ -65,64 +67,71 @@ bot.on("ready", async () => {
 });
 
 bot.on("message", async message => {
-if (message.content.startsWith(botoptions.prefix)) {
+  if (message.content.startsWith(settings.prefix)) {
 
-  let messageArray = message.content.split(" ");
-  let command = messageArray[0];
+    let messageArray = message.content.split(" ");
+    let command = messageArray[0];
 
-  command = command.substring(1);
+    command = command.substring(1);
 
-  switch (command.toLowerCase()) {
-    case "info":
-    message.channel.send(botoptions.info);
-    break;
+    if (talkedRecently.has(message.author.id)) return message.channel.send("Wait 1 minute before getting typing this again. - " + message.author);
+console.log(talkedRecently);
 
-    case "party":
-    message.channel.send("Get the party started");
-    party();
-    break;
+    switch (command.toLowerCase()) {
+      case "info":
+      message.channel.send(botoptions.info);
+      break;
 
-    case "toggle":
-    if (talkedRecently.has(message.author.id)) {
-      message.channel.send("Wait 1 minute before getting typing this again. - " + message.author);
-    } else {
+      case "party":
+      message.channel.send("Get the party started");
+      party();
+      break;
 
-      toggle();
-      message.channel.send("Toggled the lights.");
+      case "toggle":
+      if (talkedRecently.has(message.author.id)) {
+        message.channel.send("Wait 1 minute before getting typing this again. - " + message.author);
+      } else {
 
-      talkedRecently.add(message.author.id);
-      setTimeout(() => {
-        // Removes the user from the set after a minute
-        talkedRecently.delete(message.author.id);
-      }, 60000);
+        toggle();
+        message.channel.send("Toggled the lights.");
+
+        talkedRecently.add(message.author.id);
+        setTimeout(() => {
+          // Removes the user from the set after a minute
+          talkedRecently.delete(message.author.id);
+        }, 60000);
+      }
+      break;
+
+      case "set":
+      if (isNaN(messageArray[1] && isNaN(messageArray[2]))) return message.channel.send("Please provide a number and off/on");
+      if (!(messageArray[2] == "off" || messageArray[2] == "on")) return message.channel.send("Please provide a number and off/on");
+      let state = messageArray[2] == "off" ? false : true;
+
+      let stateObject = {
+        on: state,
+      }
+      officeLights[messageArray[1] -1].setState(stateObject);
+      break;
+
+      case "temp":
+      if (isNaN(messageArray[1])) {
+        if (messageArray[1] == "warm") return groupTemp(400, officeGroups[0]);
+        if (messageArray[1] == "cold") return groupTemp(253, officeGroups[0]);
+        if (messageArray[1] == "ice") return groupTemp(153, officeGroups[0]);
+        if (messageArray[1] == "hot") return groupTemp(500, officeGroups[0]);
+      }
+      message.channel.send("Changing color temp...");
+      break;
+
+      default:
+      message.channel.send(settings.default);
+      break;
     }
-    break;
-
-    case "set":
-    if (isNaN(messageArray[1] && isNaN(messageArray[2]))) return message.channel.send("Please provide a number and off/on");
-    if (!(messageArray[2] == "off" || messageArray[2] == "on")) return message.channel.send("Please provide a number and off/on");
-    let state = messageArray[2] == "off" ? false : true;
-
-    let stateObject = {
-      on: state,
-    }
-    officeLights[messageArray[1] -1].setState(stateObject);
-    break;
-
-    case "temp":
-    if (isNaN(messageArray[1])) {
-      if (messageArray[1] == "warm") return groupTemp(400, officeGroups[0]);
-      if (messageArray[1] == "cold") return groupTemp(253, officeGroups[0]);
-      if (messageArray[1] == "ice") return groupTemp(153, officeGroups[0]);
-      if (messageArray[1] == "hot") return groupTemp(500, officeGroups[0]);
-    }
-    message.channel.send("Changing color temp...");
-    break;
-
-    default:
-      message.channel.send(botoptions.default);
-    break;
-  }
+    talkedRecently.add(message.author.id);
+    setTimeout(() => {
+      talkedRecently.delete(message.author.id);
+    }, 60000);
   }
 })
 
