@@ -71,12 +71,6 @@ function getRandomInteger(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
-function groupTemp(value, group) {
-  let data = LightState.create().ct(value);
-
-  group.setGroup(data);
-}
-
 bot.on("ready", async () => {
   report.log(`Bot is ready. ${bot.user.username}`);
   report.log(`Invite link ${await bot.generateInvite(["ADMINISTRATOR"])}`);
