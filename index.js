@@ -47,10 +47,16 @@ function toggle() {
 
 function party() {
   officeLights.forEach(function(officeLight) {
+    let totalOffset = 0;
     for (let i = 0; i < 9; i ++ ) {
+      totalOffset += getRandomInteger(100, 1000);
       setTimeout(() => {
+        let newLightState = LightState.create();
+        newLightState.ct(getRandomInteger(153, 500));
+        newLightState.transitiontime(getRandomInteger(0, 100));
+
         officeLight.toggleLight();
-      }, getRandomInteger(100, 1000));
+      }, totalOffset);
     }
   });
 }
@@ -79,7 +85,7 @@ bot.on("message", async message => {
     command = command.substring(1);
 
     if (talkedRecently.has(message.author.id)) return message.channel.send("Wait 1 minute before getting typing this again. - " + message.author);
-console.log(talkedRecently);
+    console.log(talkedRecently);
 
     switch (command.toLowerCase()) {
       case "info":
@@ -142,6 +148,3 @@ console.log(talkedRecently);
 })
 
 bot.login(botoptions.token);
-
-
-//just adding this
