@@ -1,5 +1,4 @@
 const talkedRecently = new Set();
-let ignored = new Array();
 
 //Hue packages
 const Hue = require('node-hue-api');
@@ -16,8 +15,9 @@ const Group = require('./classes/group.js');
 const Report = require('./classes/report.js');
 const Blacklist = require('./classes/blacklist.js');
 
-const botoptions = require("./credentials/discord.json");
+//Credentials
 const hueCredentials = require('./credentials/hue.json');
+const discordCredentials = require("./credentials/discord.json");
 
 const settings = require('./settings.json');
 
@@ -25,7 +25,7 @@ global.report = new Report(Fs);
 global.blacklist = new Blacklist(Fs);
 
 const bot = new Discord.Client();
-const api = new Api(hueCredentials['host'], hueCredentials['username']);
+const api = new Api(hueCredentials['host'], hueCredentials['username'], hueCredentials['timeout'], hueCredentials['port']);
 
 let officeLightsId = [10, 11, 12, 13];
 let officeLights = new Array();
@@ -56,7 +56,7 @@ function party() {
       let totalOffset = 0;
       for (let i = 0; i < 10; i ++ ) {
         totalOffset += getRandomInteger(100, 1000);
-        setTimeout(() => {
+        setTimeout(function() {
           let newLightState = LightState.create().on();
           newLightState.ct(getRandomInteger(153, 500));
           newLightState.bri(getRandomInteger(0, 255));
@@ -75,12 +75,12 @@ function getRandomInteger(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
-bot.on("ready", async () => {
+bot.on("ready", function() {
   report.log(`Bot is ready. ${bot.user.username}`);
   report.log(`Invite link ${await bot.generateInvite(["ADMINISTRATOR"])}`);
 });
 
-bot.on("message", async message => {
+bot.on("message", function(message) {
   if (message.content.startsWith(settings.prefix)) {
 
     let messageArray = message.content.split(" ");
@@ -95,11 +95,6 @@ bot.on("message", async message => {
     if (blacklist.checkId(message.author.id)) return message.channel.send("I can't hear you. - " + message.author);
 
     switch (command.toLowerCase()) {
-      case "info":
-      message.channel.send(botoptions.info);
-      report.log(`"${message.author}" used the ".info" command`);
-      break;
-
       case "party":
       message.channel.send("Get the party started");
       report.log(`"${message.author}" used the ".party" command`);
@@ -175,10 +170,10 @@ bot.on("message", async message => {
       break;
     }
     talkedRecently.add(message.author.id);
-    setTimeout(() => {
+    setTimeout(function() {
       talkedRecently.delete(message.author.id);
     }, settings.timeout);
   }
 })
 
-bot.login(botoptions.token);
+bot.login(discordCredentials.token);
