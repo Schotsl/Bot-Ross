@@ -84,7 +84,7 @@ bot.on("message", async message => {
 
     command = command.substring(1);
 
-    if (!message.author.id === "547225273704251402" || !message.author.id === "547225282826731521") {
+    if (!settings.opusers.includes(message.author.id)) {
       if (talkedRecently.has(message.author.id)) return message.channel.send("Wait 1 minute before getting typing this again. - " + message.author);
     }
 
@@ -106,15 +106,14 @@ bot.on("message", async message => {
       report.log(`"${message.author.tag}" used the ".toggle" command`);
       break;
 
-      case "set":
-      if (isNaN(messageArray[1] && isNaN(messageArray[2]))) return message.channel.send("Please provide a number and off/on");
-      if (!(messageArray[2] == "off" || messageArray[2] == "on")) return message.channel.send("Please provide a number and off/on");
-      let state = messageArray[2] == "off" ? false : true;
+      case "on":
+      let newLightOn = LightState.create();
+      officeGroups[0].setGroup(newLightOn.on());
+      break;
 
-      let stateObject = lightState.create();
-      stateObject.on();
-
-      officeLights[messageArray[1] -1].setState(stateObject);
+      case "off":
+      let newLightOff = LightState.create();
+      officeGroups[0].setGroup(newLightOff.off());
       break;
 
       case "temp":
