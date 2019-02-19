@@ -101,6 +101,10 @@ bot.on("message", async(message) => {
       party();
       break;
 
+      case "help":
+      message.channel.send(settings.help);
+      break;
+
       case "ignore":
       if (settings.opusers.includes(message.author.id)) {
         message.channel.send("Aight");
