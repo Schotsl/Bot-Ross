@@ -7,7 +7,7 @@ module.exports = class Light {
   toggleLight(callback) {
     this.getState((currentState) => {
       currentState.on = !currentState.on;
-      this.setState(currentState, callback);
+      this.setState(currentState.transitionInstant(), callback);
     });
   }
 
