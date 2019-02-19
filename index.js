@@ -14,7 +14,7 @@ const Light = require('./classes/light.js')
 const Group = require('./classes/group.js');
 const Report = require('./classes/report.js');
 
-const botoptions = require("./credentials/authkeys.json");
+const botoptions = require("./credentials/discord.json");
 const hueCredentials = require('./credentials/hue.json');
 
 const settings = require('./settings.json');
