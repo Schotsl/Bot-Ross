@@ -1,4 +1,5 @@
 const talkedRecently = new Set();
+let ignored = new Array();
 
 //Hue packages
 const Hue = require('node-hue-api');
@@ -13,13 +14,16 @@ const Discord = require("discord.js");
 const Light = require('./classes/light.js')
 const Group = require('./classes/group.js');
 const Report = require('./classes/report.js');
+const Blacklist = require('./classes/blacklist.js');
 
 const botoptions = require("./credentials/discord.json");
 const hueCredentials = require('./credentials/hue.json');
 
 const settings = require('./settings.json');
 
-global.report = new Report(Fs)
+global.report = new Report(Fs);
+global.blacklist = new Blacklist(Fs);
+
 const bot = new Discord.Client();
 const api = new Api(hueCredentials['host'], hueCredentials['username']);
 
@@ -88,6 +92,8 @@ bot.on("message", async message => {
       if (talkedRecently.has(message.author.id)) return message.channel.send("Wait 1 minute before getting typing this again. - " + message.author);
     }
 
+    if (blacklist.checkId(message.author.id)) return message.channel.send("I can't hear you. - " + message.author);
+
     switch (command.toLowerCase()) {
       case "info":
       message.channel.send(botoptions.info);
@@ -98,6 +104,24 @@ bot.on("message", async message => {
       message.channel.send("Get the party started");
       report.log(`"${message.author}" used the ".party" command`);
       party();
+      break;
+
+      case "ignore":
+      if (settings.opusers.includes(message.author.id)) {
+        message.channel.send("Aight");
+        blacklist.addId(message.mentions.users.first().id);
+      } else {
+        message.channel.send("Nice try");
+      }
+      break;
+
+      case "unignore":
+      if (settings.opusers.includes(message.author.id)) {
+        message.channel.send("Aight");
+        blacklist.removeId(message.mentions.users.first().id);
+      } else {
+        message.channel.send("Nice try");
+      }
       break;
 
       case "toggle":
