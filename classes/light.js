@@ -5,7 +5,7 @@ module.exports = class Light {
   }
 
   toggleLight(callback) {
-    this.getState((currentState) => {
+    this.getState(function(currentState) {
       currentState.on = !currentState.on;
       this.setState(currentState, callback);
     });
@@ -13,7 +13,7 @@ module.exports = class Light {
 
   setState(newState, callback) {
     this.hue.setLightState(this.id, newState)
-      .then((currentLight) => {
+      .then(function(currentLight) {
         report.log(`Light ${this.id}'s state has been set`);
         if (callback) callback(currentLight.state);
       })
@@ -23,7 +23,7 @@ module.exports = class Light {
 
   getState(callback) {
     this.hue.lightStatus(this.id)
-      .then((currentLight) => {
+      .then(function(currentLight) {
         report.log(`Light ${this.id}'s state has been requested`);
         if (callback) callback(currentLight.state);
       })

@@ -6,7 +6,7 @@ module.exports = class Group {
 
   getGroup(callback) {
     this.hue.getGroup(this.id)
-      .then((currentLight) => {
+      .then(function(currentLight) {
         report.log(`Group ${this.id}'s state has been requested`);
         if (callback) callback(currentLight.state);
       })
@@ -16,7 +16,7 @@ module.exports = class Group {
 
   setGroup(newState, callback) {
     this.hue.setGroupLightState(this.id, newState)
-      .then((currentLight) => {
+      .then(function(currentLight) {
         report.log(`Group ${this.id}'s state has been requested`);
         if (callback) callback(currentLight.state);
       })
