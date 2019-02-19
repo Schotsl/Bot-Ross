@@ -19,9 +19,16 @@ const api = new Hue(hueCredentials['host'], hueCredentials['username']);
 let officeLightsId = [10, 11, 12, 13];
 let officeLights = new Array();
 
+let officeGroupsId = [8];
+let officeGroups = new Array();
+
 //Turn id array into Light array
 officeLightsId.forEach(function(officeLightId) {
   officeLights.push(new Light(officeLightId, api));
+});
+
+officeGroupsId.forEach(function(officeGroupsId) {
+  officeGroups.push(new Group(officeGroupsId, api));
 });
 
 function toggle() {
@@ -100,6 +107,12 @@ bot.on("message", async message => {
       on: state,
     }
     officeLights[messageArray[1] -1].setState(stateObject);
+    break;
+
+    case "warm":
+    let data = {ct: 500};
+    console.log("doing stuff.")
+    officeGroups[0].setGroup(data);
     break;
 
     default:
