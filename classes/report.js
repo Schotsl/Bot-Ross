@@ -17,7 +17,7 @@ module.exports = class Report {
     let currentDateString = currentDateObject.getDate() + "-" + currentDateObject.getMonth() + "-" + currentDateObject.getFullYear();
     let currentTimeString = currentDateObject.getHours() + ":" + currentDateObject.getMinutes() + ":" + currentDateObject.getSeconds() + "." + currentDateObject.getMilliseconds();
 
-    this.write(currentTimeString + " [ERROR]: " + rawLine + "\n", "logs/" + currentDateString);
+    this.write(currentTimeString + " [ERROR]: " + rawLine + "\n", "logs/" + currentDateString + ".txt");
     console.error(currentTimeString + " [ERROR]: " + rawLine);
   }
 
