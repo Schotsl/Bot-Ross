@@ -53,13 +53,7 @@ function getRandomInteger(min, max) {
 
 bot.on("ready", async () => {
   report.log(`Bot is ready. ${bot.user.username}`);
-
-  try {
-    let link = await bot.generateInvite(["ADMINISTRATOR"]);
-    report.log(link);
-  } catch(e) {
-    report.log(e.stack);
-  }
+  report.log(`Invite link ${await bot.generateInvite(["ADMINISTRATOR"])}`);
 });
 
 bot.on("message", async message => {
