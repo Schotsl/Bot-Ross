@@ -51,15 +51,14 @@ function party() {
 
       let totalOffset = 0;
       for (let i = 0; i < 10; i ++ ) {
-        totalOffset += getRandomInteger(100, 300);
+        totalOffset += getRandomInteger(100, 1000);
         setTimeout(() => {
           let newLightState = LightState.create().on();
-          newLightState.hue(getRandomInteger(0, 65535));
           newLightState.ct(getRandomInteger(153, 500));
           newLightState.bri(getRandomInteger(0, 255));
-          newLightState.sat(getRandomInteger(0, 255));
           newLightState.transitionInstant()
 
+          //If last callback, return the lights to normal
           if (i == 9) officeLight.setState(startState);
           else officeLight.setState(newLightState);
         }, totalOffset);
