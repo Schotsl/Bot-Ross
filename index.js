@@ -145,7 +145,7 @@ bot.on("message", async message => {
     talkedRecently.add(message.author.id);
     setTimeout(() => {
       talkedRecently.delete(message.author.id);
-    }, 60000);
+    }, settings.timeout);
   }
 })
 
