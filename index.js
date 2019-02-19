@@ -71,13 +71,9 @@ bot.on("message", async message => {
     break;
 
     case "toggle":
-    if (talkedRecently.has(msg.author.id)) {
-      msg.channel.send("Wait 1 minute before getting typing this again. - " + msg.author);
+    if (talkedRecently.has(message.author.id)) {
+      message.channel.send("Wait 1 minute before getting typing this again. - " + message.author);
     } else {
-      case "toggle":
-      if (talkedRecently.has(message.author.id)) {
-        message.channel.send("Wait 1 minute before getting typing this again. - " + message.author);
-      } else {
 
       toggle();
       message.channel.send("Toggled the lights.");
@@ -97,38 +93,14 @@ bot.on("message", async message => {
 
     let stateObject = {
       on: state,
-      bri: 240,
-      ct: 500,
-      alert: 'none',
-      colormode: 'ct',
-      mode: 'homeautomation',
-      reachable: true
     }
-        talkedRecently.add(message.author.id);
-        setTimeout(() => {
-          // Removes the user from the set after a minute
-          talkedRecently.delete(message.author.id);
-        }, 60000);
-      }
-      break;
+    officeLights[messageArray[1] -1].setState(stateObject);
+    break;
 
-      case "set":
-      if (isNaN(messageArray[1] && isNaN(messageArray[2]))) return message.channel.send("Please provide a number and off/on");
-      if (!(messageArray[2] == "off" || messageArray[2] == "on")) return message.channel.send("Please provide a number and off/on");
-      let state = messageArray[2] == "off" ? false : true;
-
-      let stateObject = {
-        on: state
-      }
+    default:
+      message.channel.send(botoptions.default);
+    break;
   }
 })
-      officeLights[messageArray[1] -1].setState(stateObject);
-      break;
-
-      default:
-      message.channel.send(botoptions.default);
-      break;
-    }
-  })
 
 bot.login(botoptions.token);
