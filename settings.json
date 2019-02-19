@@ -1,0 +1,5 @@
+{
+  "prefix": ".",
+  "default": "Could not find that command.",
+  "timeout": 68000
+}
