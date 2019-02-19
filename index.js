@@ -75,12 +75,12 @@ function getRandomInteger(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
-bot.on("ready", function() {
+bot.on("ready", async() => {
   report.log(`Bot is ready. ${bot.user.username}`);
-  // report.log(`Invite link ${await bot.generateInvite(["ADMINISTRATOR"])}`);
+  report.log(await bot.generateInvite(["ADMINISTRATOR"]));
 });
 
-bot.on("message", function(message) {
+bot.on("message", async(message) => {
   if (message.content.startsWith(settings.prefix)) {
 
     let messageArray = message.content.split(" ");
