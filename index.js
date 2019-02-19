@@ -22,11 +22,12 @@ let officeLights = new Array();
 let officeGroupsId = [8];
 let officeGroups = new Array();
 
-//Turn id array into Light array
+//Turn light id array into Light array
 officeLightsId.forEach(function(officeLightId) {
   officeLights.push(new Light(officeLightId, api));
 });
 
+//Turn group id array into Group array
 officeGroupsId.forEach(function(officeGroupsId) {
   officeGroups.push(new Group(officeGroupsId, api));
 });
@@ -64,10 +65,7 @@ bot.on("ready", async () => {
 });
 
 bot.on("message", async message => {
-  if(message.author.bot) return;
-  if((message.channel.type) === "dm") return;
-
-  if(!message.content.startsWith(botoptions.prefix)) return;
+if (message.content.startsWith(botoptions.prefix)) {
 
   let messageArray = message.content.split(" ");
   let command = messageArray[0];
@@ -80,6 +78,7 @@ bot.on("message", async message => {
     break;
 
     case "party":
+    message.channel.send("Get the party started");
     party();
     break;
 
@@ -123,6 +122,7 @@ bot.on("message", async message => {
     default:
       message.channel.send(botoptions.default);
     break;
+  }
   }
 })
 
