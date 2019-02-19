@@ -6,8 +6,8 @@ const Fs = require('fs');
 const Hue = require('node-hue-api').HueApi;
 
 const Light = require('./classes/light.js')
-const Report = require('./classes/report.js');
 const Group = require('./classes/group.js');
+const Report = require('./classes/report.js');
 
 const botoptions = require("./credentials/bot.json");
 const hueCredentials = require('./credentials/hue.json');
