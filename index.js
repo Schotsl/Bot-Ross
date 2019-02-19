@@ -106,19 +106,8 @@ bot.on("message", async message => {
       break;
 
       case "toggle":
-      if (talkedRecently.has(message.author.id)) {
-        message.channel.send("Wait 1 minute before getting typing this again. - " + message.author);
-      } else {
-
         toggle();
         message.channel.send("Toggled the lights.");
-
-        talkedRecently.add(message.author.id);
-        setTimeout(() => {
-          // Removes the user from the set after a minute
-          talkedRecently.delete(message.author.id);
-        }, 60000);
-      }
       break;
 
       case "set":
@@ -133,15 +122,27 @@ bot.on("message", async message => {
       break;
 
       case "temp":
+      let newColorTemp = LightState.create();
       if (isNaN(messageArray[1])) {
-        let newColorTemp = LightState.create();
-
         if (messageArray[1] == "warm") officeGroups[0].setGroup(newColorTemp.ct(400));
         else if (messageArray[1] == "ice") officeGroups[0].setGroup(newColorTemp.ct(153));
         else if (messageArray[1] == "hot") officeGroups[0].setGroup(newColorTemp.ct(500));
         else if (messageArray[1] == "cold") officeGroups[0].setGroup(newColorTemp.ct(253));
+        else return message.channel.send(settings.errors.temp);
+      } else {
+        if (messageArray[1] > 500 || messageArray[1] < 0) return message.channel.send(settings.errors.temp);
+        officeGroups[0].setGroup(newColorTemp.ct(messageArray[1]));
       }
-      message.channel.send("Changing color temp...");
+      break;
+
+      case "bri":
+      if (isNaN(messageArray[1])) {
+        let newColorTemp = LightState.create();
+
+        if (messageArray[1] == "min") officeGroups[0].setGroup(newColorTemp.bri(50));
+        else if (messageArray[1] == "max") officeGroups[0].setGroup(newColorTemp.bri(255));
+      }
+      message.channel.send("test");
       break;
 
       default:
