@@ -47,17 +47,24 @@ function toggle() {
 
 function party() {
   officeLights.forEach(function(officeLight) {
-    let totalOffset = 0;
-    for (let i = 0; i < 9; i ++ ) {
-      totalOffset += getRandomInteger(100, 1000);
-      setTimeout(() => {
-        let newLightState = LightState.create();
-        newLightState.ct(getRandomInteger(153, 500));
-        newLightState.transitiontime(getRandomInteger(0, 100));
+    officeLight.getState(function(startState) {
 
-        officeLight.toggleLight();
+    let totalOffset = 0;
+    for (let i = 0; i < 10; i ++ ) {
+      totalOffset += getRandomInteger(100, 300);
+      setTimeout(() => {
+        let newLightState = LightState.create().on();
+        newLightState.hue(getRandomInteger(0, 65535));
+        newLightState.ct(getRandomInteger(153, 500));
+        newLightState.bri(getRandomInteger(0, 255));
+        newLightState.sat(getRandomInteger(0, 255));
+        newLightState.transitionInstant()
+
+        if (i == 9) officeLight.setState(startState);
+        else officeLight.setState(newLightState);
       }, totalOffset);
     }
+  });
   });
 }
 
