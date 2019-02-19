@@ -19,6 +19,7 @@ const api = new Hue(hueCredentials['host'], hueCredentials['username']);
 let officeLightsId = [10, 11, 12, 13];
 let officeLights = new Array();
 
+//Turn id array into Light array
 officeLightsId.forEach(function(officeLightId) {
   officeLights.push(new Light(officeLightId, api));
 });
@@ -37,6 +38,10 @@ function party() {
       }, getRandomInteger(100, 1000));
     }
   });
+}
+
+function getRandomInteger(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
 }
 
 bot.on("ready", async () => {
@@ -66,8 +71,8 @@ bot.on("message", async message => {
     message.channel.send(botoptions.info);
     break;
 
-    case "notice":
-    notice();
+    case "party":
+    party();
     break;
 
     case "toggle":
