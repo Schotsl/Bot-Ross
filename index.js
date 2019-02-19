@@ -97,16 +97,19 @@ bot.on("message", async message => {
     switch (command.toLowerCase()) {
       case "info":
       message.channel.send(botoptions.info);
+      report.log(`"${message.author}" used the ".info" command`);
       break;
 
       case "party":
       message.channel.send("Get the party started");
+      report.log(`"${message.author}" used the ".party" command`);
       party();
       break;
 
       case "toggle":
       toggle();
       message.channel.send("Toggled the lights.");
+      report.log(`"${message.author.tag}" used the ".toggle" command`);
       break;
 
       case "set":
