@@ -70,22 +70,18 @@ bot.on("message", async message => {
     notice();
     break;
 
-<<<<<<< HEAD
     case "toggle":
     if (talkedRecently.has(msg.author.id)) {
       msg.channel.send("Wait 1 minute before getting typing this again. - " + msg.author);
     } else {
-=======
       case "toggle":
       if (talkedRecently.has(message.author.id)) {
         message.channel.send("Wait 1 minute before getting typing this again. - " + message.author);
       } else {
->>>>>>> 16bce091b66339857e04bf6b11946026f1f58a5c
 
       toggle();
       message.channel.send("Toggled the lights.");
 
-<<<<<<< HEAD
       talkedRecently.add(message.author.id);
       setTimeout(() => {
         // Removes the user from the set after a minute
@@ -108,7 +104,6 @@ bot.on("message", async message => {
       mode: 'homeautomation',
       reachable: true
     }
-=======
         talkedRecently.add(message.author.id);
         setTimeout(() => {
           // Removes the user from the set after a minute
@@ -116,7 +111,6 @@ bot.on("message", async message => {
         }, 60000);
       }
       break;
->>>>>>> 16bce091b66339857e04bf6b11946026f1f58a5c
 
       case "set":
       if (isNaN(messageArray[1] && isNaN(messageArray[2]))) return message.channel.send("Please provide a number and off/on");
@@ -126,15 +120,8 @@ bot.on("message", async message => {
       let stateObject = {
         on: state
       }
-
-<<<<<<< HEAD
-    //remove this later.
-    case "test":
-    officeLights[0].setState(false);
-    break;
   }
 })
-=======
       officeLights[messageArray[1] -1].setState(stateObject);
       break;
 
@@ -143,6 +130,5 @@ bot.on("message", async message => {
       break;
     }
   })
->>>>>>> 16bce091b66339857e04bf6b11946026f1f58a5c
 
 bot.login(botoptions.token);
