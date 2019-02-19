@@ -51,6 +51,13 @@ function getRandomInteger(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
+function groupTemp(value, group) {
+  let data = {
+    ct: value
+  }
+  group.setGroup(data);
+}
+
 bot.on("ready", async () => {
   report.log(`Bot is ready. ${bot.user.username}`);
   report.log(`Invite link ${await bot.generateInvite(["ADMINISTRATOR"])}`);
@@ -103,10 +110,14 @@ bot.on("message", async message => {
     officeLights[messageArray[1] -1].setState(stateObject);
     break;
 
-    case "warm":
-    let data = {ct: 500};
-    console.log("doing stuff.")
-    officeGroups[0].setGroup(data);
+    case "temp":
+    if (isNaN(messageArray[1])) {
+      if (messageArray[1] == "warm") return groupTemp(400, officeGroups[0]);
+      if (messageArray[1] == "cold") return groupTemp(253, officeGroups[0]);
+      if (messageArray[1] == "ice") return groupTemp(153, officeGroups[0]);
+      if (messageArray[1] == "hot") return groupTemp(500, officeGroups[0]);
+    }
+    message.channel.send("Changing color temp...");
     break;
 
     default:
