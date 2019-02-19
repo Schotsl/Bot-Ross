@@ -119,12 +119,14 @@ bot.on("message", async message => {
       case "temp":
       let newColorTemp = LightState.create();
       if (isNaN(messageArray[1])) {
+        //If a temprature string if provided
         if (messageArray[1] == "warm") officeGroups[0].setGroup(newColorTemp.ct(400));
         else if (messageArray[1] == "ice") officeGroups[0].setGroup(newColorTemp.ct(153));
         else if (messageArray[1] == "hot") officeGroups[0].setGroup(newColorTemp.ct(500));
         else if (messageArray[1] == "cold") officeGroups[0].setGroup(newColorTemp.ct(253));
         else return message.channel.send(settings.errors.temp);
       } else {
+        //If a temprature number is provided
         if (messageArray[1] > 500 || messageArray[1] < 0) return message.channel.send(settings.errors.temp);
         officeGroups[0].setGroup(newColorTemp.ct(messageArray[1]));
       }
