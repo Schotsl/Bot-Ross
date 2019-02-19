@@ -1,5 +1,5 @@
 .directory
-credentials/authkeys.json
+credentials/discord.json
 credentials/hue.json
 node_modules
 logs/*
