@@ -3,6 +3,7 @@
   "default": "Could not find that command.",
   "timeout": 60000,
   "errors": {
-    "temp": "Please provide warm, cold, hot, ice or a number between 0 and 500."
+    "temp": "Please provide warm, cold, hot, ice or a number between 0 and 500.",
+    "bri": "Please provide bright, dim or a number between 0 and 255."
   }
 }

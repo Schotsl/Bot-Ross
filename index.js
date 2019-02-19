@@ -136,13 +136,15 @@ bot.on("message", async message => {
       break;
 
       case "bri":
+      let newBrighness = LightState.create();
       if (isNaN(messageArray[1])) {
-        let newColorTemp = LightState.create();
-
-        if (messageArray[1] == "min") officeGroups[0].setGroup(newColorTemp.bri(50));
-        else if (messageArray[1] == "max") officeGroups[0].setGroup(newColorTemp.bri(255));
+        if (messageArray[1] == "bright") officeGroups[0].setGroup(newBrighness.bri(255));
+        else if (messageArray[1] == "dim") officeGroups[0].setGroup(newBrighness.bri(50));
+        else return message.channel.send(settings.errors.bri);
+      } else {
+        if (messageArray[1] > 255 || messageArray[1] < 0) return message.channel.send(settings.errors.bri);
+        officeGroups[0].setGroup(newBrighness.bri(messageArray[1]));
       }
-      message.channel.send("test");
       break;
 
       default:
