@@ -49,22 +49,22 @@ function party() {
   officeLights.forEach(function(officeLight) {
     officeLight.getState(function(startState) {
 
-    let totalOffset = 0;
-    for (let i = 0; i < 10; i ++ ) {
-      totalOffset += getRandomInteger(100, 300);
-      setTimeout(() => {
-        let newLightState = LightState.create().on();
-        newLightState.hue(getRandomInteger(0, 65535));
-        newLightState.ct(getRandomInteger(153, 500));
-        newLightState.bri(getRandomInteger(0, 255));
-        newLightState.sat(getRandomInteger(0, 255));
-        newLightState.transitionInstant()
+      let totalOffset = 0;
+      for (let i = 0; i < 10; i ++ ) {
+        totalOffset += getRandomInteger(100, 300);
+        setTimeout(() => {
+          let newLightState = LightState.create().on();
+          newLightState.hue(getRandomInteger(0, 65535));
+          newLightState.ct(getRandomInteger(153, 500));
+          newLightState.bri(getRandomInteger(0, 255));
+          newLightState.sat(getRandomInteger(0, 255));
+          newLightState.transitionInstant()
 
-        if (i == 9) officeLight.setState(startState);
-        else officeLight.setState(newLightState);
-      }, totalOffset);
-    }
-  });
+          if (i == 9) officeLight.setState(startState);
+          else officeLight.setState(newLightState);
+        }, totalOffset);
+      }
+    });
   });
 }
 
@@ -92,7 +92,7 @@ bot.on("message", async message => {
     command = command.substring(1);
 
     if (!message.author.id === "547225273704251402" || !message.author.id === "547225282826731521") {
-    if (talkedRecently.has(message.author.id)) return message.channel.send("Wait 1 minute before getting typing this again. - " + message.author);
+      if (talkedRecently.has(message.author.id)) return message.channel.send("Wait 1 minute before getting typing this again. - " + message.author);
     }
 
     switch (command.toLowerCase()) {
@@ -106,8 +106,8 @@ bot.on("message", async message => {
       break;
 
       case "toggle":
-        toggle();
-        message.channel.send("Toggled the lights.");
+      toggle();
+      message.channel.send("Toggled the lights.");
       break;
 
       case "set":
