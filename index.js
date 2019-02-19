@@ -78,8 +78,9 @@ bot.on("message", async message => {
 
     command = command.substring(1);
 
+    if (!message.author.id === "547225273704251402" || !message.author.id === "547225282826731521") {
     if (talkedRecently.has(message.author.id)) return message.channel.send("Wait 1 minute before getting typing this again. - " + message.author);
-console.log(talkedRecently);
+    }
 
     switch (command.toLowerCase()) {
       case "info":
