@@ -15,7 +15,7 @@ module.exports = class Light {
     this.hue.setLightState(this.id, newState)
       .then((currentLight) => {
         report.log(`Light ${this.id}'s state has been set`);
-        if (callback) callback(currentState);
+        if (callback) callback(currentLight.state);
       })
       .fail((error) => report.error(error))
       .done();
@@ -25,7 +25,7 @@ module.exports = class Light {
     this.hue.lightStatus(this.id)
       .then((currentLight) => {
         report.log(`Light ${this.id}'s state has been requested`);
-        if (callback) callback(currentState);
+        if (callback) callback(currentLight.state);
       })
       .fail((error) => report.error(error))
       .done();
