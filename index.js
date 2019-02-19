@@ -75,6 +75,15 @@ function getRandomInteger(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
+//Discord Permissions
+function permissionlookup(permission, message) {
+  if (settings.opusers.includes(message.author.id)) return true;
+  if (!message.member.permissions.has([permission], true)) {
+    message.channel.send(`<@${message.author.id}> You dont have permissions to do that! You need **${permission.toLowerCase()}**.`);
+    return false;
+  }
+}
+
 bot.on("ready", async() => {
   report.log(`Bot is ready. ${bot.user.username}`);
   report.log(await bot.generateInvite(["ADMINISTRATOR"]));
@@ -102,6 +111,7 @@ bot.on("message", async(message) => {
       break;
 
       case "ignore":
+      if (permissionlookup("KICK_MEMBERS", message) == false) return;
       if (settings.opusers.includes(message.author.id)) {
         message.channel.send("Aight");
         blacklist.addId(message.mentions.users.first().id);
@@ -111,6 +121,7 @@ bot.on("message", async(message) => {
       break;
 
       case "unignore":
+      if (permissionlookup("KICK_MEMBERS", message) == false) return;
       if (settings.opusers.includes(message.author.id)) {
         message.channel.send("Aight");
         blacklist.removeId(message.mentions.users.first().id);
