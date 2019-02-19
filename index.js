@@ -135,10 +135,12 @@ bot.on("message", async message => {
       case "bri":
       let newBrighness = LightState.create();
       if (isNaN(messageArray[1])) {
+        //If a brightness string if provided
         if (messageArray[1] == "bright") officeGroups[0].setGroup(newBrighness.bri(255));
         else if (messageArray[1] == "dim") officeGroups[0].setGroup(newBrighness.bri(50));
         else return message.channel.send(settings.errors.bri);
       } else {
+        //If a brightness number is provided
         if (messageArray[1] > 255 || messageArray[1] < 0) return message.channel.send(settings.errors.bri);
         officeGroups[0].setGroup(newBrighness.bri(messageArray[1]));
       }
