@@ -25,7 +25,7 @@ global.report = new Report(Fs);
 global.blacklist = new Blacklist(Fs);
 
 const bot = new Discord.Client();
-const api = new Api(hueCredentials['host'], hueCredentials['username'], hueCredentials['timeout'], hueCredentials['port']);
+const api = new Api(hueCredentials['host'], hueCredentials['username']);
 
 let officeLightsId = [10, 11, 12, 13];
 let officeLights = new Array();
