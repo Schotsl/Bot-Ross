@@ -89,6 +89,10 @@ bot.on("ready", async() => {
   report.log(await bot.generateInvite(["ADMINISTRATOR"]));
 });
 
+bot.on("error", async(error) => {
+  report.error(error);
+});
+
 bot.on("message", async(message) => {
   if (message.content.startsWith(settings.prefix)) {
 
