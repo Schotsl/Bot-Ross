@@ -27,7 +27,7 @@ global.blacklist = new Blacklist(Fs);
 const bot = new Discord.Client();
 const api = new Api(hueCredentials['host'], hueCredentials['username']);
 
-let officeLightsId = [10, 11, 12, 13];
+let officeLightsId = [10, 11, 12, 13, 16, 2, 14];
 let officeLights = new Array();
 
 let officeGroupsId = [8];
@@ -83,6 +83,11 @@ function permissionlookup(permission, message) {
     return false;
   }
 }
+
+api.lights(function(err, lights) {
+    if (err) throw err;
+    console.log(lights);
+});
 
 bot.on("ready", async() => {
   report.log(`Bot is ready. ${bot.user.username}`);
