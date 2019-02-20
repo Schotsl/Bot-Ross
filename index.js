@@ -84,11 +84,6 @@ function permissionlookup(permission, message) {
   }
 }
 
-api.lights(function(err, lights) {
-    if (err) throw err;
-    console.log(lights);
-});
-
 bot.on("ready", async() => {
   report.log(`Bot is ready. ${bot.user.username}`);
   report.log(await bot.generateInvite(["ADMINISTRATOR"]));
