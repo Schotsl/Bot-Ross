@@ -30,7 +30,7 @@ const api = new Api(hueCredentials['host'], hueCredentials['username']);
 let officeLightsId = [10, 11, 12, 13, 16, 2, 14];
 let officeLights = new Array();
 
-let officeGroupsId = [8];
+let officeGroupsId = [8, 1];
 let officeGroups = new Array();
 
 //Turn light id array into Light array
@@ -142,27 +142,27 @@ bot.on("message", async(message) => {
 
       case "on":
       let newLightOn = LightState.create();
-      officeGroups[0].setGroup(newLightOn.on());
+      officeGroups.forEach((officeGroup) => officeGroup.setGroup(newLightOn.on()));
       break;
 
       case "off":
       let newLightOff = LightState.create();
-      officeGroups[0].setGroup(newLightOff.off());
+      officeGroups.forEach((officeGroup) => officeGroup.setGroup(newLightOff.off()));
       break;
 
       case "temp":
       let newColorTemp = LightState.create();
       if (isNaN(messageArray[1])) {
         //If a temprature string if provided
-        if (messageArray[1] == "warm") officeGroups[0].setGroup(newColorTemp.ct(400));
-        else if (messageArray[1] == "ice") officeGroups[0].setGroup(newColorTemp.ct(153));
-        else if (messageArray[1] == "hot") officeGroups[0].setGroup(newColorTemp.ct(500));
-        else if (messageArray[1] == "cold") officeGroups[0].setGroup(newColorTemp.ct(253));
+        if (messageArray[1] == "warm") officeGroups.forEach((officeGroup) => officeGroup.setGroup(newColorTemp.ct(400)));
+        else if (messageArray[1] == "ice") officeGroups.forEach((officeGroup) => officeGroup.setGroup(newColorTemp.ct(153)));
+        else if (messageArray[1] == "hot") officeGroups.forEach((officeGroup) => officeGroup.setGroup(newColorTemp.ct(500)));
+        else if (messageArray[1] == "cold") officeGroups.forEach((officeGroup) => officeGroup.setGroup(newColorTemp.ct(253)));
         else return message.channel.send(settings.errors.temp);
       } else {
         //If a temprature number is provided
         if (messageArray[1] > 500 || messageArray[1] < 0) return message.channel.send(settings.errors.temp);
-        officeGroups[0].setGroup(newColorTemp.ct(messageArray[1]));
+        officeGroups.forEach((officeGroup) => officeGroup.setGroup(newColorTemp.ct(messageArray[1])));
       }
       break;
 
@@ -170,13 +170,13 @@ bot.on("message", async(message) => {
       let newBrighness = LightState.create();
       if (isNaN(messageArray[1])) {
         //If a brightness string if provided
-        if (messageArray[1] == "bright") officeGroups[0].setGroup(newBrighness.bri(255));
-        else if (messageArray[1] == "dim") officeGroups[0].setGroup(newBrighness.bri(50));
+        if (messageArray[1] == "bright") officeGroups.forEach((officeGroup) => officeGroup.setGroup(newBrighness.bri(255)));
+        else if (messageArray[1] == "dim") officeGroups.forEach((officeGroup) => officeGroup.setGroup(newBrighness.bri(50)));
         else return message.channel.send(settings.errors.bri);
       } else {
         //If a brightness number is provided
         if (messageArray[1] > 255 || messageArray[1] < 0) return message.channel.send(settings.errors.bri);
-        officeGroups[0].setGroup(newBrighness.bri(messageArray[1]));
+        officeGroups.forEach((officeGroup) => officeGroup.setGroup(newBrighness.bri(messageArray[1])));
       }
       break;
 
