@@ -7,6 +7,7 @@
   "license": "MIT",
   "dependencies": {
     "discord.js": "^11.4.2",
-    "node-hue-api": "^2.4.4"
+    "node-hue-api": "^2.4.4",
+    "simple-ssh": "^1.0.0"
   }
 }
