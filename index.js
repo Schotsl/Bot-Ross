@@ -1,6 +1,7 @@
 const talkedRecently = new Set();
 
 //Hue packages
+const Ssh = require('simple-ssh');
 const Hue = require('node-hue-api');
 const Api = require('node-hue-api').HueApi;
 const LightState = require('node-hue-api').lightState;
@@ -17,6 +18,7 @@ const Blacklist = require('./classes/blacklist.js');
 
 //Credentials
 const hueCredentials = require('./credentials/hue.json');
+const sshCredentials = require("./credentials/shh.json");
 const discordCredentials = require("./credentials/discord.json");
 
 const settings = require('./settings.json');
@@ -25,6 +27,7 @@ global.report = new Report(Fs);
 global.blacklist = new Blacklist(Fs);
 
 const bot = new Discord.Client();
+const ssh = new Ssh(sshCredentials);
 const api = new Api(hueCredentials['host'], hueCredentials['username']);
 
 let officeLightsId = [10, 11, 12, 13, 16, 2, 14];
@@ -112,6 +115,11 @@ bot.on("message", async(message) => {
       message.channel.send("Get the party started");
       report.log(`"${message.author}" used the ".party" command`);
       party();
+      break;
+
+      case "minecraft":
+      message.channel.send("Starting server..!");
+      ssh.exec('cd Minecraft && ./run.sh').start();
       break;
 
       case "help":
