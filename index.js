@@ -14,6 +14,7 @@ const Discord = require("discord.js");
 const Light = require('./classes/light.js')
 const Group = require('./classes/group.js');
 const Report = require('./classes/report.js');
+const Language = require('./classes/language.js')
 const Blacklist = require('./classes/blacklist.js');
 
 //Credentials
@@ -24,6 +25,7 @@ const discordCredentials = require("./credentials/discord.json");
 const settings = require('./settings.json');
 
 global.report = new Report(Fs);
+global.language = new Language(Fs);
 global.blacklist = new Blacklist(Fs);
 
 const bot = new Discord.Client();
@@ -112,38 +114,46 @@ bot.on("message", async(message) => {
 
     switch (command.toLowerCase()) {
       case "party":
-      message.channel.send("Get the party started");
+      message.channel.send(language.respond('confirm', 'happy'));
       report.log(`"${message.author}" used the ".party" command`);
       party();
       break;
 
       case "minecraft":
-      message.channel.send("Starting server..!");
+      message.channel.send(language.respond('confirm', 'happy'));
+      report.log(`"${message.author}" used the ".minecraft" command`);
       ssh.exec('cd Minecraft && ./run.sh').start();
       break;
 
       case "help":
       message.channel.send(settings.help);
+      report.log(`"${message.author}" used the ".help" command`);
       break;
 
       case "ignore":
+      //Todo: figure out what line 135 is for
       if (permissionlookup("KICK_MEMBERS", message) == false) return;
+
       if (settings.opusers.includes(message.author.id)) {
-        message.channel.send("Aight");
+        message.channel.send(language.respond('confirm', 'happy'));
         blacklist.addId(message.mentions.users.first().id);
       } else {
-        message.channel.send("Nice try");
+        message.channel.send(language.respond('deny', 'surprised'));
       }
+      report.log(`"${message.author}" used the ".ignore" command`);
       break;
 
       case "unignore":
+      //Todo: figure out what line 148 is for
       if (permissionlookup("KICK_MEMBERS", message) == false) return;
+
       if (settings.opusers.includes(message.author.id)) {
-        message.channel.send("Aight");
+        message.channel.send(language.respond('confirm', 'happy'));
         blacklist.removeId(message.mentions.users.first().id);
       } else {
-        message.channel.send("Nice try");
+        message.channel.send(language.respond('deny', 'surprised'));
       }
+      report.log(`"${message.author}" used the ".unignore" command`);
       break;
 
       case "toggle":
