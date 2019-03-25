@@ -1,7 +1,7 @@
 .directory
 credentials/discord.json
 credentials/hue.json
-credentials/ssh.json
+credentials/shh.json
 blacklist.json
 node_modules
 logs/*

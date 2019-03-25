@@ -11,6 +11,7 @@ const LightState = require('node-hue-api').lightState;
 //Other packages
 const Fs = require('fs');
 const Discord = require("discord.js");
+const Http = require('http')
 
 //Custom classes
 const Light = require('./classes/light.js')
@@ -23,6 +24,7 @@ const Blacklist = require('./classes/blacklist.js');
 const hueCredentials = require('./credentials/hue.json');
 const sshCredentials = require("./credentials/shh.json");
 const discordCredentials = require("./credentials/discord.json");
+const scontrolCredentials = require("./credentials/scontrol.json");
 
 const settings = require('./settings.json');
 
@@ -39,6 +41,12 @@ let officeLights = new Array();
 
 let officeGroupsId = [8, 1];
 let officeGroups = new Array();
+
+let scontrolServer = {
+  hostname: 'hedium.nl',
+  port: '3000',
+  token: scontrolCredentials.token
+}
 
 //Turn light id array into Light array
 officeLightsId.forEach(function(officeLightId) {
@@ -100,6 +108,58 @@ function permissionlookup(permission, message) {
   }
 }
 
+function scontrolGetDevices() {
+  const options = {
+    hostname: scontrolServer.hostname,
+    port: scontrolServer.port,
+    path: '/api/devices',
+    method: 'GET'
+  };
+  const req = http.request(options, (res) => {
+    res.setEncoding('utf8');
+    console.log(`statusCode: ${res.statusCode}`);
+    res.on('data', (d) => {
+      devicesObject = JSON.parse(d);
+      return devicesObject;
+    });
+  });
+  req.on('error', (error) => {
+    report.error(error);
+  });
+  req.end();
+}
+
+function scontrolPutDevices(id, value) {
+  let deviceArrayID = id;
+
+  const data = JSON.stringify({
+    token: token, //super secure token.
+    value: value, //0 = off, 1 = on
+  })
+
+  const options = {
+    hostname: scontrolServer.hostname,
+    port: scontrolServer.port,
+    path: `/api/devices/${deviceArrayID}`,
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'Content-Length': data.length
+    }
+  }
+
+  const req = http.request(options, (res) => {
+    res.on('data', (d) => {
+      //might need to add stuff here
+    })
+  })
+  req.on('error', (error) => {
+    report.error(error)
+  })
+  req.write(data)
+  req.end()
+}
+
 bot.on("ready", async() => {
   report.log(`Bot is ready. ${bot.user.username}`);
   report.log(await bot.generateInvite(["ADMINISTRATOR"]));
@@ -126,6 +186,25 @@ bot.on("message", async(message) => {
     if (blacklist.checkId(message.author.id)) return message.channel.send("I can't hear you. - " + message.author);
 
     switch (command.toLowerCase()) {
+      case "sc":
+
+      switch (messageArray[1].toLowerCase) {
+        case "list":
+        message.channel.send(JSON.stringify(scontrolGetDevices()));
+        break;
+
+        case "off":
+        message.channel.send('cant yet off');
+        break;
+
+        case "on":
+        message.channel.send('cant yet on');
+        break;
+      }
+      message.channel.send(language.respond('confirm', emotion));
+
+      break;
+
       case "party":
       message.channel.send(language.respond('confirm', emotion));
       report.log(`"${message.author}" used the ".party" command`);
