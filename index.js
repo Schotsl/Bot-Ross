@@ -220,7 +220,17 @@ bot.on("message", async(message) => {
           break;
         }
       } else {
-        message.channel.send(language.respond('confirm', emotion));
+        if (messageArray[1].toLowerCase() == 'list') {
+          scontrolGetDevices(devices => {
+            const embed = new Discord.RichEmbed()
+            .setAuthor(bot.user.username, bot.user.avatarUR)
+            for (i = 0; i < devices.length; i++) {
+              embed.addField(devices[i].title, `Value: ${devices[i].value}\nSimple: ${devices[i].simple}\nPin: ${devices[i].pin}`, true);
+            }
+            embed.setColor(0x42f489);
+            message.channel.send(embed);
+          })
+        }
       }
 
       break;
