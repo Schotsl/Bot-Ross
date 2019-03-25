@@ -187,8 +187,7 @@ bot.on("message", async(message) => {
 
     switch (command.toLowerCase()) {
       case "sc":
-      report.log(messageArray[1]);
-      switch (messageArray[1].toLowerCase) {
+      switch (messageArray[1].toLowerCase()) {
         case "list":
         message.channel.send(JSON.stringify(scontrolGetDevices()));
         break;
