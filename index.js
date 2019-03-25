@@ -1,4 +1,6 @@
-const talkedRecently = new Set();
+let talkedRecently = new Set();
+let latestMessage = new Date();
+let emotion = "happy";
 
 //Hue packages
 const Ssh = require('simple-ssh');
@@ -48,6 +50,17 @@ officeGroupsId.forEach(function(officeGroupsId) {
   officeGroups.push(new Group(officeGroupsId, api));
 });
 
+setInterval(updateEmotion, 1000);
+
+function updateEmotion() {
+  let last = latestMessage.getTime();
+  let recent = new Date().getTime();
+
+  emotion = recent - last <= 86400000 ? "happy" : "sad";
+  if (emotion === "happy") bot.user.setActivity('with happy feelings');
+  else if (emotion === "sad") bot.user.setActivity('with sad feelings');
+}
+
 function toggle() {
   officeLights.forEach(function(officeLight) {
     officeLight.toggleLight();
@@ -92,6 +105,7 @@ function permissionlookup(permission, message) {
 bot.on("ready", async() => {
   report.log(`Bot is ready. ${bot.user.username}`);
   report.log(await bot.generateInvite(["ADMINISTRATOR"]));
+  updateEmotion();
 });
 
 bot.on("error", async(error) => {
@@ -100,7 +114,6 @@ bot.on("error", async(error) => {
 
 bot.on("message", async(message) => {
   if (message.content.startsWith(settings.prefix)) {
-
     let messageArray = message.content.split(" ");
     let command = messageArray[0];
 
@@ -114,13 +127,13 @@ bot.on("message", async(message) => {
 
     switch (command.toLowerCase()) {
       case "party":
-      message.channel.send(language.respond('confirm', 'happy'));
+      message.channel.send(language.respond('confirm', emotion));
       report.log(`"${message.author}" used the ".party" command`);
       party();
       break;
 
       case "minecraft":
-      message.channel.send(language.respond('confirm', 'happy'));
+      message.channel.send(language.respond('confirm', emotion));
       report.log(`"${message.author}" used the ".minecraft" command`);
       ssh.exec('cd Minecraft && ./run.sh').start();
       break;
@@ -135,10 +148,10 @@ bot.on("message", async(message) => {
       if (permissionlookup("KICK_MEMBERS", message) == false) return;
 
       if (settings.opusers.includes(message.author.id)) {
-        message.channel.send(language.respond('confirm', 'happy'));
+        message.channel.send(language.respond('confirm', emotion));
         blacklist.addId(message.mentions.users.first().id);
       } else {
-        message.channel.send(language.respond('deny', 'surprised'));
+        message.channel.send(language.respond('deny', emotion));
       }
       report.log(`"${message.author}" used the ".ignore" command`);
       break;
@@ -148,10 +161,10 @@ bot.on("message", async(message) => {
       if (permissionlookup("KICK_MEMBERS", message) == false) return;
 
       if (settings.opusers.includes(message.author.id)) {
-        message.channel.send(language.respond('confirm', 'happy'));
+        message.channel.send(language.respond('confirm', emotion));
         blacklist.removeId(message.mentions.users.first().id);
       } else {
-        message.channel.send(language.respond('deny', 'surprised'));
+        message.channel.send(language.respond('deny', emotion));
       }
       report.log(`"${message.author}" used the ".unignore" command`);
       break;
@@ -207,9 +220,13 @@ bot.on("message", async(message) => {
       break;
     }
     talkedRecently.add(message.author.id);
+
     setTimeout(function() {
       talkedRecently.delete(message.author.id);
     }, settings.timeout);
+
+    latestMessage = new Date();
+    updateEmotion();
   }
 })
 
