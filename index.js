@@ -11,7 +11,7 @@ const LightState = require('node-hue-api').lightState;
 //Other packages
 const Fs = require('fs');
 const Discord = require("discord.js");
-const Http = require('http')
+const Http = require('Http')
 
 //Custom classes
 const Light = require('./classes/light.js')
@@ -115,7 +115,7 @@ function scontrolGetDevices() {
     path: '/api/devices',
     method: 'GET'
   };
-  const req = http.request(options, (res) => {
+  const req = Http.request(options, (res) => {
     res.setEncoding('utf8');
     console.log(`statusCode: ${res.statusCode}`);
     res.on('data', (d) => {
@@ -148,7 +148,7 @@ function scontrolPutDevices(id, value) {
     }
   }
 
-  const req = http.request(options, (res) => {
+  const req = Http.request(options, (res) => {
     res.on('data', (d) => {
       //might need to add stuff here
     })
