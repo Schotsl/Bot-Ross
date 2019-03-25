@@ -11,7 +11,7 @@ const LightState = require('node-hue-api').lightState;
 //Other packages
 const Fs = require('fs');
 const Discord = require("discord.js");
-const Http = require('Http')
+const Http = require('http')
 
 //Custom classes
 const Light = require('./classes/light.js')
@@ -108,7 +108,7 @@ function permissionlookup(permission, message) {
   }
 }
 
-function scontrolGetDevices() {
+function scontrolGetDevices(callback) {
   const options = {
     hostname: scontrolServer.hostname,
     port: scontrolServer.port,
@@ -116,11 +116,10 @@ function scontrolGetDevices() {
     method: 'GET'
   };
   const req = Http.request(options, (res) => {
+    report.log(res.statusCode);
     res.setEncoding('utf8');
-    console.log(`statusCode: ${res.statusCode}`);
     res.on('data', (d) => {
-      devicesObject = JSON.parse(d);
-      return devicesObject;
+      callback(JSON.parse(d));
     });
   });
   req.on('error', (error) => {
@@ -129,12 +128,16 @@ function scontrolGetDevices() {
   req.end();
 }
 
-function scontrolPutDevices(id, value) {
+function scontrolPutDevices(id, value, callback) {
   let deviceArrayID = id;
 
-  const data = JSON.stringify({
-    token: token, //super secure token.
-    value: value, //0 = off, 1 = on
+  data = JSON.stringify({
+    token: scontrolServer.token,
+    hostname: scontrolServer.hostname,
+    port: scontrolServer.port,
+    path: '/api/devices',
+    method: 'PUT',
+    value: value
   })
 
   const options = {
@@ -149,12 +152,25 @@ function scontrolPutDevices(id, value) {
   }
 
   const req = Http.request(options, (res) => {
+    report.log(res.statusCode);
+    if (res.statusCode != 200) {
+      report.log(`Got a error: ${res.statusCode}`);
+      text = `Error! Statuscode ${res.statusCode} Error: `;
+      res.on('data', (d) => {
+        text += d;
+        callback(text);
+        return
+      })
+      return
+    }
     res.on('data', (d) => {
-      //might need to add stuff here
-    })
+    callback(`Aight! ${JSON.stringify(JSON.parse(d))}`);
+      report.log(d);
+    });
   })
   req.on('error', (error) => {
-    report.error(error)
+    callback(`Error! ${error}`);
+    report.error(error);
   })
   req.write(data)
   req.end()
@@ -187,20 +203,25 @@ bot.on("message", async(message) => {
 
     switch (command.toLowerCase()) {
       case "sc":
-      switch (messageArray[1].toLowerCase()) {
-        case "list":
-        message.channel.send(JSON.stringify(scontrolGetDevices()));
-        break;
+      if (!isNaN(messageArray[1])) {
+        switch (messageArray[2].toLowerCase()) {
+          case "off":
+          if (!messageArray[1]) return message.channel.send("need more input.");
+          scontrolPutDevices(messageArray[1], '0', output => {
+            message.channel.send(output);
+          })
+          break;
 
-        case "off":
-        message.channel.send('cant yet off');
-        break;
-
-        case "on":
-        message.channel.send('cant yet on');
-        break;
+          case "on":
+          if (!messageArray[1]) return message.channel.send("need more input.");
+          scontrolPutDevices(messageArray[1], '1', output => {
+            message.channel.send(output);
+          })
+          break;
+        }
+      } else {
+        message.channel.send(language.respond('confirm', emotion));
       }
-      message.channel.send(language.respond('confirm', emotion));
 
       break;
 
