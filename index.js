@@ -50,8 +50,6 @@ officeGroupsId.forEach(function(officeGroupsId) {
   officeGroups.push(new Group(officeGroupsId, api));
 });
 
-setInterval(updateEmotion, 1000);
-
 function updateEmotion() {
   let last = latestMessage.getTime();
   let recent = new Date().getTime();
@@ -105,6 +103,8 @@ function permissionlookup(permission, message) {
 bot.on("ready", async() => {
   report.log(`Bot is ready. ${bot.user.username}`);
   report.log(await bot.generateInvite(["ADMINISTRATOR"]));
+
+  setInterval(updateEmotion, 1000);
   updateEmotion();
 });
 
