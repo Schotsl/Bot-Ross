@@ -13,6 +13,10 @@ const Fs = require('fs');
 const Http = require('http')
 const Discord = require("discord.js");
 
+//Non classes
+const settings = require('./settings.json');
+const functions = require('./functions.js');
+
 //Custom classes
 const Light = require('./classes/light.js')
 const Group = require('./classes/group.js');
@@ -25,8 +29,6 @@ const hueCredentials = require('./credentials/hue.json');
 const sshCredentials = require("./credentials/shh.json");
 const discordCredentials = require("./credentials/discord.json");
 const scontrolCredentials = require("./credentials/scontrol.json");
-
-const settings = require('./settings.json');
 
 global.report = new Report(Fs);
 global.language = new Language(Fs);
@@ -70,11 +72,11 @@ function party() {
 
       let totalOffset = 0;
       for (let i = 0; i < 10; i ++ ) {
-        totalOffset += getRandomInteger(100, 1000);
+        totalOffset += functions.getRandomInteger(100, 1000);
         setTimeout(function() {
           let newLightState = LightState.create().on();
-          newLightState.ct(getRandomInteger(153, 500));
-          newLightState.bri(getRandomInteger(0, 255));
+          newLightState.ct(functions.getRandomInteger(153, 500));
+          newLightState.bri(functions.getRandomInteger(0, 255));
           newLightState.transitionInstant()
 
           //If last callback, return the lights to normal
@@ -84,10 +86,6 @@ function party() {
       }
     });
   });
-}
-
-function getRandomInteger(min, max) {
-  return Math.floor(Math.random() * (max - min)) + min;
 }
 
 //Discord Permissions
