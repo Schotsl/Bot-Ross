@@ -170,5 +170,3 @@ bot.on("message", async(message) => {
 })
 
 bot.login(discordCredentials.token);
-
-//Test
