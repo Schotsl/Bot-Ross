@@ -39,11 +39,20 @@ global.bot = new Discord.Client();
 global.ssh = new Ssh(sshCredentials);
 global.api = new Api(hueCredentials['host'], hueCredentials['username']);
 
+global.lampArray = new Array();
+global.commandArray = new Array();
+
 //Turn light id array into Light array
-let lampArray = new Array();
 settings['lamps'].forEach(function(officeLightId) {
   let lampSingle = new Light(officeLightId, api);
   lampArray.push(lampSingle);
+});
+
+//Load commands into array
+Fs.readdirSync(`./commands`).forEach(file => {
+  let tempClass = require(`./commands/${file}`);
+  let tempObject = new tempClass();
+  commandArray.push(tempObject);
 });
 
 let scontrolServer = {
@@ -191,133 +200,10 @@ bot.on("message", async(message) => {
 
     if (blacklist.checkId(message.author.id)) return message.channel.send("I can't hear you. - " + message.author);
 
-    switch (command.toLowerCase()) {
-      case "sc":
-      if (!isNaN(messageArray[1])) {
-        switch (messageArray[2].toLowerCase()) {
-          case "off":
-          if (!messageArray[1]) return message.channel.send("need more input.");
-          scontrolPutDevices(messageArray[1], '0', output => {
-            message.channel.send(output);
-          })
-          break;
+    commandArray.forEach((commandObject) => {
+      if (commandObject.match(command)) commandObject.execute();
+    })
 
-          case "on":
-          if (!messageArray[1]) return message.channel.send("need more input.");
-          scontrolPutDevices(messageArray[1], '1', output => {
-            message.channel.send(output);
-          })
-          break;
-        }
-      } else {
-        if (messageArray[1].toLowerCase() == 'list') {
-          scontrolGetDevices(devices => {
-            const embed = new Discord.RichEmbed()
-            .setAuthor(bot.user.username, bot.user.avatarUR)
-            for (i = 0; i < devices.length; i++) {
-              embed.addField(devices[i].title, `Value: ${devices[i].value}\nSimple: ${devices[i].simple}\nPin: ${devices[i].pin}`, true);
-            }
-            embed.setColor(0x42f489);
-            message.channel.send(embed);
-          })
-        }
-      }
-
-      break;
-
-      case "party":
-      message.channel.send(language.respond('confirm', emotion));
-      report.log(`"${message.author}" used the ".party" command`);
-      party();
-      break;
-
-      case "minecraft":
-      message.channel.send(language.respond('confirm', emotion));
-      report.log(`"${message.author}" used the ".minecraft" command`);
-      ssh.exec('cd Minecraft && ./run.sh').start();
-      break;
-
-      case "help":
-      message.channel.send(settings.help);
-      report.log(`"${message.author}" used the ".help" command`);
-      break;
-
-      case "ignore":
-      //Todo: figure out what line 135 is for
-      if (permissionlookup("KICK_MEMBERS", message) == false) return;
-
-      if (settings.opusers.includes(message.author.id)) {
-        message.channel.send(language.respond('confirm', emotion));
-        blacklist.addId(message.mentions.users.first().id);
-      } else {
-        message.channel.send(language.respond('deny', emotion));
-      }
-      report.log(`"${message.author}" used the ".ignore" command`);
-      break;
-
-      case "unignore":
-      //Todo: figure out what line 148 is for
-      if (permissionlookup("KICK_MEMBERS", message) == false) return;
-
-      if (settings.opusers.includes(message.author.id)) {
-        message.channel.send(language.respond('confirm', emotion));
-        blacklist.removeId(message.mentions.users.first().id);
-      } else {
-        message.channel.send(language.respond('deny', emotion));
-      }
-      report.log(`"${message.author}" used the ".unignore" command`);
-      break;
-
-      case "toggle":
-      toggle();
-      message.channel.send("Toggled the lights.");
-      report.log(`"${message.author.tag}" used the ".toggle" command`);
-      break;
-
-      case "on":
-      let newLightOn = LightState.create();
-      lampArray.forEach((officeGroup) => officeGroup.setGroup(newLightOn.on()));
-      break;
-
-      case "off":
-      let newLightOff = LightState.create();
-      lampArray.forEach((officeGroup) => officeGroup.setGroup(newLightOff.off()));
-      break;
-
-      case "temp":
-      let newColorTemp = LightState.create();
-      if (isNaN(messageArray[1])) {
-        //If a temprature string if provided
-        if (messageArray[1] == "warm") lampArray.forEach((officeGroup) => officeGroup.setGroup(newColorTemp.ct(400)));
-        else if (messageArray[1] == "ice") lampArray.forEach((officeGroup) => officeGroup.setGroup(newColorTemp.ct(153)));
-        else if (messageArray[1] == "hot") lampArray.forEach((officeGroup) => officeGroup.setGroup(newColorTemp.ct(500)));
-        else if (messageArray[1] == "cold") lampArray.forEach((officeGroup) => officeGroup.setGroup(newColorTemp.ct(253)));
-        else return message.channel.send(settings.errors.temp);
-      } else {
-        //If a temprature number is provided
-        if (messageArray[1] > 500 || messageArray[1] < 0) return message.channel.send(settings.errors.temp);
-        lampArray.forEach((officeGroup) => officeGroup.setGroup(newColorTemp.ct(messageArray[1])));
-      }
-      break;
-
-      case "bri":
-      let newBrighness = LightState.create();
-      if (isNaN(messageArray[1])) {
-        //If a brightness string if provided
-        if (messageArray[1] == "bright") lampArray.forEach((officeGroup) => officeGroup.setGroup(newBrighness.bri(255)));
-        else if (messageArray[1] == "dim") lampArray.forEach((officeGroup) => officeGroup.setGroup(newBrighness.bri(50)));
-        else return message.channel.send(settings.errors.bri);
-      } else {
-        //If a brightness number is provided
-        if (messageArray[1] > 255 || messageArray[1] < 0) return message.channel.send(settings.errors.bri);
-        lampArray.forEach((officeGroup) => officeGroup.setGroup(newBrighness.bri(messageArray[1])));
-      }
-      break;
-
-      default:
-      message.channel.send(settings.default);
-      break;
-    }
     talkedRecently.add(message.author.id);
 
     setTimeout(function() {
