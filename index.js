@@ -3,26 +3,27 @@ let latestMessage = new Date();
 let emotion = "happy";
 
 //Hue packages
-const Ssh = require('simple-ssh');
-const Hue = require('node-hue-api');
-const Api = require('node-hue-api').HueApi;
-const LightState = require('node-hue-api').lightState;
+global.Ssh = require('simple-ssh');
+global.Hue = require('node-hue-api');
+global.Api = require('node-hue-api').HueApi;
+global.LightState = require('node-hue-api').lightState;
 
 //Other packages
-const Fs = require('fs');
-const Http = require('http')
-const Discord = require("discord.js");
+global.Fs = require('fs');
+global.Http = require('http')
+global.Discord = require("discord.js");
 
 //Non classes
-const settings = require('./settings.json');
-const functions = require('./functions.js');
+global.settings = require('./settings.json');
+global.functions = require('./functions.js');
 
 //Custom classes
-const Light = require('./classes/light.js')
-const Group = require('./classes/group.js');
-const Report = require('./classes/report.js');
-const Language = require('./classes/language.js')
-const Blacklist = require('./classes/blacklist.js');
+global.Light = require('./classes/light.js')
+global.Group = require('./classes/group.js');
+global.Report = require('./classes/report.js');
+global.Command = require('./classes/command.js')
+global.Language = require('./classes/language.js')
+global.Blacklist = require('./classes/blacklist.js');
 
 //Credentials
 const hueCredentials = require('./credentials/hue.json');
@@ -34,9 +35,9 @@ global.report = new Report(Fs);
 global.language = new Language(Fs);
 global.blacklist = new Blacklist(Fs);
 
-const bot = new Discord.Client();
-const ssh = new Ssh(sshCredentials);
-const api = new Api(hueCredentials['host'], hueCredentials['username']);
+global.bot = new Discord.Client();
+global.ssh = new Ssh(sshCredentials);
+global.api = new Api(hueCredentials['host'], hueCredentials['username']);
 
 //Turn light id array into Light array
 let lampArray = new Array();
