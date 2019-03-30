@@ -61,52 +61,6 @@ let scontrolServer = {
   token: scontrolCredentials.token
 }
 
-function updateEmotion() {
-  let last = latestMessage.getTime();
-  let recent = new Date().getTime();
-
-  emotion = recent - last <= 86400000 ? "happy" : "sad";
-  if (emotion === "happy") bot.user.setActivity('with happy feelings');
-  else if (emotion === "sad") bot.user.setActivity('with sad feelings');
-}
-
-function toggle() {
-  lampArray.forEach(function(officeLight) {
-    officeLight.toggleLight();
-  });
-}
-
-function party() {
-  lampArray.forEach(function(officeLight) {
-    officeLight.getState(function(startState) {
-
-      let totalOffset = 0;
-      for (let i = 0; i < 10; i ++ ) {
-        totalOffset += functions.getRandomInteger(100, 1000);
-        setTimeout(function() {
-          let newLightState = LightState.create().on();
-          newLightState.ct(functions.getRandomInteger(153, 500));
-          newLightState.bri(functions.getRandomInteger(0, 255));
-          newLightState.transitionInstant()
-
-          //If last callback, return the lights to normal
-          if (i == 9) officeLight.setState(startState);
-          else officeLight.setState(newLightState);
-        }, totalOffset);
-      }
-    });
-  });
-}
-
-//Discord Permissions
-function permissionlookup(permission, message) {
-  if (settings.opusers.includes(message.author.id)) return true;
-  if (!message.member.permissions.has([permission], true)) {
-    message.channel.send(`<@${message.author.id}> You dont have permissions to do that! You need **${permission.toLowerCase()}**.`);
-    return false;
-  }
-}
-
 function scontrolGetDevices(callback) {
   const options = {
     hostname: scontrolServer.hostname,
