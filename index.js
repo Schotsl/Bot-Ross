@@ -19,7 +19,6 @@ global.functions = require('./functions.js');
 
 //Custom classes
 global.Light = require('./classes/light.js')
-global.Group = require('./classes/group.js');
 global.Report = require('./classes/report.js');
 global.Command = require('./classes/command.js')
 global.Language = require('./classes/language.js')
