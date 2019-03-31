@@ -4,8 +4,8 @@ module.exports = class Help extends Command {
     this.trigger = "help";
   }
 
-  execute(input, message) {
+  executeCustom(input, message) {
     message.channel.send(settings.help);
-    report.log(`"${message.author}" used the ".help" command`);
+    report.log(`${message.author.tag} (${message.author.id}) used the ".help" command`);
   }
 }

@@ -1,4 +1,3 @@
-global.talkedRecently = new Set();
 global.latestMessage = new Date();
 global.emotion = "happy";
 
@@ -26,7 +25,7 @@ global.Blacklist = require('./classes/blacklist.js');
 
 //Credentials
 const hueCredentials = require('./credentials/hue.json');
-// const sshCredentials = require("./credentials/shh.json");
+const sshCredentials = require("./credentials/shh.json");
 const discordCredentials = require("./credentials/discord.json");
 const scontrolCredentials = require("./credentials/scontrol.json");
 
@@ -35,7 +34,7 @@ global.language = new Language(Fs);
 global.blacklist = new Blacklist(Fs);
 
 global.bot = new Discord.Client();
-// global.ssh = new Ssh(sshCredentials);
+global.ssh = new Ssh(sshCredentials);
 global.api = new Api(hueCredentials['host'], hueCredentials['username']);
 
 global.lampArray = new Array();
@@ -139,29 +138,17 @@ bot.on("ready", function() {
 
 bot.on("message", async(message) => {
   if (message.content.startsWith(settings.prefix)) {
-    let messageArray = message.content.split(" ");
-    let command = messageArray[0];
-
-    command = command.substring(1);
-
-    if (!settings.opusers.includes(message.author.id)) {
-      if (talkedRecently.has(message.author.id)) return message.channel.send("Wait 1 minute before getting typing this again. - " + message.author);
-    }
-
+    if (talkedRecently.has(message.author.id)) return message.channel.send("Wait 1 minute before getting typing this again. - " + message.author);
     if (blacklist.checkId(message.author.id)) return message.channel.send("I can't hear you. - " + message.author);
 
+    //Parse command
+    let splitMessage = message.content.split(" ");
+    let command = splitMessage[0].substring(1);
+    let params = splitMessage.slice(1);
+
     commandArray.forEach((commandObject) => {
-      if (commandObject.match(command)) commandObject.execute([], message);
+      if (commandObject.match(command)) commandObject.executeDefault(params, message);
     })
-
-    talkedRecently.add(message.author.id);
-
-    setTimeout(function() {
-      talkedRecently.delete(message.author.id);
-    }, settings.timeout);
-
-    latestMessage = new Date();
-    functions.updateEmotions();
   }
 })
 
