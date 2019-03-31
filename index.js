@@ -25,7 +25,7 @@ global.Blacklist = require('./classes/blacklist.js');
 
 //Credentials
 const hueCredentials = require('./credentials/hue.json');
-// const sshCredentials = require("./credentials/shh.json");
+const sshCredentials = require("./credentials/shh.json");
 const discordCredentials = require("./credentials/discord.json");
 const scontrolCredentials = require("./credentials/scontrol.json");
 
@@ -34,7 +34,7 @@ global.language = new Language(Fs);
 global.blacklist = new Blacklist(Fs);
 
 global.bot = new Discord.Client();
-// global.ssh = new Ssh(sshCredentials);
+global.ssh = new Ssh(sshCredentials);
 global.api = new Api(hueCredentials['host'], hueCredentials['username']);
 
 global.lampArray = new Array();
