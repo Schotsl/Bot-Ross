@@ -5,9 +5,8 @@ module.exports = class Toggle extends Command {
     this.trigger = "toggle";
   }
 
-  executeCustom(input, message) {
+  executeCustom(command, input, message) {
     message.channel.send(language.respond('confirm', emotion));
-    report.log(`${message.author.tag} (${message.author.id}) used the ".toggle" command`);
 
     lampArray.forEach(function(officeLight) {
       officeLight.toggleLight();

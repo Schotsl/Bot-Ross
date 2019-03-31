@@ -25,7 +25,7 @@ global.Blacklist = require('./classes/blacklist.js');
 
 //Credentials
 const hueCredentials = require('./credentials/hue.json');
-const sshCredentials = require("./credentials/shh.json");
+// const sshCredentials = require("./credentials/shh.json");
 const discordCredentials = require("./credentials/discord.json");
 const scontrolCredentials = require("./credentials/scontrol.json");
 
@@ -34,7 +34,7 @@ global.language = new Language(Fs);
 global.blacklist = new Blacklist(Fs);
 
 global.bot = new Discord.Client();
-global.ssh = new Ssh(sshCredentials);
+// global.ssh = new Ssh(sshCredentials);
 global.api = new Api(hueCredentials['host'], hueCredentials['username']);
 
 global.lampArray = new Array();
@@ -138,8 +138,7 @@ bot.on("ready", function() {
 
 bot.on("message", async(message) => {
   if (message.content.startsWith(settings.prefix)) {
-    if (talkedRecently.has(message.author.id)) return message.channel.send("Wait 1 minute before getting typing this again. - " + message.author);
-    if (blacklist.checkId(message.author.id)) return message.channel.send("I can't hear you. - " + message.author);
+    if (blacklist.checkId(message.author.id)) message.channel.send(language.respond('deny', emotion));
 
     //Parse command
     let splitMessage = message.content.split(" ");
@@ -147,7 +146,7 @@ bot.on("message", async(message) => {
     let params = splitMessage.slice(1);
 
     commandArray.forEach((commandObject) => {
-      if (commandObject.match(command)) commandObject.executeDefault(params, message);
+      if (commandObject.match(command)) commandObject.executeDefault(command, params, message);
     })
   }
 })

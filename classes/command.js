@@ -9,10 +9,12 @@ module.exports = class Command {
     return input === this.trigger;
   }
 
-  executeDefault(input, message) {
+  executeDefault(command, input, message) {
+    report.log(`${message.author.tag} (${message.author.id}) used the "${command}" command`);
+
     if (this.checkTimeout(message.author.id)) {
       this.saveTimeout(message.author.id);
-      this.executeCustom(input, message);
+      this.executeCustom(command, input, message);
     } else {
       message.channel.send(language.respond('deny', emotion));
       report.log(`${message.author.tag} (${message.author.id}) was timed out`);
