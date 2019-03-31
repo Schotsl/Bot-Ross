@@ -5,13 +5,6 @@ module.exports = {
     let tempValue = Math.floor(Math.random() * (tempMax * tempMin) + tempMin);
     return tempValue
   },
-  permissionlookup: function (permission, message) {
-    if (settings.opusers.includes(message.author.id)) return true;
-    if (!message.member.permissions.has([permission], true)) {
-      message.channel.send(`<@${message.author.id}> You dont have permissions to do that! You need **${permission.toLowerCase()}**.`);
-      return false;
-    }
-  },
   updateEmotions: function () {
     let last = latestMessage.getTime();
     let recent = new Date().getTime();
