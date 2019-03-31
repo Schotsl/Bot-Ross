@@ -5,9 +5,8 @@ module.exports = class Off extends Command {
     this.trigger = "off";
   }
 
-  executeCustom(input, message) {
+  executeCustom(command, input, message) {
     message.channel.send(language.respond('confirm', emotion));
-    report.log(`${message.author.tag} (${message.author.id}) used the ".off" command`);
 
     let newLightOff = LightState.create();
     lampArray.forEach((officeGroup) => officeGroup.setState(newLightOff.off()));

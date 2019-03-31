@@ -5,9 +5,8 @@ module.exports = class Party extends Command {
     this.trigger = "party";
   }
 
-  executeCustom(input, message) {
+  executeCustom(command, input, message) {
     message.channel.send(language.respond('confirm', emotion));
-    report.log(`${message.author.tag} (${message.author.id}) used the ".party" command`);
 
     lampArray.forEach(function(officeLight) {
       officeLight.getState(function(startState) {
