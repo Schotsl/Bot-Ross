@@ -1,32 +1,31 @@
-let talkedRecently = new Set();
-let latestMessage = new Date();
-let emotion = "happy";
+global.latestMessage = new Date();
+global.emotion = "happy";
 
 //Hue packages
-const Ssh = require('simple-ssh');
-const Hue = require('node-hue-api');
-const Api = require('node-hue-api').HueApi;
-const LightState = require('node-hue-api').lightState;
+global.Ssh = require('simple-ssh');
+global.Hue = require('node-hue-api');
+global.Api = require('node-hue-api').HueApi;
+global.LightState = require('node-hue-api').lightState;
 
 //Other packages
-const Fs = require('fs');
-const Http = require('http')
-const Discord = require("discord.js");
+global.Fs = require('fs');
+global.Http = require('http')
+global.Discord = require("discord.js");
 
 //Non classes
-const settings = require('./settings.json');
-const functions = require('./functions.js');
+global.settings = require('./settings.json');
+global.functions = require('./functions.js');
 
 //Custom classes
-const Light = require('./classes/light.js')
-const Group = require('./classes/group.js');
-const Report = require('./classes/report.js');
-const Language = require('./classes/language.js')
-const Blacklist = require('./classes/blacklist.js');
+global.Light = require('./classes/light.js')
+global.Report = require('./classes/report.js');
+global.Command = require('./classes/command.js')
+global.Language = require('./classes/language.js')
+global.Blacklist = require('./classes/blacklist.js');
 
 //Credentials
 const hueCredentials = require('./credentials/hue.json');
-const sshCredentials = require("./credentials/shh.json");
+// const sshCredentials = require("./credentials/shh.json");
 const discordCredentials = require("./credentials/discord.json");
 const scontrolCredentials = require("./credentials/scontrol.json");
 
@@ -34,67 +33,30 @@ global.report = new Report(Fs);
 global.language = new Language(Fs);
 global.blacklist = new Blacklist(Fs);
 
-const bot = new Discord.Client();
-const ssh = new Ssh(sshCredentials);
-const api = new Api(hueCredentials['host'], hueCredentials['username']);
+global.bot = new Discord.Client();
+// global.ssh = new Ssh(sshCredentials);
+global.api = new Api(hueCredentials['host'], hueCredentials['username']);
+
+global.lampArray = new Array();
+global.commandArray = new Array();
 
 //Turn light id array into Light array
-let lampArray = new Array();
 settings['lamps'].forEach(function(officeLightId) {
   let lampSingle = new Light(officeLightId, api);
   lampArray.push(lampSingle);
+});
+
+//Load commands into array
+Fs.readdirSync(`./commands`).forEach(file => {
+  let tempClass = require(`./commands/${file}`);
+  let tempObject = new tempClass();
+  commandArray.push(tempObject);
 });
 
 let scontrolServer = {
   hostname: 'hedium.nl',
   port: '3000',
   token: scontrolCredentials.token
-}
-
-function updateEmotion() {
-  let last = latestMessage.getTime();
-  let recent = new Date().getTime();
-
-  emotion = recent - last <= 86400000 ? "happy" : "sad";
-  if (emotion === "happy") bot.user.setActivity('with happy feelings');
-  else if (emotion === "sad") bot.user.setActivity('with sad feelings');
-}
-
-function toggle() {
-  lampArray.forEach(function(officeLight) {
-    officeLight.toggleLight();
-  });
-}
-
-function party() {
-  lampArray.forEach(function(officeLight) {
-    officeLight.getState(function(startState) {
-
-      let totalOffset = 0;
-      for (let i = 0; i < 10; i ++ ) {
-        totalOffset += functions.getRandomInteger(100, 1000);
-        setTimeout(function() {
-          let newLightState = LightState.create().on();
-          newLightState.ct(functions.getRandomInteger(153, 500));
-          newLightState.bri(functions.getRandomInteger(0, 255));
-          newLightState.transitionInstant()
-
-          //If last callback, return the lights to normal
-          if (i == 9) officeLight.setState(startState);
-          else officeLight.setState(newLightState);
-        }, totalOffset);
-      }
-    });
-  });
-}
-
-//Discord Permissions
-function permissionlookup(permission, message) {
-  if (settings.opusers.includes(message.author.id)) return true;
-  if (!message.member.permissions.has([permission], true)) {
-    message.channel.send(`<@${message.author.id}> You dont have permissions to do that! You need **${permission.toLowerCase()}**.`);
-    return false;
-  }
 }
 
 function scontrolGetDevices(callback) {
@@ -165,166 +127,27 @@ function scontrolPutDevices(id, value, callback) {
   req.end()
 }
 
-bot.on("ready", async() => {
+bot.on("ready", function() {
   report.log(`Bot is ready. ${bot.user.username}`);
-  report.log(await bot.generateInvite(["ADMINISTRATOR"]));
+  bot.generateInvite(["ADMINISTRATOR"]).then((data) => report.log(data));
 
-  setInterval(updateEmotion, 1000);
-  updateEmotion();
+  functions.updateEmotions();
+  setInterval(functions.updateEmotions, 1000);
 });
 
-bot.on("error", async(error) => {
-  report.error(error);
-});
 
 bot.on("message", async(message) => {
   if (message.content.startsWith(settings.prefix)) {
-    let messageArray = message.content.split(" ");
-    let command = messageArray[0];
+    if (blacklist.checkId(message.author.id)) message.channel.send(language.respond('deny', emotion));
 
-    command = command.substring(1);
+    //Parse command
+    let splitMessage = message.content.split(" ");
+    let command = splitMessage[0].substring(1);
+    let params = splitMessage.slice(1);
 
-    if (!settings.opusers.includes(message.author.id)) {
-      if (talkedRecently.has(message.author.id)) return message.channel.send("Wait 1 minute before getting typing this again. - " + message.author);
-    }
-
-    if (blacklist.checkId(message.author.id)) return message.channel.send("I can't hear you. - " + message.author);
-
-    switch (command.toLowerCase()) {
-      case "sc":
-      if (!isNaN(messageArray[1])) {
-        switch (messageArray[2].toLowerCase()) {
-          case "off":
-          if (!messageArray[1]) return message.channel.send("need more input.");
-          scontrolPutDevices(messageArray[1], '0', output => {
-            message.channel.send(output);
-          })
-          break;
-
-          case "on":
-          if (!messageArray[1]) return message.channel.send("need more input.");
-          scontrolPutDevices(messageArray[1], '1', output => {
-            message.channel.send(output);
-          })
-          break;
-        }
-      } else {
-        if (messageArray[1].toLowerCase() == 'list') {
-          scontrolGetDevices(devices => {
-            const embed = new Discord.RichEmbed()
-            .setAuthor(bot.user.username, bot.user.avatarUR)
-            for (i = 0; i < devices.length; i++) {
-              embed.addField(devices[i].title, `Value: ${devices[i].value}\nSimple: ${devices[i].simple}\nPin: ${devices[i].pin}`, true);
-            }
-            embed.setColor(0x42f489);
-            message.channel.send(embed);
-          })
-        }
-      }
-
-      break;
-
-      case "party":
-      message.channel.send(language.respond('confirm', emotion));
-      report.log(`"${message.author}" used the ".party" command`);
-      party();
-      break;
-
-      case "minecraft":
-      message.channel.send(language.respond('confirm', emotion));
-      report.log(`"${message.author}" used the ".minecraft" command`);
-      ssh.exec('cd Minecraft && ./run.sh').start();
-      break;
-
-      case "help":
-      message.channel.send(settings.help);
-      report.log(`"${message.author}" used the ".help" command`);
-      break;
-
-      case "ignore":
-      //Todo: figure out what line 135 is for
-      if (permissionlookup("KICK_MEMBERS", message) == false) return;
-
-      if (settings.opusers.includes(message.author.id)) {
-        message.channel.send(language.respond('confirm', emotion));
-        blacklist.addId(message.mentions.users.first().id);
-      } else {
-        message.channel.send(language.respond('deny', emotion));
-      }
-      report.log(`"${message.author}" used the ".ignore" command`);
-      break;
-
-      case "unignore":
-      //Todo: figure out what line 148 is for
-      if (permissionlookup("KICK_MEMBERS", message) == false) return;
-
-      if (settings.opusers.includes(message.author.id)) {
-        message.channel.send(language.respond('confirm', emotion));
-        blacklist.removeId(message.mentions.users.first().id);
-      } else {
-        message.channel.send(language.respond('deny', emotion));
-      }
-      report.log(`"${message.author}" used the ".unignore" command`);
-      break;
-
-      case "toggle":
-      toggle();
-      message.channel.send("Toggled the lights.");
-      report.log(`"${message.author.tag}" used the ".toggle" command`);
-      break;
-
-      case "on":
-      let newLightOn = LightState.create();
-      lampArray.forEach((officeGroup) => officeGroup.setGroup(newLightOn.on()));
-      break;
-
-      case "off":
-      let newLightOff = LightState.create();
-      lampArray.forEach((officeGroup) => officeGroup.setGroup(newLightOff.off()));
-      break;
-
-      case "temp":
-      let newColorTemp = LightState.create();
-      if (isNaN(messageArray[1])) {
-        //If a temprature string if provided
-        if (messageArray[1] == "warm") lampArray.forEach((officeGroup) => officeGroup.setGroup(newColorTemp.ct(400)));
-        else if (messageArray[1] == "ice") lampArray.forEach((officeGroup) => officeGroup.setGroup(newColorTemp.ct(153)));
-        else if (messageArray[1] == "hot") lampArray.forEach((officeGroup) => officeGroup.setGroup(newColorTemp.ct(500)));
-        else if (messageArray[1] == "cold") lampArray.forEach((officeGroup) => officeGroup.setGroup(newColorTemp.ct(253)));
-        else return message.channel.send(settings.errors.temp);
-      } else {
-        //If a temprature number is provided
-        if (messageArray[1] > 500 || messageArray[1] < 0) return message.channel.send(settings.errors.temp);
-        lampArray.forEach((officeGroup) => officeGroup.setGroup(newColorTemp.ct(messageArray[1])));
-      }
-      break;
-
-      case "bri":
-      let newBrighness = LightState.create();
-      if (isNaN(messageArray[1])) {
-        //If a brightness string if provided
-        if (messageArray[1] == "bright") lampArray.forEach((officeGroup) => officeGroup.setGroup(newBrighness.bri(255)));
-        else if (messageArray[1] == "dim") lampArray.forEach((officeGroup) => officeGroup.setGroup(newBrighness.bri(50)));
-        else return message.channel.send(settings.errors.bri);
-      } else {
-        //If a brightness number is provided
-        if (messageArray[1] > 255 || messageArray[1] < 0) return message.channel.send(settings.errors.bri);
-        lampArray.forEach((officeGroup) => officeGroup.setGroup(newBrighness.bri(messageArray[1])));
-      }
-      break;
-
-      default:
-      message.channel.send(settings.default);
-      break;
-    }
-    talkedRecently.add(message.author.id);
-
-    setTimeout(function() {
-      talkedRecently.delete(message.author.id);
-    }, settings.timeout);
-
-    latestMessage = new Date();
-    updateEmotion();
+    commandArray.forEach((commandObject) => {
+      if (commandObject.match(command)) commandObject.executeDefault(command, params, message);
+    })
   }
 })
 
