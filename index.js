@@ -162,7 +162,7 @@ bot.on("message", async(message) => {
     }, settings.timeout);
 
     latestMessage = new Date();
-    updateEmotion();
+    functions.updateEmotions();
   }
 })
 

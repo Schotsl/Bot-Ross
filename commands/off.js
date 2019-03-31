@@ -9,6 +9,6 @@ module.exports = class Off extends Command {
     report.log(`"${message.author}" used the ".off" command`);
 
     let newLightOff = LightState.create();
-    lampArray.forEach((officeGroup) => officeGroup.setGroup(newLightOff.off()));
+    lampArray.forEach((officeGroup) => officeGroup.setState(newLightOff.off()));
   }
 }
