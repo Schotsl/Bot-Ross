@@ -1,6 +1,6 @@
-let talkedRecently = new Set();
-let latestMessage = new Date();
-let emotion = "happy";
+global.talkedRecently = new Set();
+global.latestMessage = new Date();
+global.emotion = "happy";
 
 //Hue packages
 global.Ssh = require('simple-ssh');
@@ -27,7 +27,7 @@ global.Blacklist = require('./classes/blacklist.js');
 
 //Credentials
 const hueCredentials = require('./credentials/hue.json');
-const sshCredentials = require("./credentials/shh.json");
+// const sshCredentials = require("./credentials/shh.json");
 const discordCredentials = require("./credentials/discord.json");
 const scontrolCredentials = require("./credentials/scontrol.json");
 
@@ -36,7 +36,7 @@ global.language = new Language(Fs);
 global.blacklist = new Blacklist(Fs);
 
 global.bot = new Discord.Client();
-global.ssh = new Ssh(sshCredentials);
+// global.ssh = new Ssh(sshCredentials);
 global.api = new Api(hueCredentials['host'], hueCredentials['username']);
 
 global.lampArray = new Array();
@@ -129,17 +129,14 @@ function scontrolPutDevices(id, value, callback) {
   req.end()
 }
 
-bot.on("ready", async() => {
+bot.on("ready", function() {
   report.log(`Bot is ready. ${bot.user.username}`);
-  report.log(await bot.generateInvite(["ADMINISTRATOR"]));
+  bot.generateInvite(["ADMINISTRATOR"]).then((data) => report.log(data));
 
-  setInterval(updateEmotion, 1000);
-  updateEmotion();
+  functions.updateEmotions();
+  setInterval(functions.updateEmotions, 1000);
 });
 
-bot.on("error", async(error) => {
-  report.error(error);
-});
 
 bot.on("message", async(message) => {
   if (message.content.startsWith(settings.prefix)) {
@@ -155,7 +152,7 @@ bot.on("message", async(message) => {
     if (blacklist.checkId(message.author.id)) return message.channel.send("I can't hear you. - " + message.author);
 
     commandArray.forEach((commandObject) => {
-      if (commandObject.match(command)) commandObject.execute();
+      if (commandObject.match(command)) commandObject.execute([], message);
     })
 
     talkedRecently.add(message.author.id);
