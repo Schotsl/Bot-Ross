@@ -1,11 +1,15 @@
-module.exports = class Party extends Command {
+module.exports = class Toggle extends Command {
   constructor() {
     super();
-    this.trigger = "party";
+    this.trigger = "toggle";
   }
 
-  execute(input) {
+  execute(input, message) {
+    message.channel.send(language.respond('confirm', emotion));
+    report.log(`"${message.author.tag}" used the ".toggle" command`);
+
     lampArray.forEach(function(officeLight) {
       officeLight.toggleLight();
     });
+  }
 }

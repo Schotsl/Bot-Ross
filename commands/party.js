@@ -4,7 +4,10 @@ module.exports = class Party extends Command {
     this.trigger = "party";
   }
 
-  execute(input) {
+  execute(input, message) {
+    message.channel.send(language.respond('confirm', emotion));
+    report.log(`"${message.author}" used the ".party" command`);
+
     lampArray.forEach(function(officeLight) {
       officeLight.getState(function(startState) {
 
