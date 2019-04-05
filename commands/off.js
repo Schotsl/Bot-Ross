@@ -7,6 +7,7 @@ module.exports = class Off extends Command {
 
   executeCustom(command, input, message) {
     message.channel.send(language.respond('confirm', emotion));
+    message.channel.send(language.respond('off', emotion));
 
     let newLightOff = LightState.create();
     lampArray.forEach((officeGroup) => officeGroup.setState(newLightOff.off()));
