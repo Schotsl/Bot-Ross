@@ -7,6 +7,7 @@ module.exports = class Party extends Command {
 
   executeCustom(command, input, message) {
     message.channel.send(language.respond('confirm', emotion));
+    message.channel.send(language.respond('party', emotion));
 
     lampArray.forEach(function(officeLight) {
       officeLight.getState(function(startState) {
