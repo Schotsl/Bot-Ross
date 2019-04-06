@@ -23,15 +23,20 @@ global.Command = require('./classes/command.js')
 global.Language = require('./classes/language.js')
 global.Blacklist = require('./classes/blacklist.js');
 
-//Credentials
-const hueCredentials = require('./credentials/hue.json');
-const sshCredentials = require("./credentials/shh.json");
-const discordCredentials = require("./credentials/discord.json");
-const scontrolCredentials = require("./credentials/scontrol.json");
-
 global.report = new Report(Fs);
 global.language = new Language(Fs);
 global.blacklist = new Blacklist(Fs);
+
+//Credentials
+const hueCredentialsLocation = './credentials/hue.json';
+const sshCredentialsLocation = './credentials/shh.json';
+const discordCredentialsLocation = './credentials/discord.json';
+const scontrolCredentialsLocation = './credentials/scontrol.json';
+
+if (Fs.existsSync(hueCredentialsLocation)) var hueCredentials = require('./credentials/hue.json');
+if (Fs.existsSync(sshCredentialsLocation)) var sshCredentials = require("./credentials/shh.json");
+if (Fs.existsSync(discordCredentialsLocation)) var discordCredentials = require("./credentials/discord.json");
+if (Fs.existsSync(scontrolCredentialsLocation)) var scontrolCredentials = require("./credentials/scontrol.json");
 
 global.bot = new Discord.Client();
 global.ssh = new Ssh(sshCredentials);
