@@ -8,6 +8,8 @@
   "dependencies": {
     "discord.js": "^11.4.2",
     "node-hue-api": "^2.4.4",
-    "simple-ssh": "^1.0.0"
+    "node-opus": "^0.3.1",
+    "simple-ssh": "^1.0.0",
+    "ytdl-core": "^0.29.1"
   }
 }
