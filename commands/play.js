@@ -10,10 +10,10 @@ module.exports = class Play extends Command {
     let channelId = message.member.voiceChannelID;
     let channelObject = bot.channels.get(channelId);
 
-    let streamObject = channelObject.join().then((connection) => {
-      const streamOptions = { seek: 0, volume: 1 };
-      const stream = ytdl(input[0], { filter : 'audioonly' });
-      const dispatcher = connection.playStream(stream, streamOptions);
-    })
+    global.voiceChannelObject = await channelObject.join();
+
+    const stream = ytdl(input[0], { filter : 'audioonly' });
+    const dispatcher = voiceChannelObject.playStream(stream);
+    dispatcher.on("end", end => voiceChannelObject.disconnect());
   }
 }
