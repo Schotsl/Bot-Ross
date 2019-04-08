@@ -12,7 +12,7 @@ module.exports = class Play extends Command {
 
     let streamObject = channelObject.join().then((connection) => {
       const streamOptions = { seek: 0, volume: 1 };
-      const stream = ytdl('https://www.youtube.com/watch?v=Zkw_jSHtXvg', { filter : 'audioonly' });
+      const stream = ytdl(input[0], { filter : 'audioonly' });
       const dispatcher = connection.playStream(stream, streamOptions);
     })
   }
