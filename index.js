@@ -66,6 +66,9 @@ bot.on("ready", function() {
   setInterval(functions.updateEmotions, 1000);
 });
 
+bot.on("error", function(data) {
+  report.error(data);
+});
 
 bot.on("message", async(message) => {
   if (message.content.startsWith(settings.prefix)) {
