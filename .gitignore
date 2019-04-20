@@ -1,4 +1,5 @@
 .directory
+persons/
 credentials/discord.json
 credentials/hue.json
 credentials/shh.json
