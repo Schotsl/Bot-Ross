@@ -18,6 +18,7 @@ global.functions = require('./functions.js');
 
 //Custom classes
 global.Light = require('./classes/light.js')
+global.Person = require('./classes/person.js')
 global.Report = require('./classes/report.js');
 global.Command = require('./classes/command.js')
 global.Language = require('./classes/language.js')
@@ -43,6 +44,7 @@ global.ssh = new Ssh(sshCredentials);
 global.api = new Api(hueCredentials['host'], hueCredentials['username']);
 
 global.lampArray = new Array();
+global.personArray = new Array();
 global.commandArray = new Array();
 
 //Turn light id array into Light array
@@ -50,6 +52,21 @@ settings['lamps'].forEach(function(officeLightId) {
   let lampSingle = new Light(officeLightId, api);
   lampArray.push(lampSingle);
 });
+
+//Load commands into array
+Fs.readdirSync(`./persons`).forEach(file => {
+  let tempData = JSON.stringify(require(`./persons/${file}`));
+  let tempObject = new Person();
+
+  if (tempData.last) tempObject.last = tempData.last;
+  if (tempData.email) tempObject.email = tempData.email;
+  if (tempData.first) tempObject.first = tempData.first;
+  if (tempData.number) tempObject.number = tempData.number;
+  if (tempData.discord) tempObject.discord = tempData.discord;
+
+  personArray.push(tempObject);
+});
+report.log(`Loaded ${personArray.length} people`);
 
 //Load commands into array
 Fs.readdirSync(`./commands`).forEach(file => {
@@ -86,5 +103,3 @@ bot.on("message", async(message) => {
 })
 
 bot.login(discordCredentials.token);
-
-//Test
