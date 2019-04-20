@@ -13,7 +13,7 @@ module.exports = class Play extends Command {
     let channelId = message.member.voiceChannelID;
     let channelObject = bot.channels.get(channelId);
 
-    const stream = ytdl(input[0], { filter : 'audioonly' });
+    let stream = ytdl(input[0], { filter : 'audioonly' });
     this.queue.push(stream);
 
     if (!this.playing) {
