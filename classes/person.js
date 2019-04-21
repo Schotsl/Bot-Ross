@@ -6,4 +6,10 @@ module.exports = class Light {
     this.number = "";
     this.discord = "";
   }
+
+  getStatus(callback) {
+    bot.fetchUser(this.discord).then((data) => {
+      callback(data.presence.status);
+    });
+  }
 }

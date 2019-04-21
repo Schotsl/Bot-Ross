@@ -55,7 +55,7 @@ settings['lamps'].forEach(function(officeLightId) {
 
 //Load commands into array
 Fs.readdirSync(`./persons`).forEach(file => {
-  let tempData = JSON.stringify(require(`./persons/${file}`));
+  let tempData = JSON.parse(require(`./persons/${file}`));
   let tempObject = new Person();
 
   if (tempData.last) tempObject.last = tempData.last;
