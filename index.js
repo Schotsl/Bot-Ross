@@ -52,6 +52,7 @@ settings['lamps'].forEach(function(officeLightId) {
   let lampSingle = new Light(officeLightId, api);
   lampArray.push(lampSingle);
 });
+report.log(`Loaded ${lampArray.length} lights`);
 
 //Load commands into array
 Fs.readdirSync(`./persons`).forEach(file => {
@@ -74,6 +75,7 @@ Fs.readdirSync(`./commands`).forEach(file => {
   let tempObject = new tempClass();
   commandArray.push(tempObject);
 });
+report.log(`Loaded ${commandArray.length} commands`);
 
 bot.on("ready", function() {
   report.log(`Bot is ready. ${bot.user.username}`);
