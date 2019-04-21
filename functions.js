@@ -13,9 +13,16 @@ module.exports = {
     if (emotion === "happy") bot.user.setActivity('with happy feelings');
     else if (emotion === "sad") bot.user.setActivity('with sad feelings');
   },
-  getPerson: function (tempId) {
+  getPersons: function (tempString) {
+    tempString = tempString.toLowerCase();
+    tempArray = new Array();
+
     personArray.forEach((tempPerson) => {
-      if (tempPerson.discord == tempId) console.log('yeet');
+      if (tempPerson.discord.toLowerCase() == tempString) tempArray.push(tempPerson);
+      else if (tempPerson.email.toLowerCase() == tempString) tempArray.push(tempPerson);
+      else if (tempPerson.first.toLowerCase() == tempString) tempArray.push(tempPerson);
     })
+
+    return tempArray;
   }
 };

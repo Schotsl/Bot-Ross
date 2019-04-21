@@ -1,4 +1,4 @@
-module.exports = class Light {
+module.exports = class Person {
   constructor(id, hue) {
     this.last = "";
     this.email = "";
