@@ -13,4 +13,9 @@ module.exports = {
     if (emotion === "happy") bot.user.setActivity('with happy feelings');
     else if (emotion === "sad") bot.user.setActivity('with sad feelings');
   },
+  getPerson: function (tempId) {
+    personArray.forEach((tempPerson) => {
+      if (tempPerson.discord == tempId) console.log('yeet');
+    })
+  }
 };
