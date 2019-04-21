@@ -9,8 +9,8 @@ module.exports = class Party extends Command {
     message.channel.send(language.respond('confirm', emotion));
     message.channel.send(language.respond('party', emotion));
 
-    lampArray.forEach(function(officeLight) {
-      officeLight.getState(function(startState) {
+    lampArray.forEach(function(lampSingle) {
+      lampSingle.getState(function(startState) {
 
         let totalOffset = 0;
         for (let i = 0; i < 10; i ++ ) {
@@ -22,8 +22,8 @@ module.exports = class Party extends Command {
             newLightState.transitionInstant()
 
             //If last callback, return the lights to normal
-            if (i == 9) officeLight.setState(startState);
-            else officeLight.setState(newLightState);
+            if (i == 9) lampSingle.setState(startState);
+            else lampSingle.setState(newLightState);
           }, totalOffset);
         }
       });

@@ -2,8 +2,9 @@ const Fs = require('fs');
 
 module.exports = {
   getRandomInteger: function (tempMin, tempMax) {
-    let tempValue = Math.floor(Math.random() * (tempMax * tempMin) + tempMin);
-    return tempValue
+    tempMin = Math.ceil(tempMin);
+    tempMax = Math.floor(tempMax);
+    return Math.floor(Math.random() * (tempMax - tempMin + 1)) + tempMin;
   },
   updateEmotions: function () {
     let last = latestMessage.getTime();
