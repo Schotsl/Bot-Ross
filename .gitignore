@@ -1,8 +1,11 @@
 .directory
 persons/
-credentials/discord.json
-credentials/hue.json
-credentials/shh.json
 blacklist.json
 node_modules
 logs/*
+
+# All credentials
+credentials/discord.json
+credentials/mysql.json
+credentials/hue.json
+credentials/shh.json

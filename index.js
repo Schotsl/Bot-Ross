@@ -9,7 +9,8 @@ global.LightState = require('node-hue-api').lightState;
 
 //Other packages
 global.Fs = require('fs');
-global.Http = require('http')
+global.Http = require('http');
+global.MySQL = require('mysql');
 global.Discord = require("discord.js");
 
 //Non classes
@@ -31,17 +32,21 @@ global.blacklist = new Blacklist(Fs);
 //Credentials
 const hueCredentialsLocation = './credentials/hue.json';
 const sshCredentialsLocation = './credentials/shh.json';
+const mySQLCredentialsLocation = './credentials/mysql.json';
 const discordCredentialsLocation = './credentials/discord.json';
 const scontrolCredentialsLocation = './credentials/scontrol.json';
 
-if (Fs.existsSync(hueCredentialsLocation)) var hueCredentials = require('./credentials/hue.json');
-if (Fs.existsSync(sshCredentialsLocation)) var sshCredentials = require("./credentials/shh.json");
-if (Fs.existsSync(discordCredentialsLocation)) var discordCredentials = require("./credentials/discord.json");
-if (Fs.existsSync(scontrolCredentialsLocation)) var scontrolCredentials = require("./credentials/scontrol.json");
+if (Fs.existsSync(hueCredentialsLocation)) var hueCredentials = require(hueCredentialsLocation);
+if (Fs.existsSync(sshCredentialsLocation)) var sshCredentials = require(sshCredentialsLocation);
+if (Fs.existsSync(mySQLCredentialsLocation)) var mySQLCredentials = require(mySQLCredentialsLocation);
+if (Fs.existsSync(discordCredentialsLocation)) var discordCredentials = require(discordCredentialsLocation);
+if (Fs.existsSync(scontrolCredentialsLocation)) var scontrolCredentials = require(scontrolCredentialsLocation);
 
 global.bot = new Discord.Client();
 global.ssh = new Ssh(sshCredentials);
 global.api = new Api(hueCredentials['host'], hueCredentials['username']);
+global.connection = MySQL.createConnection(mySQLCredentials);
+connection.connect();
 
 global.lampArray = new Array();
 global.personArray = new Array();
@@ -55,19 +60,27 @@ settings['lamps'].forEach(function(officeLightId) {
 report.log(`Loaded ${lampArray.length} lights`);
 
 //Load commands into array
-Fs.readdirSync(`./persons`).forEach(file => {
-  let tempData = JSON.parse(require(`./persons/${file}`));
-  let tempObject = new Person();
+connection.query(`SELECT \`id\`, \`first\`, \`last\`, \`email\`, \`adres\`, \`postal\`, \`city\`, \`birthday\`, \`insta\`, \`discord\`, \`twitter\`, \`ip\` FROM \`persons\` WHERE 1`, function (error, dataArray) {
+  dataArray.forEach((singleData) => {
+    let tempObject = new Person();
 
-  if (tempData.last) tempObject.last = tempData.last;
-  if (tempData.email) tempObject.email = tempData.email;
-  if (tempData.first) tempObject.first = tempData.first;
-  if (tempData.number) tempObject.number = tempData.number;
-  if (tempData.discord) tempObject.discord = tempData.discord;
+    if (singleData.id) tempObject.id = singleData.id;
+    if (singleData.ip) tempObject.ip = singleData.ip;
+    if (singleData.last) tempObject.last = singleData.last;
+    if (singleData.city) tempObject.city = singleData.city;
+    if (singleData.first) tempObject.first = singleData.first;
+    if (singleData.email) tempObject.email = singleData.email;
+    if (singleData.adres) tempObject.adres = singleData.adres;
+    if (singleData.insta) tempObject.insta = singleData.insta;
+    if (singleData.postal) tempObject.postal = singleData.postal;
+    if (singleData.twitter) tempObject.twitter = singleData.twitter;
+    if (singleData.discord) tempObject.discord = singleData.discord;
+    if (singleData.birthday) tempObject.birthday = singleData.birthday;
 
-  personArray.push(tempObject);
+    personArray.push(tempObject);
+  });
+  report.log(`Loaded ${personArray.length} people`);
 });
-report.log(`Loaded ${personArray.length} people`);
 
 //Load commands into array
 Fs.readdirSync(`./commands`).forEach(file => {
