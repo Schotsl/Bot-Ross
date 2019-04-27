@@ -1,5 +1,3 @@
-const Fs = require('fs');
-
 module.exports = {
   getRandomInteger: function (tempMin, tempMax) {
     tempMin = Math.ceil(tempMin);

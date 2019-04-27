@@ -1,6 +1,8 @@
+fs = require('fs');
+
 module.exports = class Report {
-  constructor(fs) {
-    this.fs = fs;
+  constructor() {
+
   }
 
   log(rawLine) {
@@ -22,7 +24,7 @@ module.exports = class Report {
   }
 
   write(logFileEntry, logFileName) {
-    if (!this.fs.existsSync(logFileName)) this.fs.openSync(logFileName, 'w');
-    this.fs.appendFileSync(logFileName, logFileEntry);
+    if (!fs.existsSync(logFileName)) fs.openSync(logFileName, 'w');
+    fs.appendFileSync(logFileName, logFileEntry);
   }
 }
