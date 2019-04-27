@@ -2,8 +2,9 @@ const Fs = require('fs');
 
 module.exports = {
   getRandomInteger: function (tempMin, tempMax) {
-    let tempValue = Math.floor(Math.random() * (tempMax * tempMin) + tempMin);
-    return tempValue
+    tempMin = Math.ceil(tempMin);
+    tempMax = Math.floor(tempMax);
+    return Math.floor(Math.random() * (tempMax - tempMin + 1)) + tempMin;
   },
   updateEmotions: function () {
     emotionValue = emotionValue * 0.9999;
@@ -30,5 +31,17 @@ module.exports = {
         emotionState = 0;
       }
     }
+  },
+  getPersons: function (tempString) {
+    tempString = tempString.toLowerCase();
+    tempArray = new Array();
+
+    personArray.forEach((tempPerson) => {
+      if (tempPerson.discord.toLowerCase() == tempString) tempArray.push(tempPerson);
+      else if (tempPerson.email.toLowerCase() == tempString) tempArray.push(tempPerson);
+      else if (tempPerson.first.toLowerCase() == tempString) tempArray.push(tempPerson);
+    })
+
+    return tempArray;
   }
 };
