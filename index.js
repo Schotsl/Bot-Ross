@@ -1,21 +1,19 @@
-global.latestMessage = new Date();
 global.emotionValue = 0;
 global.emotionState = 0;
 
 //Hue packages
-global.Ssh = require('simple-ssh');
 global.Hue = require('node-hue-api');
 global.Api = require('node-hue-api').HueApi;
 global.LightState = require('node-hue-api').lightState;
 
 //Other packages
-global.Fs = require('fs');
-global.Http = require('http');
+global.Ssh = require('simple-ssh');
 global.MySQL = require('mysql');
 global.Discord = require("discord.js");
 global.Sentiment = require('sentiment');
 
-//Non classes
+//Non constructors
+global.fs = require('fs');
 global.settings = require('./settings.json');
 global.functions = require('./functions.js');
 
@@ -27,9 +25,9 @@ global.Command = require('./classes/command.js')
 global.Language = require('./classes/language.js')
 global.Blacklist = require('./classes/blacklist.js');
 
-global.report = new Report(Fs);
-global.language = new Language(Fs);
-global.blacklist = new Blacklist(Fs);
+global.report = new Report();
+global.language = new Language();
+global.blacklist = new Blacklist();
 global.sentiment = new Sentiment();
 
 //Credentials
@@ -39,11 +37,11 @@ const mySQLCredentialsLocation = './credentials/mysql.json';
 const discordCredentialsLocation = './credentials/discord.json';
 const scontrolCredentialsLocation = './credentials/scontrol.json';
 
-if (Fs.existsSync(hueCredentialsLocation)) var hueCredentials = require(hueCredentialsLocation);
-if (Fs.existsSync(sshCredentialsLocation)) var sshCredentials = require(sshCredentialsLocation);
-if (Fs.existsSync(mySQLCredentialsLocation)) var mySQLCredentials = require(mySQLCredentialsLocation);
-if (Fs.existsSync(discordCredentialsLocation)) var discordCredentials = require(discordCredentialsLocation);
-if (Fs.existsSync(scontrolCredentialsLocation)) var scontrolCredentials = require(scontrolCredentialsLocation);
+if (fs.existsSync(hueCredentialsLocation)) var hueCredentials = require(hueCredentialsLocation);
+if (fs.existsSync(sshCredentialsLocation)) var sshCredentials = require(sshCredentialsLocation);
+if (fs.existsSync(mySQLCredentialsLocation)) var mySQLCredentials = require(mySQLCredentialsLocation);
+if (fs.existsSync(discordCredentialsLocation)) var discordCredentials = require(discordCredentialsLocation);
+if (fs.existsSync(scontrolCredentialsLocation)) var scontrolCredentials = require(scontrolCredentialsLocation);
 
 global.bot = new Discord.Client();
 global.ssh = new Ssh(sshCredentials);
@@ -86,7 +84,7 @@ connection.query(`SELECT \`id\`, \`first\`, \`last\`, \`email\`, \`adres\`, \`po
 });
 
 //Load commands into array
-Fs.readdirSync(`./commands`).forEach(file => {
+fs.readdirSync(`./commands`).forEach(file => {
   let tempClass = require(`./commands/${file}`);
   let tempObject = new tempClass();
   commandArray.push(tempObject);

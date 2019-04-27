@@ -1,6 +1,7 @@
+let fs = require('fs');
+
 module.exports = class Blacklist {
-  constructor(fs) {
-    this.fs = fs;
+  constructor() {
     this.listed = new Array();
 
     this.loadBlacklist();
@@ -8,12 +9,12 @@ module.exports = class Blacklist {
 
   saveBlacklist() {
     let tempJSON = JSON.stringify(this.listed);
-    this.fs.writeFileSync('blacklist.json', tempJSON);
+    fs.writeFileSync('blacklist.json', tempJSON);
     report.log(`Blacklist has been saved`);
   }
 
   loadBlacklist() {
-    let tempBuffer = this.fs.readFileSync('blacklist.json');
+    let tempBuffer = fs.readFileSync('blacklist.json');
     this.listed = JSON.parse(tempBuffer);
     report.log(`Blacklist has been loaded`);
   }
