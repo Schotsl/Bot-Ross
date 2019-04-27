@@ -6,6 +6,7 @@ logs/*
 
 # All credentials
 credentials/discord.json
-credentials/mysql.json
 credentials/hue.json
+credentials/mysql.json
+credentials/scontrol.json
 credentials/shh.json
