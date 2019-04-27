@@ -10,7 +10,8 @@ global.LightState = require('node-hue-api').lightState;
 
 //Other packages
 global.Fs = require('fs');
-global.Http = require('http')
+global.Http = require('http');
+global.MySQL = require('mysql');
 global.Discord = require("discord.js");
 global.Sentiment = require('sentiment');
 
@@ -20,6 +21,7 @@ global.functions = require('./functions.js');
 
 //Custom classes
 global.Light = require('./classes/light.js')
+global.Person = require('./classes/person.js')
 global.Report = require('./classes/report.js');
 global.Command = require('./classes/command.js')
 global.Language = require('./classes/language.js')
@@ -33,25 +35,54 @@ global.sentiment = new Sentiment();
 //Credentials
 const hueCredentialsLocation = './credentials/hue.json';
 const sshCredentialsLocation = './credentials/shh.json';
+const mySQLCredentialsLocation = './credentials/mysql.json';
 const discordCredentialsLocation = './credentials/discord.json';
 const scontrolCredentialsLocation = './credentials/scontrol.json';
 
-if (Fs.existsSync(hueCredentialsLocation)) var hueCredentials = require('./credentials/hue.json');
-if (Fs.existsSync(sshCredentialsLocation)) var sshCredentials = require("./credentials/shh.json");
-if (Fs.existsSync(discordCredentialsLocation)) var discordCredentials = require("./credentials/discord.json");
-if (Fs.existsSync(scontrolCredentialsLocation)) var scontrolCredentials = require("./credentials/scontrol.json");
+if (Fs.existsSync(hueCredentialsLocation)) var hueCredentials = require(hueCredentialsLocation);
+if (Fs.existsSync(sshCredentialsLocation)) var sshCredentials = require(sshCredentialsLocation);
+if (Fs.existsSync(mySQLCredentialsLocation)) var mySQLCredentials = require(mySQLCredentialsLocation);
+if (Fs.existsSync(discordCredentialsLocation)) var discordCredentials = require(discordCredentialsLocation);
+if (Fs.existsSync(scontrolCredentialsLocation)) var scontrolCredentials = require(scontrolCredentialsLocation);
 
 global.bot = new Discord.Client();
 global.ssh = new Ssh(sshCredentials);
 global.api = new Api(hueCredentials['host'], hueCredentials['username']);
+global.connection = MySQL.createConnection(mySQLCredentials);
+connection.connect();
 
 global.lampArray = new Array();
+global.personArray = new Array();
 global.commandArray = new Array();
 
 //Turn light id array into Light array
 settings['lamps'].forEach(function(officeLightId) {
   let lampSingle = new Light(officeLightId, api);
   lampArray.push(lampSingle);
+});
+report.log(`Loaded ${lampArray.length} lights`);
+
+//Load commands into array
+connection.query(`SELECT \`id\`, \`first\`, \`last\`, \`email\`, \`adres\`, \`postal\`, \`city\`, \`birthday\`, \`insta\`, \`discord\`, \`twitter\`, \`ip\` FROM \`persons\` WHERE 1`, function (error, dataArray) {
+  dataArray.forEach((singleData) => {
+    let tempObject = new Person();
+
+    if (singleData.id) tempObject.id = singleData.id;
+    if (singleData.ip) tempObject.ip = singleData.ip;
+    if (singleData.last) tempObject.last = singleData.last;
+    if (singleData.city) tempObject.city = singleData.city;
+    if (singleData.first) tempObject.first = singleData.first;
+    if (singleData.email) tempObject.email = singleData.email;
+    if (singleData.adres) tempObject.adres = singleData.adres;
+    if (singleData.insta) tempObject.insta = singleData.insta;
+    if (singleData.postal) tempObject.postal = singleData.postal;
+    if (singleData.twitter) tempObject.twitter = singleData.twitter;
+    if (singleData.discord) tempObject.discord = singleData.discord;
+    if (singleData.birthday) tempObject.birthday = singleData.birthday;
+
+    personArray.push(tempObject);
+  });
+  report.log(`Loaded ${personArray.length} people`);
 });
 
 //Load commands into array
@@ -60,6 +91,7 @@ Fs.readdirSync(`./commands`).forEach(file => {
   let tempObject = new tempClass();
   commandArray.push(tempObject);
 });
+report.log(`Loaded ${commandArray.length} commands`);
 
 bot.on("ready", function() {
   report.log(`Bot is ready. ${bot.user.username}`);
@@ -69,6 +101,9 @@ bot.on("ready", function() {
   setInterval(functions.updateEmotions, 100);
 });
 
+bot.on("error", function(data) {
+  report.error(data);
+});
 
 bot.on("message", async(message) => {
   //Detect mention
