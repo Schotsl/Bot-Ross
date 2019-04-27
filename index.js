@@ -1,5 +1,6 @@
 global.latestMessage = new Date();
-global.emotion = "happy";
+global.emotionValue = 0;
+global.emotionState = 0;
 
 //Hue packages
 global.Ssh = require('simple-ssh');
@@ -11,6 +12,7 @@ global.LightState = require('node-hue-api').lightState;
 global.Fs = require('fs');
 global.Http = require('http')
 global.Discord = require("discord.js");
+global.Sentiment = require('sentiment');
 
 //Non classes
 global.settings = require('./settings.json');
@@ -26,6 +28,7 @@ global.Blacklist = require('./classes/blacklist.js');
 global.report = new Report(Fs);
 global.language = new Language(Fs);
 global.blacklist = new Blacklist(Fs);
+global.sentiment = new Sentiment();
 
 //Credentials
 const hueCredentialsLocation = './credentials/hue.json';
@@ -62,12 +65,18 @@ bot.on("ready", function() {
   report.log(`Bot is ready. ${bot.user.username}`);
   bot.generateInvite(["ADMINISTRATOR"]).then((data) => report.log(data));
 
-  functions.updateEmotions();
-  setInterval(functions.updateEmotions, 1000);
+  bot.user.setActivity('with neutral feelings');
+  setInterval(functions.updateEmotions, 100);
 });
 
 
 bot.on("message", async(message) => {
+  //Detect mention
+  message.mentions.users.forEach((user) => {
+      if (user.id === bot.user.id) emotionValue += sentiment.analyze(message.content).comparative;
+  });
+
+  //Detect command
   if (message.content.startsWith(settings.prefix)) {
     if (blacklist.checkId(message.author.id)) message.channel.send(language.respond('deny', emotion));
 
@@ -83,5 +92,3 @@ bot.on("message", async(message) => {
 })
 
 bot.login(discordCredentials.token);
-
-//Test
