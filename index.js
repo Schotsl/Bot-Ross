@@ -111,7 +111,7 @@ bot.on("message", async(message) => {
 
   //Detect command
   if (message.content.startsWith(settings.prefix)) {
-    if (blacklist.checkId(message.author.id)) message.channel.send(language.respond('deny', emotion));
+    if (blacklist.checkId(message.author.id)) language.respond('deny', emotionValue, (response) => message.channel.send(response));
 
     //Parse command
     let splitMessage = message.content.split(" ");

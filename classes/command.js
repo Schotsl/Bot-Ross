@@ -16,7 +16,7 @@ module.exports = class Command {
       this.saveTimeout(message.author.id);
       this.executeCustom(command, input, message);
     } else {
-      message.channel.send(language.respond('deny', emotion));
+      language.respond('deny', emotionValue, (response) => message.channel.send(response));
       report.log(`${message.author.tag} (${message.author.id}) was timed out`);
     }
   }

@@ -6,8 +6,8 @@ module.exports = class Party extends Command {
   }
 
   executeCustom(command, input, message) {
-    message.channel.send(language.respond('confirm', emotion));
-    message.channel.send(language.respond('party', emotion));
+    language.respond('confirm', emotionValue, (response) => message.channel.send(response));
+    language.respond('party', emotionValue, (response) => message.channel.send(response));
 
     lampArray.forEach(function(lampSingle) {
       lampSingle.getState(function(startState) {

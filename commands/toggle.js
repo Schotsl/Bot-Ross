@@ -6,9 +6,7 @@ module.exports = class Toggle extends Command {
   }
 
   executeCustom(command, input, message) {
-    // message.channel.send(language.respond('confirm', emotion));
-    console.log(language.respond('toggle', emotion));
-    message.channel.send(language.respond('toggle', emotion));
+    language.respond('toggle', emotionValue, (response) => message.channel.send(response));
 
     lampArray.forEach(function(officeLight) {
       officeLight.toggleLight();
