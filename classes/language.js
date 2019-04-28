@@ -1,25 +1,12 @@
-fs = require('fs');
-
 module.exports = class Language {
   constructor() {
-    this.language = {};
 
-    this.loadLanguage();
   }
 
-  loadLanguage() {
-    let tempBuffer = fs.readFileSync('language.json');
-    //Todo: Figure out why we need double JSON.parse on line 12
-    this.language = JSON.parse(JSON.parse(tempBuffer));
-    report.log(`Language has been loaded`);
-  }
-
-  respond(intention, emotion) {
-    let responseArray = this.language[intention][emotion];
-    if (responseArray.length) return responseArray[Math.floor(Math.random() * responseArray.length)];
-    else {
-      if (emotion === "sad") return this.respond(intention, "surprised");
-      if (emotion === "happy") return this.respond(intention, "surprised");
-    }
+  respond(intention, emotion, callback) {
+    connection.query(`SELECT \`content\` FROM \`languages\` WHERE \`intention\` = '${intention}' ORDER BY ABS ( \`value\` - ${emotion}) LIMIT 1`, function (error, dataArray) {
+      if (dataArray.length > 0) callback(dataArray[0]['content']);
+      else callback("Something went wrong, please report this 001 error");
+  });
   }
 }

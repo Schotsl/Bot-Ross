@@ -6,7 +6,7 @@ module.exports = class Notify extends Command {
 
   executeCustom(command, input, message) {
     let singlePerson = functions.getPersons(input[0])[0];
-    message.channel.send(language.respond('confirm', emotion));
+    language.respond('confirm', emotionValue, (response) => message.channel.send(response));
 
     let oldStatus;
     setInterval(() => {

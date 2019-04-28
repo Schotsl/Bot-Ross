@@ -6,8 +6,8 @@ module.exports = class On extends Command {
   }
 
   executeCustom(command, input, message) {
-    message.channel.send(language.respond('confirm', emotion));
-    message.channel.send(language.respond('on', emotion));
+    language.respond('confirm', emotionValue, (response) => message.channel.send(response));
+    language.respond('on', emotionValue, (response) => message.channel.send(response));
 
     let newLightOn = LightState.create();
     lampArray.forEach((officeGroup) => officeGroup.setState(newLightOn.on()));
