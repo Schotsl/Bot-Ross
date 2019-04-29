@@ -5,19 +5,23 @@ module.exports = class Notify extends Command {
   }
 
   executeCustom(command, input, message) {
-    let singlePerson = functions.getPersons(input[0])[0];
     language.respond('confirm', emotionValue, (response) => message.channel.send(response));
 
     let oldStatus;
     setInterval(() => {
-      singlePerson.getStatus((newStatus) => {
-        if (oldStatus != newStatus && typeof oldStatus !== 'undefined') {
-          message.channel.send(`${singlePerson.first} ${singlePerson.last} went from ${oldStatus} to ${newStatus}`);
-        }
+      personRepository.getByFirst(input[0], (personCollection) => {
+        let personArray = personCollection.getPersons();
 
-        oldStatus = newStatus;
+        personArray.forEach((personObject) => {
+            personObject.getDiscordStatus((newStatus) => {
+              if (oldStatus != newStatus && typeof oldStatus !== 'undefined') {
+                message.channel.send(`${personObject.getFullname()} went from ${oldStatus} to ${newStatus}`);
+              }
+
+              oldStatus = newStatus;
+            });
+          });
       });
-    });
-
+    }, 1000);
   }
 }

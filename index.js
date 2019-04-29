@@ -19,7 +19,6 @@ global.functions = require('./functions.js');
 
 //Custom classes
 global.Light = require('./classes/light.js')
-global.Person = require('./classes/person.js')
 global.Report = require('./classes/report.js');
 global.Command = require('./classes/command.js')
 global.Language = require('./classes/language.js')
@@ -50,8 +49,24 @@ global.connection = MySQL.createConnection(mySQLCredentials);
 connection.connect();
 
 global.lampArray = new Array();
-global.personArray = new Array();
 global.commandArray = new Array();
+
+//Collection entity
+let PersonCollection = require('./classes/Collection/PersonCollection.js');
+
+//Mapper entity
+let PersonMapper = require('./classes/Mapper/Person.js');
+let PersonCollectionMapper = require('./classes/Mapper/PersonCollection.js');
+
+//Repository entity
+let PersonRepository = require('./classes/Repository/PersonRepository.js');
+
+//Create mapper
+let personMapper = new PersonMapper;
+let personCollectionMapper = new PersonCollectionMapper(personMapper);
+
+//Create repositories
+global.personRepository = new PersonRepository(personCollectionMapper);
 
 //Turn light id array into Light array
 settings['lamps'].forEach(function(officeLightId) {
@@ -59,29 +74,6 @@ settings['lamps'].forEach(function(officeLightId) {
   lampArray.push(lampSingle);
 });
 report.log(`Loaded ${lampArray.length} lights`);
-
-//Load commands into array
-connection.query(`SELECT \`id\`, \`first\`, \`last\`, \`email\`, \`adres\`, \`postal\`, \`city\`, \`birthday\`, \`insta\`, \`discord\`, \`twitter\`, \`ip\` FROM \`persons\` WHERE 1`, function (error, dataArray) {
-  dataArray.forEach((singleData) => {
-    let tempObject = new Person();
-
-    if (singleData.id) tempObject.id = singleData.id;
-    if (singleData.ip) tempObject.ip = singleData.ip;
-    if (singleData.last) tempObject.last = singleData.last;
-    if (singleData.city) tempObject.city = singleData.city;
-    if (singleData.first) tempObject.first = singleData.first;
-    if (singleData.email) tempObject.email = singleData.email;
-    if (singleData.adres) tempObject.adres = singleData.adres;
-    if (singleData.insta) tempObject.insta = singleData.insta;
-    if (singleData.postal) tempObject.postal = singleData.postal;
-    if (singleData.twitter) tempObject.twitter = singleData.twitter;
-    if (singleData.discord) tempObject.discord = singleData.discord;
-    if (singleData.birthday) tempObject.birthday = singleData.birthday;
-
-    personArray.push(tempObject);
-  });
-  report.log(`Loaded ${personArray.length} people`);
-});
 
 //Load commands into array
 fs.readdirSync(`./commands`).forEach(file => {
