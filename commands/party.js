@@ -3,6 +3,7 @@ module.exports = class Party extends Command {
     super();
     this.timeout = 10000;
     this.trigger = "party";
+    this.description = "Start a 10 second party";
   }
 
   executeCustom(command, input, message) {

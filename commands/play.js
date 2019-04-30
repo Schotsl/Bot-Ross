@@ -3,7 +3,9 @@ const ytdl = require('ytdl-core');
 module.exports = class Play extends Command {
   constructor() {
     super();
+    this.timeout = 10000;
     this.trigger = "play";
+    this.description = "Play a Youtube or Spotify song";
 
     this.playing = false;
     this.queue = new Array();

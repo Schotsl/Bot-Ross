@@ -1,7 +1,9 @@
 module.exports = class Notify extends Command {
   constructor() {
     super();
+    this.timeout = 10000;
     this.trigger = "notify";
+    this.description = "Get notified when persons status changes"
   }
 
   executeCustom(command, input, message) {

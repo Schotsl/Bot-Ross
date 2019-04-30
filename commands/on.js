@@ -3,6 +3,7 @@ module.exports = class On extends Command {
     super();
     this.timeout = 10000;
     this.trigger = "on";
+    this.description = "Turn on all the lights";
   }
 
   executeCustom(command, input, message) {
