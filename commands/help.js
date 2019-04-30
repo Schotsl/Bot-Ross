@@ -7,6 +7,14 @@ module.exports = class Help extends Command {
   }
 
   executeCustom(command, input, message) {
-    message.channel.send(settings.help);
+    let helpReply;
+
+    helpReply += `\`\`\``;
+    commandArray.forEach((command) => {
+      helpReply += `${command.trigger}: ${command.description}\n`;
+    })
+    helpReply += `\`\`\``;
+
+    message.channel.send(helpReply);
   }
 }
