@@ -101,6 +101,14 @@ bot.on("message", async(message) => {
       if (user.id === bot.user.id) emotionValue += sentiment.analyze(message.content).comparative;
   });
 
+  //Detect person score
+  personRepository.getByDiscord(message.author.id, (users) => {
+    users.getPersons().forEach((user) => {
+      user.score += sentiment.analyze(message.content).comparative;
+      personRepository.updateUser(user);
+    })
+  })
+
   //Detect command
   if (message.content.startsWith(settings.prefix)) {
     if (blacklist.checkId(message.author.id)) language.respond('deny', emotionValue, (response) => message.channel.send(response));
