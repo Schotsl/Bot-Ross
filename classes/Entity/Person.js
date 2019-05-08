@@ -1,6 +1,7 @@
 module.exports = class Person {
   constructor(id, hue) {
     this.id;
+    this.score;
     this.first;
     this.last;
     this.email;
@@ -16,6 +17,10 @@ module.exports = class Person {
 
   setId(id) {
     this.id = id;
+  }
+
+  setScore(score) {
+    this.score = score;
   }
 
   setFirst(first) {
@@ -64,6 +69,10 @@ module.exports = class Person {
 
   getId() {
     return this.id;
+  }
+
+  getScore() {
+    return this.score;
   }
 
   getFirst() {
@@ -120,5 +129,9 @@ module.exports = class Person {
     bot.fetchUser(discord).then((data) => {
       callback(data.presence.status);
     });
+  }
+
+  addScore(score) {
+    this.score += score;
   }
 }
