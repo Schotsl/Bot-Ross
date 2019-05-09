@@ -10,6 +10,8 @@ module.exports = class Notify extends Command {
     language.respond('confirm', emotionValue, (response) => message.channel.send(response));
 
     let oldStatus;
+    let oldChannel;
+
     setInterval(() => {
       personRepository.getByFirst(input[0], (personCollection) => {
         let personArray = personCollection.getPersons();
@@ -17,10 +19,20 @@ module.exports = class Notify extends Command {
         personArray.forEach((personObject) => {
             personObject.getDiscordStatus((newStatus) => {
               if (oldStatus != newStatus && typeof oldStatus !== 'undefined') {
-                message.channel.send(`${personObject.getFullname()} went from ${oldStatus} to ${newStatus}`);
+                let string = `${personObject.getFullname()} went from ${oldStatus} to ${newStatus}`;
+                message.channel.send(string);
               }
 
               oldStatus = newStatus;
+            });
+
+            personObject.getDiscordChannel((newChannel) => {
+              if (oldChannel != newChannel && typeof oldStatus !== 'undefined') {
+                let string = typeof newChannel !== 'undefined' ? `${personObject.getFullname()} joined voice` : `${personObject.getFullname()} left voice`;
+                message.channel.send(string);
+              }
+
+              oldChannel = newChannel;
             });
           });
       });

@@ -131,6 +131,20 @@ module.exports = class Person {
     });
   }
 
+  getDiscordChannel(callback) {
+    let discord = this.getDiscord();
+
+    bot.guilds.forEach((server) => {
+      server.channels.forEach((channel) => {
+        if (channel.type == "voice") {
+          channel.members.forEach((user) => {
+            if (discord == user.user.id) callback(channel);
+          });
+        }
+      });
+    });
+  }
+
   addScore(score) {
     this.score += score;
   }
