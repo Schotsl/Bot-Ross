@@ -133,16 +133,19 @@ module.exports = class Person {
 
   getDiscordChannel(callback) {
     let discord = this.getDiscord();
+    let return;
 
     bot.guilds.forEach((server) => {
       server.channels.forEach((channel) => {
         if (channel.type == "voice") {
           channel.members.forEach((user) => {
-            if (discord == user.user.id) callback(channel);
+            if (discord == user.user.id) object = channel;
           });
         }
       });
     });
+
+    callback(return);
   }
 
   addScore(score) {
