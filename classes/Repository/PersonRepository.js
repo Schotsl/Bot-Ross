@@ -5,30 +5,37 @@ module.exports = class PersonRepository {
 
   getAll(callback) {
     let that = this;
+    let connection = MySQL.createConnection(mySQLCredentials);
 
     connection.query(`SELECT \`id\`, \`score\`, \`first\`, \`last\`, \`email\`, \`adress\`, \`postal\`, \`city\`, \`birthday\`, \`insta\`, \`discord\`, \`twitter\`, \`ip\` FROM \`persons\` WHERE 1`, function (error, personsArray) {
       callback(that.personCollectionMapper.createAndMap(personsArray));
-    })
+    });
+    connection.end();
   }
 
   getByFirst(first, callback) {
     let that = this;
+    let connection = MySQL.createConnection(mySQLCredentials);
 
     connection.query(`SELECT \`id\`, \`score\`, \`first\`, \`last\`, \`email\`, \`adress\`, \`postal\`, \`city\`, \`birthday\`, \`insta\`, \`discord\`, \`twitter\`, \`ip\` FROM \`persons\` WHERE \`first\` LIKE '%${first}%'`, function (error, personsArray) {
       callback(that.personCollectionMapper.createAndMap(personsArray));
-    })
+    });
+    connection.end();
   }
 
   getByDiscord(discord, callback) {
     let that = this;
+    let connection = MySQL.createConnection(mySQLCredentials);
 
     connection.query(`SELECT \`id\`, \`score\`, \`first\`, \`last\`, \`email\`, \`adress\`, \`postal\`, \`city\`, \`birthday\`, \`insta\`, \`discord\`, \`twitter\`, \`ip\` FROM \`persons\` WHERE \`discord\` LIKE '%${discord}%'`, function (error, personsArray) {
       callback(that.personCollectionMapper.createAndMap(personsArray));
-    })
+    });
+    connection.end();
   }
 
   updateUser(user, callback) {
     let that = this;
+    let connection = MySQL.createConnection(mySQLCredentials);
 
     let query = `UPDATE \`persons\` SET `;
     if (typeof user.ip != "undefined") query += `\`ip\` = '${user.ip}', `;
@@ -47,6 +54,7 @@ module.exports = class PersonRepository {
 
     connection.query(query, function (error, personsArray) {
       if (callback) callback(user);
-    })
+    });
+    connection.end();
   }
 }

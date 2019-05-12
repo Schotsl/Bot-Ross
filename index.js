@@ -36,17 +36,15 @@ const mySQLCredentialsLocation = './credentials/mysql.json';
 const discordCredentialsLocation = './credentials/discord.json';
 const scontrolCredentialsLocation = './credentials/scontrol.json';
 
-if (fs.existsSync(hueCredentialsLocation)) var hueCredentials = require(hueCredentialsLocation);
-if (fs.existsSync(sshCredentialsLocation)) var sshCredentials = require(sshCredentialsLocation);
-if (fs.existsSync(mySQLCredentialsLocation)) var mySQLCredentials = require(mySQLCredentialsLocation);
-if (fs.existsSync(discordCredentialsLocation)) var discordCredentials = require(discordCredentialsLocation);
-if (fs.existsSync(scontrolCredentialsLocation)) var scontrolCredentials = require(scontrolCredentialsLocation);
+if (fs.existsSync(hueCredentialsLocation)) global.hueCredentials = require(hueCredentialsLocation);
+if (fs.existsSync(sshCredentialsLocation)) global.sshCredentials = require(sshCredentialsLocation);
+if (fs.existsSync(mySQLCredentialsLocation)) global.mySQLCredentials = require(mySQLCredentialsLocation);
+if (fs.existsSync(discordCredentialsLocation)) global.discordCredentials = require(discordCredentialsLocation);
+if (fs.existsSync(scontrolCredentialsLocation)) global.scontrolCredentials = require(scontrolCredentialsLocation);
 
 global.bot = new Discord.Client();
 global.ssh = new Ssh(sshCredentials);
 global.api = new Api(hueCredentials['host'], hueCredentials['username']);
-global.connection = MySQL.createConnection(mySQLCredentials);
-connection.connect();
 
 global.lampArray = new Array();
 global.commandArray = new Array();
