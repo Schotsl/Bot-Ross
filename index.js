@@ -41,7 +41,6 @@ if (fs.existsSync(discordCredentialsLocation)) global.discordCredentials = requi
 if (fs.existsSync(scontrolCredentialsLocation)) global.scontrolCredentials = require(scontrolCredentialsLocation);
 
 global.bot = new Discord.Client();
-global.ssh = new Ssh(sshCredentials);
 global.api = new Api(hueCredentials['host'], hueCredentials['username']);
 
 global.lampArray = new Array();
