@@ -51,20 +51,29 @@ global.commandArray = new Array();
 
 //Collection entity
 let PersonCollection = require('./classes/Collection/PersonCollection.js');
+let SentenceCollection = require('./classes/Collection/SentenceCollection.js');
 
 //Mapper entity
 let PersonMapper = require('./classes/Mapper/Person.js');
+let SentenceMapper = require('./classes/Mapper/Sentence.js');
 let PersonCollectionMapper = require('./classes/Mapper/PersonCollection.js');
+let SentenceCollectionMapper = require('./classes/Mapper/SentenceCollection.js');
 
 //Repository entity
 let PersonRepository = require('./classes/Repository/PersonRepository.js');
+let SentenceRepository = require('./classes/Repository/SentenceRepository.js');
 
 //Create mapper
 let personMapper = new PersonMapper;
+let sentenceMapper = new SentenceMapper;
 let personCollectionMapper = new PersonCollectionMapper(personMapper);
+let sentenceCollectionMapper = new SentenceCollectionMapper(sentenceMapper);
 
 //Create repositories
 global.personRepository = new PersonRepository(personCollectionMapper);
+global.sentenceRepository = new SentenceRepository(sentenceCollectionMapper);
+
+sentenceRepository.getClosestIntention('deny', 1, (data) => console.log(JSON.stringify(data)));
 
 //Turn light id array into Light array
 settings['lamps'].forEach(function(officeLightId) {
@@ -86,7 +95,7 @@ bot.on("ready", function() {
   bot.generateInvite(["ADMINISTRATOR"]).then((data) => report.log(data));
 
   bot.user.setActivity('with neutral feelings');
-  setInterval(functions.updateEmotions, 100);
+  setInterval(functions.setEmotions, 100);
 });
 
 bot.on("error", function(data) {
