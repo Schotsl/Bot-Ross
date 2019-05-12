@@ -7,8 +7,13 @@ module.exports = class Party extends Command {
   }
 
   executeCustom(command, input, message) {
-    language.respond('confirm', emotionValue, (response) => message.channel.send(response));
-    language.respond('party', emotionValue, (response) => message.channel.send(response));
+    sentenceRepository.getClosestIntention('confirm', emotionValue, (sentenceCollection) => {
+      message.channel.send(sentenceCollection.getSentences()[0].getContent());
+    });
+
+    sentenceRepository.getClosestIntention('party', emotionValue, (sentenceCollection) => {
+      message.channel.send(sentenceCollection.getSentences()[0].getContent());
+    });
 
     lampArray.forEach(function(lampSingle) {
       lampSingle.getState(function(startState) {

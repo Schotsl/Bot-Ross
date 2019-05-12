@@ -7,7 +7,9 @@ module.exports = class Toggle extends Command {
   }
 
   executeCustom(command, input, message) {
-    language.respond('toggle', emotionValue, (response) => message.channel.send(response));
+    sentenceRepository.getClosestIntention('toggle', emotionValue, (sentenceCollection) => {
+      message.channel.send(sentenceCollection.getSentences()[0].getContent());
+    });
 
     lampArray.forEach(function(officeLight) {
       officeLight.toggleLight();

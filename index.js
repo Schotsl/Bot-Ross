@@ -18,14 +18,12 @@ global.settings = require('./settings.json');
 global.functions = require('./functions.js');
 
 //Custom classes
-global.Light = require('./classes/light.js')
+global.Light = require('./classes/light.js');
 global.Report = require('./classes/report.js');
-global.Command = require('./classes/command.js')
-global.Language = require('./classes/language.js')
+global.Command = require('./classes/command.js');
 global.Blacklist = require('./classes/blacklist.js');
 
 global.report = new Report();
-global.language = new Language();
 global.blacklist = new Blacklist();
 global.sentiment = new Sentiment();
 
@@ -73,8 +71,6 @@ let sentenceCollectionMapper = new SentenceCollectionMapper(sentenceMapper);
 global.personRepository = new PersonRepository(personCollectionMapper);
 global.sentenceRepository = new SentenceRepository(sentenceCollectionMapper);
 
-sentenceRepository.getClosestIntention('deny', 1, (data) => console.log(JSON.stringify(data)));
-
 //Turn light id array into Light array
 settings['lamps'].forEach(function(officeLightId) {
   let lampSingle = new Light(officeLightId, api);
@@ -118,7 +114,11 @@ bot.on("message", async(message) => {
 
   //Detect command
   if (message.content.startsWith(settings.prefix)) {
-    if (blacklist.checkId(message.author.id)) language.respond('deny', emotionValue, (response) => message.channel.send(response));
+    if (blacklist.checkId(message.author.id)) {
+      sentenceRepository.getClosestIntention('deny', emotionValue, (sentenceCollection) => {
+        message.channel.send(sentenceCollection.getSentences()[0].getContent());
+      });
+    }
 
     //Parse command
     let splitMessage = message.content.split(" ");

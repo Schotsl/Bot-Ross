@@ -16,7 +16,9 @@ module.exports = class Command {
       this.saveTimeout(message.author.id);
       this.executeCustom(command, input, message);
     } else {
-      language.respond('deny', emotionValue, (response) => message.channel.send(response));
+      sentenceRepository.getClosestIntention('deny', emotionValue, (sentenceCollection) => {
+        message.channel.send(sentenceCollection.getSentences()[0].getContent());
+      });
       report.log(`${message.author.tag} (${message.author.id}) was timed out`);
     }
   }
