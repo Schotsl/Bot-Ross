@@ -4,7 +4,7 @@ module.exports = {
     tempMax = Math.floor(tempMax);
     return Math.floor(Math.random() * (tempMax - tempMin + 1)) + tempMin;
   },
-  updateEmotions: function () {
+  setEmotions: function () {
     emotionValue = emotionValue * 0.9999;
 
     if (emotionValue > 0.5) {
@@ -29,17 +29,5 @@ module.exports = {
         emotionState = 0;
       }
     }
-  },
-  getPersons: function (tempString) {
-    tempString = tempString.toLowerCase();
-    tempArray = new Array();
-
-    personArray.forEach((tempPerson) => {
-      if (tempPerson.discord.toLowerCase() == tempString) tempArray.push(tempPerson);
-      else if (tempPerson.email.toLowerCase() == tempString) tempArray.push(tempPerson);
-      else if (tempPerson.first.toLowerCase() == tempString) tempArray.push(tempPerson);
-    })
-
-    return tempArray;
   }
 };

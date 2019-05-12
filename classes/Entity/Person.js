@@ -1,5 +1,5 @@
 module.exports = class Person {
-  constructor(id, hue) {
+  constructor() {
     this.id;
     this.score;
     this.first;

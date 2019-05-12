@@ -7,8 +7,13 @@ module.exports = class Off extends Command {
   }
 
   executeCustom(command, input, message) {
-    language.respond('confirm', emotionValue, (response) => message.channel.send(response));
-    language.respond('off', emotionValue, (response) => message.channel.send(response));
+    sentenceRepository.getClosestIntention('confirm', emotionValue, (sentenceCollection) => {
+      message.channel.send(sentenceCollection.getSentences()[0].getContent());
+    });
+
+    sentenceRepository.getClosestIntention('off', emotionValue, (sentenceCollection) => {
+      message.channel.send(sentenceCollection.getSentences()[0].getContent());
+    });
 
     let newLightOff = LightState.create();
     lampArray.forEach((officeGroup) => officeGroup.setState(newLightOff.off()));
