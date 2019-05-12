@@ -1,4 +1,4 @@
-let Person = require('./../Entity/Sentence.js');
+let Sentence = require('./../Entity/Sentence.js');
 
 module.exports = class SentenceMapper {
   map(sentenceObject, sentenceArray) {
