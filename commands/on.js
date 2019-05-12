@@ -7,8 +7,13 @@ module.exports = class On extends Command {
   }
 
   executeCustom(command, input, message) {
-    language.respond('confirm', emotionValue, (response) => message.channel.send(response));
-    language.respond('on', emotionValue, (response) => message.channel.send(response));
+    sentenceRepository.getClosestIntention('confirm', emotionValue, (sentenceCollection) => {
+      message.channel.send(sentenceCollection.getSentences()[0].getContent());
+    });
+
+    sentenceRepository.getClosestIntention('on', emotionValue, (sentenceCollection) => {
+      message.channel.send(sentenceCollection.getSentences()[0].getContent());
+    });
 
     let newLightOn = LightState.create();
     lampArray.forEach((officeGroup) => officeGroup.setState(newLightOn.on()));
