@@ -8,9 +8,9 @@ module.exports = class PersonRepository {
     let connection = MySQL.createConnection(mySQLCredentials);
 
     connection.query(`SELECT \`id\`, \`score\`, \`first\`, \`last\`, \`email\`, \`adress\`, \`postal\`, \`city\`, \`birthday\`, \`insta\`, \`discord\`, \`twitter\`, \`ip\` FROM \`persons\` WHERE 1`, function (error, personsArray) {
+      connection.end();
       callback(that.personCollectionMapper.createAndMap(personsArray));
     });
-    connection.end();
   }
 
   getByFirst(first, callback) {
@@ -18,9 +18,9 @@ module.exports = class PersonRepository {
     let connection = MySQL.createConnection(mySQLCredentials);
 
     connection.query(`SELECT \`id\`, \`score\`, \`first\`, \`last\`, \`email\`, \`adress\`, \`postal\`, \`city\`, \`birthday\`, \`insta\`, \`discord\`, \`twitter\`, \`ip\` FROM \`persons\` WHERE \`first\` LIKE '%${first}%'`, function (error, personsArray) {
+      connection.end();
       callback(that.personCollectionMapper.createAndMap(personsArray));
     });
-    connection.end();
   }
 
   getByDiscord(discord, callback) {
@@ -28,9 +28,9 @@ module.exports = class PersonRepository {
     let connection = MySQL.createConnection(mySQLCredentials);
 
     connection.query(`SELECT \`id\`, \`score\`, \`first\`, \`last\`, \`email\`, \`adress\`, \`postal\`, \`city\`, \`birthday\`, \`insta\`, \`discord\`, \`twitter\`, \`ip\` FROM \`persons\` WHERE \`discord\` LIKE '%${discord}%'`, function (error, personsArray) {
+      connection.end();
       callback(that.personCollectionMapper.createAndMap(personsArray));
     });
-    connection.end();
   }
 
   updateUser(user, callback) {
@@ -53,13 +53,14 @@ module.exports = class PersonRepository {
     query = `${query.substring(0, query.length - 2)} WHERE \`id\` = '${user.id}'`;
 
     connection.query(query, function (error, personsArray) {
+      connection.end();
       if (callback) callback(user);
     });
-    connection.end();
   }
 
   saveUser(user, callback) {
     let that = this;
+    let connection = MySQL.createConnection(mySQLCredentials);
 
     let query = `INSERT INTO \`persons\` (`;
     if (typeof user.ip != "undefined") query += `\`ip\`, `;
@@ -95,9 +96,10 @@ module.exports = class PersonRepository {
         user.setId(lastId[0]['LAST_INSERT_ID()']);
 
         if (callback) {
+          connection.end();
           callback(user);
         }
-      })
-    })
+      });
+    });
   }
 }
