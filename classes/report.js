@@ -1,3 +1,7 @@
+// Todo:
+// - Add white space zeros to time
+// - Check for log directory to prevent crash
+
 fs = require('fs');
 
 module.exports = class Report {
