@@ -49,4 +49,47 @@ module.exports = class PersonRepository {
       if (callback) callback(user);
     })
   }
+
+  saveUser(user, callback) {
+    let that = this;
+
+    let query = `INSERT INTO \`persons\` (`;
+    if (typeof user.ip != "undefined") query += `\`ip\`, `;
+    if (typeof user.last != "undefined") query += `\`last\`, `;
+    if (typeof user.city != "undefined") query += `\`city\`, `;
+    if (typeof user.score != "undefined") query += `\`score\`, `;
+    if (typeof user.first != "undefined") query += `\`first\`, `;
+    if (typeof user.email != "undefined") query += `\`email\`, `;
+    if (typeof user.insta != "undefined") query += `\`insta\`, `;
+    if (typeof user.adres != "undefined") query += `\`adress\`, `;
+    if (typeof user.postal != "undefined") query += `\`postal\`, `;
+    if (typeof user.twitter != "undefined") query += `\`twitter\`, `;
+    if (typeof user.discord != "undefined") query += `\`discord\`, `;
+    if (typeof user.birthday != "undefined") query += `\`birthday\`, `;
+    query = `${query.substring(0, query.length - 2)} ) VALUES (`;
+
+    if (typeof user.ip != "undefined") query += `'${user.ip}', `;
+    if (typeof user.last != "undefined") query += `'${user.last}', `;
+    if (typeof user.city != "undefined") query += `'${user.city}', `;
+    if (typeof user.score != "undefined") query += `'${user.score}', `;
+    if (typeof user.first != "undefined") query += `'${user.first}', `;
+    if (typeof user.email != "undefined") query += `'${user.email}', `;
+    if (typeof user.insta != "undefined") query += `'${user.insta}', `;
+    if (typeof user.adres != "undefined") query += `'${user.adress}', `;
+    if (typeof user.postal != "undefined") query += `'${user.postal}', `;
+    if (typeof user.twitter != "undefined") query += `'${user.twitter}', `;
+    if (typeof user.discord != "undefined") query += `'${user.discord}', `;
+    if (typeof user.birthday != "undefined") query += `'${user.birthday.getFullYear()}-${user.birthday.getMonth() + 1}-${user.birthday.getDate()}', `;
+    query = `${query.substring(0, query.length - 2)})`;
+
+    connection.query(query, function (error, personsArray) {
+      connection.query('SELECT LAST_INSERT_ID()', function (error, lastId) {
+        user.setId(lastId[0]['LAST_INSERT_ID()']);
+
+        if (callback) {
+          callback(user);
+        }
+      })
+    })
+  }
 }

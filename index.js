@@ -102,11 +102,23 @@ bot.on("message", async(message) => {
   });
 
   //Detect person score
-  personRepository.getByDiscord(message.author.id, (users) => {
-    users.getPersons().forEach((user) => {
-      user.score += sentiment.analyze(message.content).comparative;
-      personRepository.updateUser(user);
-    })
+  personRepository.getByDiscord(message.author.id, (personCollection) => {
+    let person = personCollection.getPersons()[0];
+
+    if (typeof person == "undefined") {
+      let Person = require('./classes/Entity/Person.js');
+
+      person = new Person();
+      person.setDiscord(message.author.id);
+      personRepository.saveUser(person, () => {
+        person.score += sentiment.analyze(message.content).comparative;
+        personRepository.updateUser(person);
+      });
+
+    } else {
+      person.score += sentiment.analyze(message.content).comparative;
+      personRepository.updateUser(person);
+    }
   })
 
   //Detect command
