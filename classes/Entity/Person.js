@@ -1,5 +1,5 @@
 module.exports = class Person {
-  constructor(id, hue) {
+  constructor() {
     this.id;
     this.score;
     this.first;
@@ -133,16 +133,19 @@ module.exports = class Person {
 
   getDiscordChannel(callback) {
     let discord = this.getDiscord();
+    let returned;
 
     bot.guilds.forEach((server) => {
       server.channels.forEach((channel) => {
         if (channel.type == "voice") {
           channel.members.forEach((user) => {
-            if (discord == user.user.id) callback(channel);
+            if (discord == user.user.id) returned = channel;
           });
         }
       });
     });
+
+    callback(returned);
   }
 
   addScore(score) {
