@@ -7,7 +7,9 @@ module.exports = class Notify extends Command {
   }
 
   executeCustom(command, input, message) {
-    language.respond('confirm', emotionValue, (response) => message.channel.send(response));
+    sentenceRepository.getClosestIntention('confirm', emotionValue, (sentenceCollection) => {
+      message.channel.send(sentenceCollection.getSentences()[0].getContent());
+    });
 
     let oldStatus;
     let oldChannel;

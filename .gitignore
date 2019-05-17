@@ -3,10 +3,9 @@ persons/
 blacklist.json
 node_modules
 logs/*
+recordings/*.pcm
+
 
 # All credentials
-credentials/discord.json
-credentials/hue.json
-credentials/mysql.json
-credentials/scontrol.json
-credentials/shh.json
+credentials/*
+!credentials/*.sample
