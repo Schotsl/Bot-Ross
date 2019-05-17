@@ -6,6 +6,7 @@
   "author": "Sjors van Holst & Wouter de Bruijn",
   "license": "MIT",
   "dependencies": {
+    "castv2-player": "^2.0.5",
     "discord.js": "^11.4.2",
     "mysql": "^2.17.1",
     "node-hue-api": "^2.4.4",
