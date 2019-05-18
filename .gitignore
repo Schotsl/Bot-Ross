@@ -4,7 +4,7 @@ blacklist.json
 node_modules
 logs/*
 recordings/*.pcm
-
+*.tmp
 
 # All credentials
 credentials/*

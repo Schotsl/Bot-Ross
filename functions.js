@@ -1,4 +1,7 @@
 module.exports = {
+  getTimeInMillis: function () {
+    return new Date().getTime();
+  },
   getRandomInteger: function (tempMin, tempMax) {
     tempMin = Math.ceil(tempMin);
     tempMax = Math.floor(tempMax);
