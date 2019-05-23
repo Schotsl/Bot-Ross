@@ -49,6 +49,8 @@ module.exports = class PersonRepository {
     if (typeof user.postal != "undefined") query += `\`postal\` = '${user.postal}', `;
     if (typeof user.twitter != "undefined") query += `\`twitter\` = '${user.twitter}', `;
     if (typeof user.discord != "undefined") query += `\`discord\` = '${user.discord}', `;
+    if (typeof user.discord_url != "undefined") query += `\`discord_url\` = '${user.discord_url}', `;
+    if (typeof user.discord_user != "undefined") query += `\`discord_user\` = '${user.discord_user}', `;
     if (typeof user.birthday != "undefined") query += `\`birthday\` = '${user.birthday.getFullYear()}-${user.birthday.getMonth() + 1}-${user.birthday.getDate()}', `;
     query = `${query.substring(0, query.length - 2)} WHERE \`id\` = '${user.id}'`;
 
@@ -74,6 +76,8 @@ module.exports = class PersonRepository {
     if (typeof user.postal != "undefined") query += `\`postal\`, `;
     if (typeof user.twitter != "undefined") query += `\`twitter\`, `;
     if (typeof user.discord != "undefined") query += `\`discord\`, `;
+    if (typeof user.discord_url != "undefined") query += `\`discord_url\`, `;
+    if (typeof user.discord_user != "undefined") query += `\`discord_user\`, `;
     if (typeof user.birthday != "undefined") query += `\`birthday\`, `;
     query = `${query.substring(0, query.length - 2)} ) VALUES (`;
 
@@ -88,6 +92,8 @@ module.exports = class PersonRepository {
     if (typeof user.postal != "undefined") query += `'${user.postal}', `;
     if (typeof user.twitter != "undefined") query += `'${user.twitter}', `;
     if (typeof user.discord != "undefined") query += `'${user.discord}', `;
+    if (typeof user.discord_url != "undefined") query += `'${user.discord_url}', `;
+    if (typeof user.discord_user != "undefined") query += `'${user.discord_user}', `;
     if (typeof user.birthday != "undefined") query += `'${user.birthday.getFullYear()}-${user.birthday.getMonth() + 1}-${user.birthday.getDate()}', `;
     query = `${query.substring(0, query.length - 2)})`;
 

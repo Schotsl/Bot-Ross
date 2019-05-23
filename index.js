@@ -115,11 +115,16 @@ bot.on("message", async(message) => {
       person.setDiscord(message.author.id);
       personRepository.saveUser(person, () => {
         person.score += sentiment.analyze(message.content).comparative;
+        person.discord_url = bot.users.get(message.author.id).avatarURL;
+        person.discord_user = message.author.user;
+
         personRepository.updateUser(person);
       });
-
     } else {
       person.score += sentiment.analyze(message.content).comparative;
+      person.discord_url = bot.users.get(message.author.id).avatarURL;
+      person.discord_user = message.author.username;
+
       personRepository.updateUser(person);
     }
   })
