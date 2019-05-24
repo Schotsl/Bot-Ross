@@ -48,26 +48,34 @@ global.lampArray = new Array();
 global.commandArray = new Array();
 
 //Collection entity
+let LightCollection = require('./classes/Collection/LightCollection.js');
 let PersonCollection = require('./classes/Collection/PersonCollection.js');
 let SentenceCollection = require('./classes/Collection/SentenceCollection.js');
 
 //Mapper entity
+let LightMapper = require('./classes/Mapper/Light.js');
 let PersonMapper = require('./classes/Mapper/Person.js');
 let SentenceMapper = require('./classes/Mapper/Sentence.js');
+let LightCollectionMapper = require('./classes/Mapper/LightCollection.js');
 let PersonCollectionMapper = require('./classes/Mapper/PersonCollection.js');
 let SentenceCollectionMapper = require('./classes/Mapper/SentenceCollection.js');
 
 //Repository entity
+let LightRepository = require('./classes/Repository/LightRepository.js');
 let PersonRepository = require('./classes/Repository/PersonRepository.js');
 let SentenceRepository = require('./classes/Repository/SentenceRepository.js');
 
 //Create mapper
+let lightMapper = new PersonMapper;
 let personMapper = new PersonMapper;
 let sentenceMapper = new SentenceMapper;
+
+let lightCollectionMapper = new LightCollectionMapper(lightMapper);
 let personCollectionMapper = new PersonCollectionMapper(personMapper);
 let sentenceCollectionMapper = new SentenceCollectionMapper(sentenceMapper);
 
 //Create repositories
+global.lightRepository = new LightRepository(lightCollectionMapper);
 global.personRepository = new PersonRepository(personCollectionMapper);
 global.sentenceRepository = new SentenceRepository(sentenceCollectionMapper);
 
