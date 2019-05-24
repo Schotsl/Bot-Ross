@@ -92,7 +92,29 @@ bot.on("ready", function() {
 
   bot.user.setActivity('with neutral feelings');
   setInterval(functions.setEmotions, 100);
+
+  setInterval(checkBirthday, 86400000);
+  checkBirthday();
 });
+
+function checkBirthday() {
+  personRepository.getAll((personCollection) => {
+    personCollection.getPersons().forEach((person) => {
+      let tempBirthday = person.getBirthday();
+      let tempDiscord = person.getDiscord();
+
+      if (tempBirthday && tempDiscord) {
+        let tempCurrent = new Date();
+
+        if (tempBirthday.getDay() == tempCurrent.getDay() && tempBirthday.getMonth() == tempCurrent.getMonth()) {
+          sentenceRepository.getClosestIntention('congratulations', emotionValue, (sentenceCollection) => {
+            bot.users.get(tempDiscord).send(sentenceCollection.getSentences()[0].getContent());
+          });
+        }
+      }
+    });
+  });
+}
 
 bot.on("error", function(data) {
   report.error(data);
