@@ -22,10 +22,8 @@ global.functions = require('./functions.js');
 global.Light = require('./classes/light.js');
 global.Report = require('./classes/report.js');
 global.Command = require('./classes/command.js');
-global.Blacklist = require('./classes/blacklist.js');
 
 global.report = new Report();
-global.blacklist = new Blacklist();
 global.sentiment = new Sentiment();
 
 //Credentials
@@ -160,11 +158,6 @@ bot.on("message", async(message) => {
 
   //Detect command
   if (message.content.startsWith(settings.prefix)) {
-    if (blacklist.checkId(message.author.id)) {
-      sentenceRepository.getClosestIntention('deny', emotionValue, (sentenceCollection) => {
-        message.channel.send(sentenceCollection.getSentences()[0].getContent());
-      });
-    }
 
     //Parse command
     let splitMessage = message.content.split(" ");
