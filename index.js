@@ -105,11 +105,10 @@ function checkBirthday() {
 
       if (tempBirthday && tempDiscord) {
         let tempCurrent = new Date();
-
         if (tempBirthday.getDay() == tempCurrent.getDay() && tempBirthday.getMonth() == tempCurrent.getMonth()) {
-          sentenceRepository.getClosestIntention('congratulations', emotionValue, (sentenceCollection) => {
-            bot.users.get(tempDiscord).send(sentenceCollection.getSentences()[0].getContent());
-          });
+          setTimeout(() => bot.users.get(tempDiscord).send("This birthday I wish you happiness and love!"), 3000);
+          setTimeout(() => bot.users.get(tempDiscord).send("May all your dreams turn into reality and may lady luck visit your home today"), 6000);
+          setTimeout(() => bot.users.get(tempDiscord).send("Very happy birthday to one of the sweetest people ever known!"), 9000);
         }
       }
     });
