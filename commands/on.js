@@ -1,3 +1,5 @@
+let lightState = require('node-hue-api').lightState;
+
 module.exports = class On extends Command {
   constructor() {
     super();
@@ -15,7 +17,13 @@ module.exports = class On extends Command {
       message.channel.send(sentenceCollection.getSentences()[0].getContent());
     });
 
-    let newLightOn = LightState.create();
-    lampArray.forEach((officeGroup) => officeGroup.setState(newLightOn.on()));
+    let newLightState = lightState.create();
+    lightRepository.getAll((lightCollection) => {
+      let lightArray = lightCollection.getLights();
+
+      lightArray.forEach((lightSingle) => {
+        lightSingle.setState(newLightState.on());
+      });
+    });
   }
 }

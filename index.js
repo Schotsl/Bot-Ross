@@ -1,11 +1,6 @@
 global.emotionValue = 0;
 global.emotionState = 0;
 
-//Hue packages
-global.Hue = require('node-hue-api');
-global.Api = require('node-hue-api').HueApi;
-global.LightState = require('node-hue-api').lightState;
-
 //Other packages
 global.Ssh = require('simple-ssh');
 global.MySQL = require('mysql');
@@ -19,7 +14,6 @@ global.settings = require('./settings.json');
 global.functions = require('./functions.js');
 
 //Custom classes
-global.Light = require('./classes/light.js');
 global.Report = require('./classes/report.js');
 global.Command = require('./classes/command.js');
 
@@ -40,9 +34,6 @@ if (fs.existsSync(discordCredentialsLocation)) global.discordCredentials = requi
 if (fs.existsSync(scontrolCredentialsLocation)) global.scontrolCredentials = require(scontrolCredentialsLocation);
 
 global.bot = new Discord.Client();
-global.api = new Api(hueCredentials['host'], hueCredentials['username']);
-
-global.lampArray = new Array();
 global.commandArray = new Array();
 
 //Collection entity
@@ -64,7 +55,7 @@ let PersonRepository = require('./classes/Repository/PersonRepository.js');
 let SentenceRepository = require('./classes/Repository/SentenceRepository.js');
 
 //Create mapper
-let lightMapper = new PersonMapper;
+let lightMapper = new LightMapper;
 let personMapper = new PersonMapper;
 let sentenceMapper = new SentenceMapper;
 
@@ -76,13 +67,6 @@ let sentenceCollectionMapper = new SentenceCollectionMapper(sentenceMapper);
 global.lightRepository = new LightRepository(lightCollectionMapper);
 global.personRepository = new PersonRepository(personCollectionMapper);
 global.sentenceRepository = new SentenceRepository(sentenceCollectionMapper);
-
-//Turn light id array into Light array
-settings['lamps'].forEach(function(officeLightId) {
-  let lampSingle = new Light(officeLightId, api);
-  lampArray.push(lampSingle);
-});
-report.log(`Loaded ${lampArray.length} lights`);
 
 //Load commands into array
 fs.readdirSync(`./commands`).forEach(file => {

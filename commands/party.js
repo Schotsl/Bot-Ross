@@ -4,7 +4,8 @@
 
 let ScannerPromise = require("castv2-player").ScannerPromise();
 let MediaPlayer = require("castv2-player").MediaPlayer();
-var mp3Duration = require('mp3-duration');
+let mp3Duration = require('mp3-duration');
+let lightState = require('node-hue-api').lightState;
 
 module.exports = class Party extends Command {
   constructor() {
@@ -44,25 +45,28 @@ module.exports = class Party extends Command {
             });
 
             let startTime = functions.getTimeInMillis();
-            lampArray.forEach(function(lampSingle) {
-              lampSingle.getState(function(startState) {
+            lightRepository.getAll((lightCollection) => {
+              let lightArray = lightCollection.getLights();
 
-                function executeRandomLight() {
-                  setTimeout(function() {
-                    let currentTime = functions.getTimeInMillis();
-                    if (currentTime - startTime < duration * 1000 - 1500) {
-                      lampSingle.setState(startState, executeRandomLight);
-                    }
-                  }, functions.getRandomInteger(1000, 1500));
-                }
+              lightArray.forEach((lightSingle) => {
+                lightSingle.getState(function(startState) {
 
-                executeRandomLight();
+                  function executeRandomLight() {
+                    setTimeout(function() {
+                      let currentTime = functions.getTimeInMillis();
+                      if (currentTime - startTime < duration * 1000 - 1500) {
+                        lightSingle.setState(startState, executeRandomLight);
+                      }
+                    }, functions.getRandomInteger(1000, 1500));
+                  }
+
+                  executeRandomLight();
+                });
               });
             });
           });
         });
       });
     });
-
   }
 }

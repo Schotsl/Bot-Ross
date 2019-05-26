@@ -1,3 +1,5 @@
+let Api = require('node-hue-api').HueApi;
+
 module.exports = class Light {
   constructor() {
     this.id;
@@ -8,7 +10,7 @@ module.exports = class Light {
     this.id = id;
   }
 
-  setScore(hue) {
+  setHue(hue) {
     this.hue = hue;
   }
 
@@ -18,5 +20,32 @@ module.exports = class Light {
 
   getHue() {
     return this.hue;
+  }
+
+  setState(newState, callback) {
+    let that = this;
+    let api = new Api(hueCredentials['host'], hueCredentials['username']);
+
+    api.setLightState(that.id, newState)
+      .then((currentLight) => {
+        report.log(`Light ${that.id}'s state has been set`);
+        if (callback) callback(currentLight.state);
+      })
+      .fail((error) => report.error(error))
+      .done();
+  }
+
+
+  getState(callback) {
+    let that = this;
+    let api = new Api(hueCredentials['host'], hueCredentials['username']);
+
+    api.lightStatus(that.hue)
+      .then((currentLight) => {
+        report.log(`Light ${that.hue}'s state has been requested`);
+        if (callback) callback(currentLight.state);
+      })
+      .fail((error) => report.error(error))
+      .done();
   }
 }
