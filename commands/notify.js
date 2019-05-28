@@ -11,33 +11,38 @@ module.exports = class Notify extends Command {
       message.channel.send(sentenceCollection.getSentences()[0].getContent());
     });
 
-    let oldStatus;
-    let oldChannel;
+    personRepository.getByFirst(input[0], (personCollection) => {
+      let personObject = personCollection.getPersons()[0];
 
-    setInterval(() => {
-      personRepository.getByFirst(input[0], (personCollection) => {
-        let personArray = personCollection.getPersons();
+      bot.on("voiceStateUpdate", function(oldMember, newMember) {
+        //If voice channel change
+        if (oldMember.voiceChannelID !== newMember.voiceChannelID) {
+          let channelObjects = newMember.guild.channels;
+          if (newMember.voiceChannelID !== null && oldMember.voiceChannelID !== null) message.channel.send(`${personObject.getFullname()} changed to ${channelObjects.get(newMember.voiceChannelID).name}`);
+          else if (oldMember.voiceChannelID === null) message.channel.send(`${personObject.getFullname()} joined ${channelObjects.get(newMember.voiceChannelID).name}`);
+          else if (newMember.voiceChannelID === null) message.channel.send(`${personObject.getFullname()} left ${channelObjects.get(oldMember.voiceChannelID).name}`);
+        }
 
-        personArray.forEach((personObject) => {
-            personObject.getDiscordStatus((newStatus) => {
-              if (oldStatus != newStatus && typeof oldStatus !== 'undefined') {
-                let string = `${personObject.getFullname()} went from ${oldStatus} to ${newStatus}`;
-                message.channel.send(string);
-              }
+        //If voice mute change
+        if (oldMember.selfMute !== newMember.selfMute) {
+          if (newMember.selfMute) message.channel.send(`${personObject.getFullname()} muted itself`);
+          else message.channel.send(`${personObject.getFullname()} unmuted its self`);
+        }
 
-              oldStatus = newStatus;
-            });
-
-            personObject.getDiscordChannel((newChannel) => {
-              if (oldChannel != newChannel && typeof oldStatus !== 'undefined') {
-                let string = typeof newChannel !== 'undefined' ? `${personObject.getFullname()} joined voice` : `${personObject.getFullname()} left voice`;
-                message.channel.send(string);
-              }
-
-              oldChannel = newChannel;
-            });
-          });
+        //If voice mute change
+        if (oldMember.selfDeaf !== newMember.selfDeaf) {
+          if (newMember.selfDeaf) message.channel.send(`${personObject.getFullname()} deafened itself`);
+          else message.channel.send(`${personObject.getFullname()} undeafened itself`);
+        }
       });
-    }, 1000);
+
+      bot.on("presenceUpdate", function(oldMember, newMember) {
+        //If status change
+        if (oldMember.selfDeaf !== newMember.selfDeaf) {
+          message.channel.send(`${personObject.getFullname()} status changed to ${newMember.presence.status}`);
+        }
+      });
+
+    })
   }
 }
