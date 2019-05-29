@@ -1,10 +1,8 @@
-let lightState = require('node-hue-api').lightState;
-
 module.exports = class Basics extends Command {
   constructor() {
     super();
     this.commands = [
-      {trigger: "help", function: "help", description: "Get all available commands", timeout: 1000, executed: {}}
+      {trigger: "help", function: "help", description: "Get all available commands", timeout: 1000, executed: {}, hidden: false}
     ];
   }
 
