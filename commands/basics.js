@@ -1,0 +1,24 @@
+let lightState = require('node-hue-api').lightState;
+
+module.exports = class Basics extends Command {
+  constructor() {
+    super();
+    this.commands = [
+      {trigger: "help", function: "help", description: "Get all available commands", timeout: 1000, executed: {}}
+    ];
+  }
+
+  help(input, message) {
+    let helpReply = `\`\`\``;
+
+    commandArray.forEach((commandObject) => {
+      commandObject.commands.forEach((commandArray) => {
+        helpReply += `${commandArray.trigger}: ${commandArray.description}\n`;
+      });
+    });
+    helpReply += `\`\`\``;
+
+    message.channel.send(helpReply);
+  }
+
+}
