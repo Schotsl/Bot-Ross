@@ -1,34 +1,32 @@
 module.exports = class Command {
   constructor() {
-    this.timeout = 0;
-    this.trigger = "";
-    this.executed = {};
+    this.commands = [];
   }
 
-  match(input) {
-    return input === this.trigger;
+  execute(command, params, message) {
+    this.commands.forEach((commandArray) => {
+      if (commandArray.trigger === command) {
+
+        //Check if user hasn't timedout
+        if (this.checkTimeout(message.author.id, commandArray.executed, commandArray.timeout)) {
+          commandArray.executed[message.author.id] = new Date().getTime();
+          this[commandArray.function](params, message);
+        } else {
+          sentenceRepository.getClosestIntention('deny', emotionValue, (sentenceCollection) => {
+            message.channel.send(sentenceCollection.getSentences()[0].getContent());
+          });
+          report.log(`${message.author.tag} (${message.author.id}) was timed out`);
+        }
+      }
+    });
   }
 
-  executeDefault(command, input, message) {
-    report.log(`${message.author.tag} (${message.author.id}) used the "${command}" command`);
-
-    if (this.checkTimeout(message.author.id)) {
-      this.saveTimeout(message.author.id);
-      this.executeCustom(command, input, message);
-    } else {
-      sentenceRepository.getClosestIntention('deny', emotionValue, (sentenceCollection) => {
-        message.channel.send(sentenceCollection.getSentences()[0].getContent());
-      });
-      report.log(`${message.author.tag} (${message.author.id}) was timed out`);
-    }
-  }
-
-  checkTimeout(id) {
+  checkTimeout(id, object, timeout) {
     //Check if ID is timedout
-    if (this.executed[id]) {
+    if (object[id]) {
       let timeMillis = new Date().getTime();
-      let timeDiffrence = timeMillis - this.executed[id];
-      if (timeDiffrence <= this.timeout) return false;
+      let timeDiffrence = timeMillis - object[id];
+      if (timeDiffrence <= timeout) return false;
     }
 
     //Clean array
@@ -39,10 +37,5 @@ module.exports = class Command {
     };
 
     return true;
-  }
-
-  saveTimeout(id) {
-    let timeMillis = new Date().getTime();
-    this.executed[id] = timeMillis;
   }
 }

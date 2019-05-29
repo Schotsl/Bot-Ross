@@ -149,7 +149,7 @@ bot.on("message", async(message) => {
     let params = splitMessage.slice(1);
 
     commandArray.forEach((commandObject) => {
-      if (commandObject.match(command)) commandObject.executeDefault(command, params, message);
+      commandObject.execute(command, params, message);
     })
   }
 })
