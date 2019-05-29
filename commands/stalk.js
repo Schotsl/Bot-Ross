@@ -2,7 +2,7 @@ module.exports = class Stalk extends Command {
   constructor() {
     super();
     this.commands = [
-      {trigger: "notify", function: "notify", description: "Get notifications about a specfic person", timeout: 1000, executed: {}}
+      {trigger: "notify", function: "notify", description: "Get notifications about a specfic person", timeout: 1000, executed: {}, hidden: true}
     ];
   }
 
