@@ -1,6 +1,4 @@
 {
   "prefix": ".",
-  "default": "Could not find that command.",
-  "lamps": [2, 10, 11, 13, 14, 16],
-  "help": "```Everyone:\r\n  -\tparty /  Create a party\r\n  -\thelp / Get all commands\r\n  -\ttoggle / Toggle all lights\r\n  -\ton / Turn of all lights\r\n  -\toff / Turn off all lights\r\n  -\ttemp / Change the temperature  of the lights\r\n  -\tbri / Change the temperature  of the lights\r\n\r\nElite only:\r\n  -\tignore / Wouldn't you like to know wheater boy\r\n  -\tunignore / Unignore specific  Discord user```"
+  "default": "Could not find that command."
 }
