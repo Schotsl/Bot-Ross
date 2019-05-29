@@ -11,7 +11,7 @@ module.exports = class Basics extends Command {
 
     commandArray.forEach((commandObject) => {
       commandObject.commands.forEach((commandArray) => {
-        helpReply += `${commandArray.trigger}: ${commandArray.description}\n`;
+        if (!commandArray.hidden) helpReply += `${commandArray.trigger}: ${commandArray.description}\n`;
       });
     });
     helpReply += `\`\`\``;
