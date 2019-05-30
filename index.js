@@ -95,7 +95,8 @@ function checkBirthday() {
 
       if (tempBirthday && tempDiscord) {
         let tempCurrent = new Date();
-        if (tempBirthday.getDay() == tempCurrent.getDay() && tempBirthday.getMonth() == tempCurrent.getMonth()) {
+        if (tempBirthday.getDate() == tempCurrent.getDate() && tempBirthday.getMonth() == tempCurrent.getMonth()) {
+          report.log(`Congratulated ${person.getFullname()}`);
           setTimeout(() => bot.users.get(tempDiscord).send("This birthday I wish you happiness and love!"), 3000);
           setTimeout(() => bot.users.get(tempDiscord).send("May all your dreams turn into reality and may lady luck visit your home today"), 6000);
           setTimeout(() => bot.users.get(tempDiscord).send("Very happy birthday to one of the sweetest people ever known!"), 9000);
