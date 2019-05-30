@@ -1,7 +1,3 @@
-// Todo:
-// - Add white space zeros to time
-// - Check for log directory to prevent crash
-
 fs = require('fs');
 
 module.exports = class Report {
@@ -11,23 +7,42 @@ module.exports = class Report {
 
   log(rawLine) {
     let currentDateObject = new Date();
-    let currentDateString = currentDateObject.getDate() + "-" + currentDateObject.getMonth() + "-" + currentDateObject.getFullYear();
-    let currentTimeString = currentDateObject.getHours() + ":" + currentDateObject.getMinutes() + ":" + currentDateObject.getSeconds() + "." + currentDateObject.getMilliseconds();
 
-    this.write(currentTimeString + " [LOG]: " + rawLine + "\n", "logs/" + currentDateString + ".txt");
-    console.log(currentTimeString + " [LOG]: " + rawLine);
+    let currentDateDay = `0${currentDateObject.getDate()}`.slice(-2);
+    let currentDateMonth = `0${currentDateObject.getMonth()}`.slice(-2);
+    let currentDateYear = `0${currentDateObject.getFullYear()}`.slice(-2);
+    let currentDateString = `${currentDateDay}-${currentDateMonth}-${currentDateYear}`;
+
+    let currentTimeHour = `0${currentDateObject.getHours()}`.slice(-2);
+    let currentTimeMinute = `0${currentDateObject.getMinutes()}`.slice(-2);
+    let currentTimeSecond = `0${currentDateObject.getSeconds()}`.slice(-2);
+    let currentTimeMillis = `000${currentDateObject.getMilliseconds()}`.slice(-3);
+    let currentTimeString = `${currentTimeHour}:${currentTimeMinute}:${currentTimeSecond}.${currentTimeMillis}`;
+
+    this.write(`${currentTimeString} [LOG]: ${rawLine}\n`, `${currentDateString}.txt`, `logs`);
+    console.log(`${currentTimeString} [LOG]: ${rawLine}`);
   }
 
   error(rawLine) {
     let currentDateObject = new Date();
-    let currentDateString = currentDateObject.getDate() + "-" + currentDateObject.getMonth() + "-" + currentDateObject.getFullYear();
-    let currentTimeString = currentDateObject.getHours() + ":" + currentDateObject.getMinutes() + ":" + currentDateObject.getSeconds() + "." + currentDateObject.getMilliseconds();
 
-    this.write(currentTimeString + " [ERROR]: " + rawLine + "\n", "logs/" + currentDateString + ".txt");
+    let currentDateDay = `0${currentDateObject.getDate()}`.slice(-2);
+    let currentDateMonth = `0${currentDateObject.getMonth()}`.slice(-2);
+    let currentDateYear = `0${currentDateObject.getFullYear()}`.slice(-2);
+    let currentDateString = `${currentDateDay}-${currentDateMonth}-${currentDateYear}`;
+
+    let currentTimeHour = `0${currentDateObject.getHours()}`.slice(-2);
+    let currentTimeMinute = `0${currentDateObject.getMinutes()}`.slice(-2);
+    let currentTimeSecond = `0${currentDateObject.getSeconds()}`.slice(-2);
+    let currentTimeMillis = `000${currentDateObject.getMilliseconds()}`.slice(-3);
+    let currentTimeString = `${currentTimeHour}:${currentTimeMinute}:${currentTimeSecond}.${currentTimeMillis}`;
+
+    this.write(currentTimeString + " [ERROR]: " + rawLine + "\n", currentDateString + ".txt", "logs");
     console.error(currentTimeString + " [ERROR]: " + rawLine);
   }
 
-  write(logFileEntry, logFileName) {
+  write(logFileEntry, logFileName, logFileDirectory) {
+    if (!fs.existsSync(logFileDirectory)) fs.mkdirSync(logFileDirectory);
     if (!fs.existsSync(logFileName)) fs.openSync(logFileName, 'w');
     fs.appendFileSync(logFileName, logFileEntry);
   }
