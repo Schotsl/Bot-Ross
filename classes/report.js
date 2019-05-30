@@ -1,4 +1,6 @@
-fs = require('fs');
+"use strict";
+
+fs = require(`fs`);
 
 module.exports = class Report {
   constructor() {
@@ -37,13 +39,13 @@ module.exports = class Report {
     let currentTimeMillis = `000${currentDateObject.getMilliseconds()}`.slice(-3);
     let currentTimeString = `${currentTimeHour}:${currentTimeMinute}:${currentTimeSecond}.${currentTimeMillis}`;
 
-    this.write(currentTimeString + " [ERROR]: " + rawLine + "\n", currentDateString + ".txt", "logs");
-    console.error(currentTimeString + " [ERROR]: " + rawLine);
+    this.write(`${currentTimeString} [ERROR]: ${rawLine}\n`, `${currentDateString}.txt`, `logs`);
+    console.error(`${currentTimeString} [ERROR]: ${rawLine}`);
   }
 
   write(logFileEntry, logFileName, logFileDirectory) {
     if (!fs.existsSync(logFileDirectory)) fs.mkdirSync(logFileDirectory);
-    if (!fs.existsSync(logFileName)) fs.openSync(logFileName, 'w');
-    fs.appendFileSync(logFileName, logFileEntry);
+    if (!fs.existsSync(`${logFileDirectory}/${logFileName}`)) fs.openSync(`${logFileDirectory}/${logFileName}`, `w`);
+    fs.appendFileSync(`${logFileDirectory}/${logFileName}`, logFileEntry);
   }
 }
