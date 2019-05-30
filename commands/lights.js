@@ -1,20 +1,22 @@
-let lightState = require('node-hue-api').lightState;
+"use strict";
+
+let lightState = require(`node-hue-api`).lightState;
 
 module.exports = class Lights extends Command {
   constructor() {
     super();
     this.commands = [
-      {trigger: "off", function: "off", description: "Turn off the lights", timeout: 1000, executed: {}, hidden: false},
-      {trigger: "on", function: "on", description: "Turn on the lights", timeout: 1000, executed: {}, hidden: false}
+      {trigger: `off`, function: `off`, description: `Turn off the lights`, timeout: 1000, executed: {}, hidden: false},
+      {trigger: `on`, function: `on`, description: `Turn on the lights`, timeout: 1000, executed: {}, hidden: false}
     ];
   }
 
   off(input, message) {
-    sentenceRepository.getClosestIntention('confirm', emotionValue, (sentenceCollection) => {
+    sentenceRepository.getClosestIntention(`confirm`, emotionValue, (sentenceCollection) => {
       message.channel.send(sentenceCollection.getSentences()[0].getContent());
     });
 
-    sentenceRepository.getClosestIntention('off', emotionValue, (sentenceCollection) => {
+    sentenceRepository.getClosestIntention(`off`, emotionValue, (sentenceCollection) => {
       message.channel.send(sentenceCollection.getSentences()[0].getContent());
     });
 
@@ -29,11 +31,11 @@ module.exports = class Lights extends Command {
   }
 
   on(input, message) {
-    sentenceRepository.getClosestIntention('confirm', emotionValue, (sentenceCollection) => {
+    sentenceRepository.getClosestIntention(`confirm`, emotionValue, (sentenceCollection) => {
       message.channel.send(sentenceCollection.getSentences()[0].getContent());
     });
 
-    sentenceRepository.getClosestIntention('on', emotionValue, (sentenceCollection) => {
+    sentenceRepository.getClosestIntention(`on`, emotionValue, (sentenceCollection) => {
       message.channel.send(sentenceCollection.getSentences()[0].getContent());
     });
 

@@ -1,8 +1,10 @@
+"use strict";
+
 module.exports = class Basics extends Command {
   constructor() {
     super();
     this.commands = [
-      {trigger: "help", function: "help", description: "Get all available commands", timeout: 1000, executed: {}, hidden: false}
+      {trigger: `help`, function: `help`, description: `Get all available commands`, timeout: 1000, executed: {}, hidden: false}
     ];
   }
 
@@ -18,5 +20,4 @@ module.exports = class Basics extends Command {
 
     message.channel.send(helpReply);
   }
-
 }

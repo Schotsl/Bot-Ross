@@ -1,9 +1,15 @@
-let Light = require('./../Entity/Light.js');
+"use strict";
+
+let Light = require(`./../Entity/Light.js`);
 
 module.exports = class LightMapper {
+  constructor() {
+
+  }
+
   map(lightObject, lightArray) {
-    if (typeof lightArray.id != "undefined" && lightArray.id != null) lightObject.setId(lightArray.id);
-    if (typeof lightArray.hue != "undefined" && lightArray.hue != null) lightObject.setHue(lightArray.hue);
+    if (typeof(lightArray.id) !== `undefined` && lightArray.id !== null) lightObject.setId(lightArray.id);
+    if (typeof(lightArray.hue) !== `undefined` && lightArray.hue !== null) lightObject.setHue(lightArray.hue);
 
     return lightObject;
   }

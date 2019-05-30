@@ -1,4 +1,6 @@
-let PersonCollection = require('./../Collection/PersonCollection.js');
+"use strict";
+
+let PersonCollection = require(`./../Collection/PersonCollection.js`);
 
 module.exports = class PersonCollectionMapper {
   constructor(personMapper) {
@@ -7,7 +9,7 @@ module.exports = class PersonCollectionMapper {
 
   map(personCollectionObject, personsArray) {
     let that = this;
-    
+
     personsArray.forEach(function(personArray) {
       let personObject = that.personMapper.createAndMap(personArray);
       personCollectionObject.addPerson(personObject);

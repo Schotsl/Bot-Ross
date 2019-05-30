@@ -1,3 +1,5 @@
+"use strict";
+
 module.exports = class Person {
   constructor() {
     this.id;
@@ -121,31 +123,6 @@ module.exports = class Person {
 
   getFullname() {
     return `${this.getFirst()} ${this.getLast()}`;
-  }
-
-  getDiscordStatus(callback) {
-    let discord = this.getDiscord();
-
-    bot.fetchUser(discord).then((data) => {
-      callback(data.presence.status);
-    });
-  }
-
-  getDiscordChannel(callback) {
-    let discord = this.getDiscord();
-    let returned;
-
-    bot.guilds.forEach((server) => {
-      server.channels.forEach((channel) => {
-        if (channel.type == "voice") {
-          channel.members.forEach((user) => {
-            if (discord == user.user.id) returned = channel;
-          });
-        }
-      });
-    });
-
-    callback(returned);
   }
 
   addScore(score) {
