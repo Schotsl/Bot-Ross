@@ -1,3 +1,5 @@
+"use strict";
+
 module.exports = class PersonCollection {
   constructor() {
     this.persons = [];

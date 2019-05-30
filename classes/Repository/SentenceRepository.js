@@ -1,3 +1,5 @@
+"use strict";
+
 module.exports = class SentenceRepository {
   constructor(sentenceCollectionMapper) {
     this.sentenceCollectionMapper = sentenceCollectionMapper;

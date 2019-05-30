@@ -1,3 +1,5 @@
+"use strict";
+
 module.exports = class LightRepository {
   constructor(lightCollectionMapper) {
     this.lightCollectionMapper = lightCollectionMapper;

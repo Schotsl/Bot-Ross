@@ -1,20 +1,22 @@
+"use strict";
+
 module.exports = class Stalk extends Command {
   constructor() {
     super();
     this.commands = [
-      {trigger: "notify", function: "notify", description: "Get notifications about a specfic person", timeout: 1000, executed: {}, hidden: true}
+      {trigger: `notify`, function: `notify`, description: `Get notifications about a specfic person`, timeout: 1000, executed: {}, hidden: true}
     ];
   }
 
   notify(input, message) {
-    sentenceRepository.getClosestIntention('confirm', emotionValue, (sentenceCollection) => {
+    sentenceRepository.getClosestIntention(`confirm`, emotionValue, (sentenceCollection) => {
       message.channel.send(sentenceCollection.getSentences()[0].getContent());
     });
 
     personRepository.getByFirst(input[0], (personCollection) => {
       let personObject = personCollection.getPersons()[0];
 
-      bot.on("voiceStateUpdate", function(oldMember, newMember) {
+      bot.on(`voiceStateUpdate`, function(oldMember, newMember) {
         if (oldMember.id === personObject.getDiscord() || newMember.id === personObject.getDiscord()) {
 
           //If voice channel change
@@ -40,14 +42,14 @@ module.exports = class Stalk extends Command {
         }
       });
 
-      bot.on("presenceUpdate", function(oldMember, newMember) {
+      bot.on(`presenceUpdate`, function(oldMember, newMember) {
         if (oldMember.id === personObject.getDiscord() || newMember.id === personObject.getDiscord()) {
 
           //If status change
           if (oldMember.selfDeaf !== newMember.selfDeaf) {
             message.channel.send(`${personObject.getFullname()} status changed to ${newMember.presence.status}`);
           }
-          
+
         }
       });
     })

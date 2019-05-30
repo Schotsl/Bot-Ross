@@ -1,31 +1,39 @@
+"use strict";
+
+// TODO's:
+// - Fix naming of object/array/collections
+// - Fix discord user properties
+// - Store query in variable
+// - Double check class naming
+
 global.emotionValue = 0;
 global.emotionState = 0;
 
 //Other packages
-global.Ssh = require('simple-ssh');
-global.MySQL = require('mysql');
-global.Discord = require("discord.js");
-global.Sentiment = require('sentiment');
+global.Ssh = require(`simple-ssh`);
+global.MySQL = require(`mysql`);
+global.Discord = require(`discord.js`);
+global.Sentiment = require(`sentiment`);
 
 //Non constructors
-global.fs = require('fs');
-global.request = require('request');
-global.settings = require('./settings.json');
-global.functions = require('./functions.js');
+global.fs = require(`fs`);
+global.request = require(`request`);
+global.settings = require(`./settings.json`);
+global.functions = require(`./functions.js`);
 
 //Custom classes
-global.Report = require('./classes/report.js');
-global.Command = require('./classes/command.js');
+global.Report = require(`./classes/report.js`);
+global.Command = require(`./classes/command.js`);
 
 global.report = new Report();
 global.sentiment = new Sentiment();
 
 //Credentials
-const hueCredentialsLocation = './credentials/hue.json';
-const sshCredentialsLocation = './credentials/shh.json';
-const mySQLCredentialsLocation = './credentials/mysql.json';
-const discordCredentialsLocation = './credentials/discord.json';
-const scontrolCredentialsLocation = './credentials/scontrol.json';
+const hueCredentialsLocation = `./credentials/hue.json`;
+const sshCredentialsLocation = `./credentials/shh.json`;
+const mySQLCredentialsLocation = `./credentials/mysql.json`;
+const discordCredentialsLocation = `./credentials/discord.json`;
+const scontrolCredentialsLocation = `./credentials/scontrol.json`;
 
 if (fs.existsSync(hueCredentialsLocation)) global.hueCredentials = require(hueCredentialsLocation);
 if (fs.existsSync(sshCredentialsLocation)) global.sshCredentials = require(sshCredentialsLocation);
@@ -42,17 +50,17 @@ let PersonCollection = require('./classes/Collection/PersonCollection.js');
 let SentenceCollection = require('./classes/Collection/SentenceCollection.js');
 
 //Mapper entity
-let LightMapper = require('./classes/Mapper/Light.js');
-let PersonMapper = require('./classes/Mapper/Person.js');
-let SentenceMapper = require('./classes/Mapper/Sentence.js');
-let LightCollectionMapper = require('./classes/Mapper/LightCollection.js');
-let PersonCollectionMapper = require('./classes/Mapper/PersonCollection.js');
-let SentenceCollectionMapper = require('./classes/Mapper/SentenceCollection.js');
+let LightMapper = require(`./classes/Mapper/Light.js`);
+let PersonMapper = require(`./classes/Mapper/Person.js`);
+let SentenceMapper = require(`./classes/Mapper/Sentence.js`);
+let LightCollectionMapper = require(`./classes/Mapper/LightCollection.js`);
+let PersonCollectionMapper = require(`./classes/Mapper/PersonCollection.js`);
+let SentenceCollectionMapper = require(`./classes/Mapper/SentenceCollection.js`);
 
 //Repository entity
-let LightRepository = require('./classes/Repository/LightRepository.js');
-let PersonRepository = require('./classes/Repository/PersonRepository.js');
-let SentenceRepository = require('./classes/Repository/SentenceRepository.js');
+let LightRepository = require(`./classes/Repository/LightRepository.js`);
+let PersonRepository = require(`./classes/Repository/PersonRepository.js`);
+let SentenceRepository = require(`./classes/Repository/SentenceRepository.js`);
 
 //Create mapper
 let lightMapper = new LightMapper;
@@ -76,11 +84,11 @@ fs.readdirSync(`./commands`).forEach(file => {
 });
 report.log(`Loaded ${commandArray.length} commands`);
 
-bot.on("ready", function() {
+bot.on(`ready`, function() {
   report.log(`Bot is ready. ${bot.user.username}`);
-  bot.generateInvite(["ADMINISTRATOR"]).then((data) => report.log(data));
+  bot.generateInvite([`ADMINISTRATOR`]).then((data) => report.log(data));
 
-  bot.user.setActivity('with neutral feelings');
+  bot.user.setActivity(`with neutral feelings`);
   setInterval(functions.setEmotions, 100);
 
   setInterval(checkBirthday, 86400000);
@@ -95,22 +103,22 @@ function checkBirthday() {
 
       if (tempBirthday && tempDiscord) {
         let tempCurrent = new Date();
-        if (tempBirthday.getDate() == tempCurrent.getDate() && tempBirthday.getMonth() == tempCurrent.getMonth()) {
+        if (tempBirthday.getDate() === tempCurrent.getDate() && tempBirthday.getMonth() === tempCurrent.getMonth()) {
           report.log(`Congratulated ${person.getFullname()}`);
-          setTimeout(() => bot.users.get(tempDiscord).send("This birthday I wish you happiness and love!"), 3000);
-          setTimeout(() => bot.users.get(tempDiscord).send("May all your dreams turn into reality and may lady luck visit your home today"), 6000);
-          setTimeout(() => bot.users.get(tempDiscord).send("Very happy birthday to one of the sweetest people ever known!"), 9000);
+          setTimeout(() => bot.users.get(tempDiscord).send(`This birthday I wish you happiness and love!`), 3000);
+          setTimeout(() => bot.users.get(tempDiscord).send(`May all your dreams turn into reality and may lady luck visit your home today`), 6000);
+          setTimeout(() => bot.users.get(tempDiscord).send(`Very happy birthday to one of the sweetest people ever known!`), 9000);
         }
       }
     });
   });
 }
 
-bot.on("error", function(data) {
+bot.on(`error`, function(data) {
   report.error(data);
 });
 
-bot.on("message", async(message) => {
+bot.on(`message`, async(message) => {
   //Detect mention
   message.mentions.users.forEach((user) => {
       if (user.id === bot.user.id) emotionValue += sentiment.analyze(message.content).comparative;
@@ -120,8 +128,8 @@ bot.on("message", async(message) => {
   personRepository.getByDiscord(message.author.id, (personCollection) => {
     let person = personCollection.getPersons()[0];
 
-    if (typeof person == "undefined") {
-      let Person = require('./classes/Entity/Person.js');
+    if (typeof(person === `undefined`) {
+      let Person = require(`./classes/Entity/Person.js`);
 
       person = new Person();
       person.setDiscord(message.author.id);

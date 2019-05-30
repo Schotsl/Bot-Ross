@@ -1,4 +1,6 @@
-let SentenceCollection = require('./../Collection/SentenceCollection.js');
+"use strict";
+
+let SentenceCollection = require(`./../Collection/SentenceCollection.js`);
 
 module.exports = class SentenceCollectionMapper {
   constructor(sentenceMapper) {

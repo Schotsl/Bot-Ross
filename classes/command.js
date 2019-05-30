@@ -1,3 +1,5 @@
+"use strict";
+
 module.exports = class Command {
   constructor() {
     this.commands = [];
@@ -12,7 +14,7 @@ module.exports = class Command {
           commandArray.executed[message.author.id] = new Date().getTime();
           this[commandArray.function](params, message);
         } else {
-          sentenceRepository.getClosestIntention('deny', emotionValue, (sentenceCollection) => {
+          sentenceRepository.getClosestIntention(`deny`, emotionValue, (sentenceCollection) => {
             message.channel.send(sentenceCollection.getSentences()[0].getContent());
           });
           report.log(`${message.author.tag} (${message.author.id}) was timed out`);
@@ -30,7 +32,7 @@ module.exports = class Command {
     }
 
     //Clean array
-    for (var execute in this.executed) {
+    for (let execute in this.executed) {
       let timeMillis = new Date().getTime();
       let timeDiffrence = timeMillis - this.executed[id];
       if (timeDiffrence > this.timeout) delete this.executed[execute]

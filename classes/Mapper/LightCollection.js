@@ -1,4 +1,6 @@
-let LightCollection = require('./../Collection/LightCollection.js');
+"use strict";
+
+let LightCollection = require(`./../Collection/LightCollection.js`);
 
 module.exports = class LightCollectionMapper {
   constructor(lightMapper) {
