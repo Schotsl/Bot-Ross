@@ -128,7 +128,7 @@ bot.on(`message`, async(message) => {
   personRepository.getByDiscord(message.author.id, (personCollection) => {
     let person = personCollection.getPersons()[0];
 
-    if (typeof(person === `undefined`) {
+    if (typeof(person === `undefined`)) {
       let Person = require(`./classes/Entity/Person.js`);
 
       person = new Person();
