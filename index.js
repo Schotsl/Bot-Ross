@@ -119,6 +119,12 @@ bot.on(`error`, function(data) {
 });
 
 bot.on(`message`, async(message) => {
+  //If non-DM
+  if (message.channel.type !== 'dm') {
+    message.react(bot.emojis.get('584007411656949780'));
+    message.react(bot.emojis.get('584007366283100181'));
+  }
+
   //Detect mention
   message.mentions.users.forEach((user) => {
       if (user.id === bot.user.id) emotionValue += sentiment.analyze(message.content).comparative;
