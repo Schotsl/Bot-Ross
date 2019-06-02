@@ -15,6 +15,7 @@
     "request": "^2.88.0",
     "sentiment": "^5.0.1",
     "simple-ssh": "^1.0.0",
+    "uniqid": "^5.0.3",
     "ytdl-core": "^0.29.1"
   }
 }

@@ -17,6 +17,7 @@ global.Sentiment = require(`sentiment`);
 
 //Non constructors
 global.fs = require(`fs`);
+global.uniqid = require('uniqid');
 global.request = require(`request`);
 global.settings = require(`./settings.json`);
 global.functions = require(`./functions.js`);
