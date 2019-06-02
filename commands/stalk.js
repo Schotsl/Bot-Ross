@@ -46,10 +46,9 @@ module.exports = class Stalk extends Command {
         if (oldMember.id === personObject.getDiscord() || newMember.id === personObject.getDiscord()) {
 
           //If status change
-          if (oldMember.selfDeaf !== newMember.selfDeaf) {
-            message.channel.send(`${personObject.getFullname()} status changed to ${newMember.presence.status}`);
+          if (oldMember.presence.status !== newMember.presence.status) {
+            message.channel.send(`${personObject.getFullname()} status changed to ${newMember.user.presence.status}`);
           }
-
         }
       });
     })
