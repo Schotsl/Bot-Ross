@@ -25,6 +25,7 @@ global.functions = require(`./functions.js`);
 //Custom classes
 global.Report = require(`./classes/report.js`);
 global.Command = require(`./classes/command.js`);
+global.Protocol = require(`./classes/protocol.js`);
 
 global.report = new Report();
 global.sentiment = new Sentiment();
@@ -44,6 +45,7 @@ if (fs.existsSync(scontrolCredentialsLocation)) global.scontrolCredentials = req
 
 global.bot = new Discord.Client();
 global.commandArray = new Array();
+global.protocolArray = new Array();
 
 //Collection entity
 let LightCollection = require('./classes/Collection/LightCollection.js');
@@ -87,15 +89,56 @@ fs.readdirSync(`./commands`).forEach(file => {
 });
 report.log(`Loaded ${commandArray.length} commands`);
 
+let protocolData = {};
+if (fs.existsSync("protocols/data.json")) {
+  protocolData = JSON.parse(fs.readFileSync("protocols/data.json"));
+}
+
+fs.readdirSync(`./protocols`).forEach(file => {
+  if (functions.getFileExtension(file) === `.js`) {
+    let tempClass = require(`./protocols/${file}`);
+    let tempObject = new tempClass();
+
+    //Add object to data file if it doesn't excist
+    if (typeof(protocolData[tempObject.constructor.name]) === `undefined`) protocolData[tempObject.constructor.name] = {};
+    fs.writeFileSync("./protocols/data.json", JSON.stringify(protocolData));
+
+    //Add array to date file if it doesn't excist
+    tempObject.protocols.forEach((singleArrayThing) => {
+      if (typeof(protocolData[tempObject.constructor.name][singleArrayThing.name]) === `undefined`) {
+        protocolData[tempObject.constructor.name][singleArrayThing.name] = 0;
+        fs.writeFileSync("./protocols/data.json", JSON.stringify(protocolData));
+      }
+    });
+
+    tempObject.protocols.forEach((singleArrayThing) => {
+      let tempInterval = singleArrayThing.interval;
+      let tempFunction = singleArrayThing.function;
+
+      let tempDiffrence = new Date().getTime() - protocolData[tempObject.constructor.name][singleArrayThing.name];
+      let tempTimeout = tempInterval - tempDiffrence > 0 ? tempInterval - tempDiffrence : 0;
+
+      setTimeout(() => {
+        tempObject[tempFunction]();
+        protocolData[tempObject.constructor.name][singleArrayThing.name] = new Date().getTime();
+        fs.writeFileSync("./protocols/data.json", JSON.stringify(protocolData))
+
+        setInterval(() => {
+          tempObject[tempFunction]();
+          protocolData[tempObject.constructor.name][singleArrayThing.name] = new Date().getTime();
+          fs.writeFileSync("./protocols/data.json", JSON.stringify(protocolData))
+        }, tempInterval);
+      }, tempTimeout);
+    });
+  }
+});
+
 bot.on(`ready`, function() {
   report.log(`Bot is ready. ${bot.user.username}`);
   bot.generateInvite([`ADMINISTRATOR`]).then((data) => report.log(data));
 
   bot.user.setActivity(`with neutral feelings`);
   setInterval(functions.setEmotions, 100);
-
-  setInterval(checkBirthday, 86400000);
-  checkBirthday();
 });
 
 function checkBirthday() {
