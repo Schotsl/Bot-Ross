@@ -79,9 +79,11 @@ global.sentenceRepository = new SentenceRepository(sentenceCollectionMapper);
 
 //Load commands into array
 fs.readdirSync(`./commands`).forEach(file => {
-  let tempClass = require(`./commands/${file}`);
-  let tempObject = new tempClass();
-  commandArray.push(tempObject);
+  if (functions.getFileExtension(file) === `.js`) {
+    let tempClass = require(`./commands/${file}`);
+    let tempObject = new tempClass();
+    commandArray.push(tempObject);
+  }
 });
 report.log(`Loaded ${commandArray.length} commands`);
 
