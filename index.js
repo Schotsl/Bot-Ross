@@ -141,36 +141,11 @@ bot.on(`ready`, function() {
   setInterval(functions.setEmotions, 100);
 });
 
-function checkBirthday() {
-  personRepository.getAll((personCollection) => {
-    personCollection.getPersons().forEach((person) => {
-      let tempBirthday = person.getBirthday();
-      let tempDiscord = person.getDiscord();
-
-      if (tempBirthday && tempDiscord) {
-        let tempCurrent = new Date();
-        if (tempBirthday.getDate() === tempCurrent.getDate() && tempBirthday.getMonth() === tempCurrent.getMonth()) {
-          report.log(`Congratulated ${person.getFullname()}`);
-          setTimeout(() => bot.users.get(tempDiscord).send(`This birthday I wish you happiness and love!`), 3000);
-          setTimeout(() => bot.users.get(tempDiscord).send(`May all your dreams turn into reality and may lady luck visit your home today`), 6000);
-          setTimeout(() => bot.users.get(tempDiscord).send(`Very happy birthday to one of the sweetest people ever known!`), 9000);
-        }
-      }
-    });
-  });
-}
-
 bot.on(`error`, function(data) {
   report.error(data);
 });
 
 bot.on(`message`, async(message) => {
-  //If non-DM
-  if (message.channel.type !== 'dm') {
-    message.react(bot.emojis.get('584007411656949780'));
-    message.react(bot.emojis.get('584007366283100181'));
-  }
-
   //Detect mention
   message.mentions.users.forEach((user) => {
       if (user.id === bot.user.id) emotionValue += sentiment.analyze(message.content).comparative;
