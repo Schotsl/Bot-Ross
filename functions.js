@@ -9,6 +9,10 @@ module.exports = {
     tempMax = Math.floor(tempMax);
     return Math.floor(Math.random() * (tempMax - tempMin + 1)) + tempMin;
   },
+  getFileExtension: function (fileName) {
+    let periodIndex = fileName.lastIndexOf('.');
+    return (periodIndex < 0) ? '' : fileName.substr(periodIndex);
+  },
   setEmotions: function () {
     emotionValue = emotionValue * 0.9999;
 
