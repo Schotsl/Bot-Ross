@@ -3,6 +3,7 @@ persons/
 blacklist.json
 node_modules
 logs/*
+protocols/*.json
 recordings/*.pcm
 *.tmp
 
