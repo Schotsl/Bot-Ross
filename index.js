@@ -71,10 +71,10 @@ let PersonRepository = require(`./classes/Repository/PersonRepository.js`);
 let SentenceRepository = require(`./classes/Repository/SentenceRepository.js`);
 
 //Create mapper
-let logMapper = new LogMapper;
-let lightMapper = new LightMapper;
-let personMapper = new PersonMapper;
-let sentenceMapper = new SentenceMapper;
+let logMapper = new LogMapper();
+let lightMapper = new LightMapper();
+let personMapper = new PersonMapper();
+let sentenceMapper = new SentenceMapper();
 
 let logCollectionMapper = new LogCollectionMapper(logMapper);
 let lightCollectionMapper = new LightCollectionMapper(lightMapper);
@@ -153,10 +153,10 @@ bot.on(`error`, function(data) {
   report.error(data);
 });
 
-bot.on(`message`, async(message) => {
+bot.on(`message`, async (message) => {
   //Detect mention
   message.mentions.users.forEach((user) => {
-      if (user.id === bot.user.id) emotionValue += sentiment.analyze(message.content).comparative;
+    if (user.id === bot.user.id) emotionValue += sentiment.analyze(message.content).comparative;
   });
 
   //Detect person score
