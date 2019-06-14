@@ -87,6 +87,16 @@ global.lightRepository = new LightRepository(lightCollectionMapper);
 global.personRepository = new PersonRepository(personCollectionMapper);
 global.sentenceRepository = new SentenceRepository(sentenceCollectionMapper);
 
+function getMapperFactory() {
+  let MapperFactory = require(`./classes/Mapper/MapperFactory.js`);
+  return new MapperFactory();
+}
+
+function getRepositoryFactory() {
+  let RepositoryFactory = require('./classes/Mapper/MapperFactory.js');
+  return new RepositoryFactory(getMapperFactory());
+}
+
 //Load commands into array
 fs.readdirSync(`./commands`).forEach(file => {
   if (functions.getFileExtension(file) === `.js`) {
