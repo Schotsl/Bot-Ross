@@ -4,7 +4,7 @@ module.exports = class Birthday extends Protocol {
   constructor() {
     super();
     this.protocols = [
-      {name: `congratulate`, interval: 24 * 60 * 60 * 1000, function: `congratulate`, description: `Congratulate person on their birthday`}
+      {name: `congratulate`, interval: {enabled: true, value: 24 * 60 * 60 * 1000}, function: `congratulate`, description: `Congratulate person on their birthday`}
     ];
   }
 
