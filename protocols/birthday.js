@@ -9,6 +9,8 @@ module.exports = class Birthday extends Protocol {
   }
 
   congratulate() {
+    report.log(`Checking for birthdays`);
+
     personRepository.getAll((personCollection) => {
       personCollection.getPersons().forEach((person) => {
         let tempBirthday = person.getBirthday();
