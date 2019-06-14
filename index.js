@@ -199,3 +199,57 @@ bot.on(`message`, async(message) => {
 })
 
 bot.login(discordCredentials.token);
+
+let Log = require('./classes/Entity/Log.js');
+
+bot.on(`voiceStateUpdate`, function(oldMember, newMember) {
+  let state = "";
+
+  //If voice channel change
+  if (oldMember.voiceChannelID !== newMember.voiceChannelID) {
+    if (newMember.voiceChannelID !== null && oldMember.voiceChannelID !== null) state = "changed";
+    else if (oldMember.voiceChannelID === null) state = "joined";
+    else if (newMember.voiceChannelID === null) state = "left";
+  }
+
+  //If voice mute change
+  if (oldMember.selfMute !== newMember.selfMute) {
+    if (newMember.selfMute) state = "muted";
+    else state = "unmuted";
+  }
+
+  //If voice mute change
+  if (oldMember.selfDeaf !== newMember.selfDeaf) {
+    if (newMember.selfDeaf) state = "deafened";
+    else state = "undeafened";
+  }
+
+  personRepository.getByDiscord(newMember.id, (personCollection) => {
+    let person = personCollection.getPersons()[0];
+    let log = new Log();
+
+    log.setPerson(person.getId());
+    log.setState(state);
+
+    logRepository.saveLog(log);
+  })
+});
+
+bot.on(`presenceUpdate`, function(oldMember, newMember) {
+  let state = "";
+
+  //If status change
+  if (oldMember.presence.status !== newMember.presence.status) {
+    state = newMember.user.presence.status
+  }
+
+  personRepository.getByDiscord(newMember.id, (personCollection) => {
+    let person = personCollection.getPersons()[0];
+    let log = new Log();
+
+    log.setPerson(person.getId());
+    log.setState(state);
+
+    logRepository.saveLog(log);
+  })
+});
