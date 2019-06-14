@@ -226,12 +226,16 @@ bot.on(`voiceStateUpdate`, function(oldMember, newMember) {
 
   personRepository.getByDiscord(newMember.id, (personCollection) => {
     let person = personCollection.getPersons()[0];
-    let log = new Log();
 
-    log.setPerson(person.getId());
-    log.setState(state);
+    //Not ideal, if user is still being registered to the database they wont be logged
+    if (typeof(person) !== `undefined`) {
+      let log = new Log();
 
-    logRepository.saveLog(log);
+      log.setPerson(person.getId());
+      log.setState(state);
+
+      logRepository.saveLog(log);
+    }
   })
 });
 
@@ -245,11 +249,15 @@ bot.on(`presenceUpdate`, function(oldMember, newMember) {
 
   personRepository.getByDiscord(newMember.id, (personCollection) => {
     let person = personCollection.getPersons()[0];
-    let log = new Log();
 
-    log.setPerson(person.getId());
-    log.setState(state);
+    //Not ideal, if user is still being registered to the database they wont be logged
+    if (typeof(person) !== `undefined`) {
+      let log = new Log();
 
-    logRepository.saveLog(log);
+      log.setPerson(person.getId());
+      log.setState(state);
+
+      logRepository.saveLog(log);
+    }
   })
 });
