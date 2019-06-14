@@ -120,23 +120,25 @@ fs.readdirSync(`./protocols`).forEach(file => {
     });
 
     tempObject.protocols.forEach((singleArrayThing) => {
-      let tempInterval = singleArrayThing.interval;
-      let tempFunction = singleArrayThing.function;
+      if (singleArrayThing.interval.enabled) {
+        let tempInterval = singleArrayThing.interval.value;
+        let tempFunction = singleArrayThing.function;
 
-      let tempDiffrence = new Date().getTime() - protocolData[tempObject.constructor.name][singleArrayThing.name];
-      let tempTimeout = tempInterval - tempDiffrence > 0 ? tempInterval - tempDiffrence : 0;
+        let tempDiffrence = new Date().getTime() - protocolData[tempObject.constructor.name][singleArrayThing.name];
+        let tempTimeout = tempInterval - tempDiffrence > 0 ? tempInterval - tempDiffrence : 0;
 
-      setTimeout(() => {
-        tempObject[tempFunction]();
-        protocolData[tempObject.constructor.name][singleArrayThing.name] = new Date().getTime();
-        fs.writeFileSync("./protocols/data.json", JSON.stringify(protocolData))
-
-        setInterval(() => {
+        setTimeout(() => {
           tempObject[tempFunction]();
           protocolData[tempObject.constructor.name][singleArrayThing.name] = new Date().getTime();
           fs.writeFileSync("./protocols/data.json", JSON.stringify(protocolData))
-        }, tempInterval);
-      }, tempTimeout);
+
+          setInterval(() => {
+            tempObject[tempFunction]();
+            protocolData[tempObject.constructor.name][singleArrayThing.name] = new Date().getTime();
+            fs.writeFileSync("./protocols/data.json", JSON.stringify(protocolData))
+          }, tempInterval);
+        }, tempTimeout);
+      }
     });
   }
 });
