@@ -3,9 +3,14 @@
 module.exports = class Debug extends Command {
   constructor() {
     super();
-    this.commands = [
-      {trigger: `shutdown`, function: `shutdown`, description: `Kills the node process`, timeout: 1000, executed: {}, hidden: true}
-    ];
+    this.commands = [{
+      trigger: `shutdown`,
+      function: `shutdown`,
+      description: `Kills the node process`,
+      timeout: 1000,
+      executed: {},
+      hidden: true
+    }];
   }
 
   shutdown(input, message) {

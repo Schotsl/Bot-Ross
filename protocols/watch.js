@@ -5,9 +5,15 @@ let Log = require('./../classes/Entity/Log.js');
 module.exports = class Watch extends Protocol {
   constructor() {
     super();
-    this.protocols = [
-      {name: `watch`, interval: {enabled: false, value: 0}, function: `watch`, description: `Logs discord activities`}
-    ];
+    this.protocols = [{
+      name: `watch`,
+      interval: {
+        enabled: false,
+        value: 0
+      },
+      function: `watch`,
+      description: `Logs discord activities`
+    }];
   }
 
   watch() {

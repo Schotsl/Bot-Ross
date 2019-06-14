@@ -9,7 +9,7 @@ module.exports = class LightRepository {
     let that = this;
     let connection = MySQL.createConnection(mySQLCredentials);
 
-    connection.query(`SELECT \`id\`, \`hue\` FROM \`lights\` WHERE 1`, function (error, lightsArray) {
+    connection.query(`SELECT \`id\`, \`hue\` FROM \`lights\` WHERE 1`, function(error, lightsArray) {
       connection.end();
       callback(that.lightCollectionMapper.createAndMap(lightsArray));
     });

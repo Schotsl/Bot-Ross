@@ -3,9 +3,14 @@
 module.exports = class Basics extends Command {
   constructor() {
     super();
-    this.commands = [
-      {trigger: `help`, function: `help`, description: `Get all available commands`, timeout: 1000, executed: {}, hidden: false}
-    ];
+    this.commands = [{
+      trigger: `help`,
+      function: `help`,
+      description: `Get all available commands`,
+      timeout: 1000,
+      executed: {},
+      hidden: false
+    }];
   }
 
   help(input, message) {

@@ -26,47 +26,47 @@ module.exports = class Party extends Command {
     let that = this;
 
     request.get(that.url)
-    .pipe(fs.createWriteStream('music.tmp'))
-    .on('error', function(error) {
-      report.log(error);
-    })
-    .on('finish', function() {
-      mp3Duration('./music.tmp', function (error, duration) {
+      .pipe(fs.createWriteStream('music.tmp'))
+      .on('error', function(error) {
+        report.log(error);
+      })
+      .on('finish', function() {
+        mp3Duration('./music.tmp', function(error, duration) {
 
-        that.mediaPlayer.setVolumePromise(65);
-        that.mediaPlayer.stopClientPromise().then(() => {
-          that.mediaPlayer.playUrlPromise(that.url).then(() => {
-            sentenceRepository.getClosestIntention('confirm', emotionValue, (sentenceCollection) => {
-              message.channel.send(sentenceCollection.getSentences()[0].getContent());
-            });
+          that.mediaPlayer.setVolumePromise(65);
+          that.mediaPlayer.stopClientPromise().then(() => {
+            that.mediaPlayer.playUrlPromise(that.url).then(() => {
+              sentenceRepository.getClosestIntention('confirm', emotionValue, (sentenceCollection) => {
+                message.channel.send(sentenceCollection.getSentences()[0].getContent());
+              });
 
-            sentenceRepository.getClosestIntention('party', emotionValue, (sentenceCollection) => {
-              message.channel.send(sentenceCollection.getSentences()[0].getContent());
-            });
+              sentenceRepository.getClosestIntention('party', emotionValue, (sentenceCollection) => {
+                message.channel.send(sentenceCollection.getSentences()[0].getContent());
+              });
 
-            let startTime = functions.getTimeInMillis();
-            lightRepository.getAll((lightCollection) => {
-              let lightArray = lightCollection.getLights();
+              let startTime = functions.getTimeInMillis();
+              lightRepository.getAll((lightCollection) => {
+                let lightArray = lightCollection.getLights();
 
-              lightArray.forEach((lightSingle) => {
-                lightSingle.getState(function(startState) {
+                lightArray.forEach((lightSingle) => {
+                  lightSingle.getState(function(startState) {
 
-                  function executeRandomLight() {
-                    setTimeout(function() {
-                      let currentTime = functions.getTimeInMillis();
-                      if (currentTime - startTime < duration * 1000 - 1500) {
-                        lightSingle.setState(startState, executeRandomLight);
-                      }
-                    }, functions.getRandomInteger(1000, 1500));
-                  }
+                    function executeRandomLight() {
+                      setTimeout(function() {
+                        let currentTime = functions.getTimeInMillis();
+                        if (currentTime - startTime < duration * 1000 - 1500) {
+                          lightSingle.setState(startState, executeRandomLight);
+                        }
+                      }, functions.getRandomInteger(1000, 1500));
+                    }
 
-                  executeRandomLight();
+                    executeRandomLight();
+                  });
                 });
               });
             });
           });
         });
       });
-    });
   }
 }
