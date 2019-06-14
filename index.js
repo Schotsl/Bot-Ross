@@ -138,6 +138,8 @@ fs.readdirSync(`./protocols`).forEach(file => {
             fs.writeFileSync("./protocols/data.json", JSON.stringify(protocolData))
           }, tempInterval);
         }, tempTimeout);
+      } else {
+        tempObject[singleArrayThing.function]();
       }
     });
   }
