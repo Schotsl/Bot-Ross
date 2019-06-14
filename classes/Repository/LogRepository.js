@@ -14,4 +14,29 @@ module.exports = class LogRepository {
       callback(that.logCollectionMapper.createAndMap(logsArray));
     });
   }
+
+  saveLog(log, callback) {
+    let that = this;
+    let connection = MySQL.createConnection(mySQLCredentials);
+
+    let query = `INSERT INTO \`logs\` (`;
+    if (typeof(log.person) !== `undefined`) query += `\`person\`, `;
+    if (typeof(log.state) !== `undefined`) query += `\`state\`, `;
+    query = `${query.substring(0, query.length - 2)} ) VALUES (`;
+
+    if (typeof(log.person) !== `undefined`) query += `'${log.person}', `;
+    if (typeof(log.state) !== `undefined`) query += `'${log.state}', `;
+    query = `${query.substring(0, query.length - 2)})`;
+
+    connection.query(query, function (error, personsArray) {
+      connection.query(`SELECT LAST_INSERT_ID()`, function (error, lastId) {
+        log.setId(lastId[0][`LAST_INSERT_ID()`]);
+
+        if (callback) {
+          connection.end();
+          callback(log);
+        }
+      });
+    });
+  }
 }
