@@ -9,7 +9,7 @@ module.exports = class PersonRepository {
     let that = this;
     let connection = MySQL.createConnection(mySQLCredentials);
 
-    connection.query(`SELECT \`id\`, \`score\`, \`first\`, \`last\`, \`email\`, \`adress\`, \`postal\`, \`city\`, \`birthday\`, \`insta\`, \`discord\`, \`twitter\`, \`ip\` FROM \`persons\` WHERE 1`, function (error, personsArray) {
+    connection.query(`SELECT \`id\`, \`score\`, \`first\`, \`last\`, \`email\`, \`adress\`, \`postal\`, \`city\`, \`birthday\`, \`insta\`, \`discord\`, \`twitter\`, \`ip\` FROM \`persons\` WHERE 1`, function(error, personsArray) {
       connection.end();
       callback(that.personCollectionMapper.createAndMap(personsArray));
     });
@@ -19,7 +19,7 @@ module.exports = class PersonRepository {
     let that = this;
     let connection = MySQL.createConnection(mySQLCredentials);
 
-    connection.query(`SELECT \`id\`, \`score\`, \`first\`, \`last\`, \`email\`, \`adress\`, \`postal\`, \`city\`, \`birthday\`, \`insta\`, \`discord\`, \`twitter\`, \`ip\` FROM \`persons\` WHERE \`first\` LIKE '%${first}%'`, function (error, personsArray) {
+    connection.query(`SELECT \`id\`, \`score\`, \`first\`, \`last\`, \`email\`, \`adress\`, \`postal\`, \`city\`, \`birthday\`, \`insta\`, \`discord\`, \`twitter\`, \`ip\` FROM \`persons\` WHERE \`first\` LIKE '%${first}%'`, function(error, personsArray) {
       connection.end();
       callback(that.personCollectionMapper.createAndMap(personsArray));
     });
@@ -29,7 +29,7 @@ module.exports = class PersonRepository {
     let that = this;
     let connection = MySQL.createConnection(mySQLCredentials);
 
-    connection.query(`SELECT \`id\`, \`score\`, \`first\`, \`last\`, \`email\`, \`adress\`, \`postal\`, \`city\`, \`birthday\`, \`insta\`, \`discord\`, \`twitter\`, \`ip\` FROM \`persons\` WHERE \`discord\` LIKE '%${discord}%'`, function (error, personsArray) {
+    connection.query(`SELECT \`id\`, \`score\`, \`first\`, \`last\`, \`email\`, \`adress\`, \`postal\`, \`city\`, \`birthday\`, \`insta\`, \`discord\`, \`twitter\`, \`ip\` FROM \`persons\` WHERE \`discord\` LIKE '%${discord}%'`, function(error, personsArray) {
       connection.end();
       callback(that.personCollectionMapper.createAndMap(personsArray));
     });
@@ -56,7 +56,7 @@ module.exports = class PersonRepository {
     if (typeof(user.birthday) !== `undefined`) query += `\`birthday\` = '${user.birthday.getFullYear()}-${user.birthday.getMonth() + 1}-${user.birthday.getDate()}', `;
     query = `${query.substring(0, query.length - 2)} WHERE \`id\` = '${user.id}'`;
 
-    connection.query(query, function (error, personsArray) {
+    connection.query(query, function(error, personsArray) {
       connection.end();
       if (callback) callback(user);
     });
@@ -99,8 +99,8 @@ module.exports = class PersonRepository {
     if (typeof(user.birthday) !== `undefined`) query += `'${user.birthday.getFullYear()}-${user.birthday.getMonth() + 1}-${user.birthday.getDate()}', `;
     query = `${query.substring(0, query.length - 2)})`;
 
-    connection.query(query, function (error, personsArray) {
-      connection.query(`SELECT LAST_INSERT_ID()`, function (error, lastId) {
+    connection.query(query, function(error, personsArray) {
+      connection.query(`SELECT LAST_INSERT_ID()`, function(error, lastId) {
         user.setId(lastId[0][`LAST_INSERT_ID()`]);
 
         if (callback) {

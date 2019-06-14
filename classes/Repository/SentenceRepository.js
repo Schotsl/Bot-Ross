@@ -9,7 +9,7 @@ module.exports = class SentenceRepository {
     let that = this;
     let connection = MySQL.createConnection(mySQLCredentials);
 
-    connection.query(`SELECT \`id\`, \`value\`, \`intention\`, \`content\` FROM \`languages\` WHERE 1`, function (error, sentencesArray) {
+    connection.query(`SELECT \`id\`, \`value\`, \`intention\`, \`content\` FROM \`languages\` WHERE 1`, function(error, sentencesArray) {
       connection.end();
       callback(that.sentenceCollectionMapper.createAndMap(sentencesArray));
     });
@@ -19,7 +19,7 @@ module.exports = class SentenceRepository {
     let that = this;
     let connection = MySQL.createConnection(mySQLCredentials);
 
-    connection.query(`SELECT \`content\` FROM \`languages\` WHERE \`intention\` = '${intention}' ORDER BY ABS ( \`value\` - ${value}) LIMIT 1`, function (error, sentencesArray) {
+    connection.query(`SELECT \`content\` FROM \`languages\` WHERE \`intention\` = '${intention}' ORDER BY ABS ( \`value\` - ${value}) LIMIT 1`, function(error, sentencesArray) {
       connection.end();
       callback(that.sentenceCollectionMapper.createAndMap(sentencesArray));
     });

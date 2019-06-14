@@ -9,7 +9,7 @@ module.exports = class LogRepository {
     let that = this;
     let connection = MySQL.createConnection(mySQLCredentials);
 
-    connection.query(`SELECT \`id\`, \`person\`, \`state\` FROM \`logs\` WHERE 1`, function (error, logsArray) {
+    connection.query(`SELECT \`id\`, \`person\`, \`state\` FROM \`logs\` WHERE 1`, function(error, logsArray) {
       connection.end();
       callback(that.logCollectionMapper.createAndMap(logsArray));
     });
@@ -28,8 +28,8 @@ module.exports = class LogRepository {
     if (typeof(log.state) !== `undefined`) query += `'${log.state}', `;
     query = `${query.substring(0, query.length - 2)})`;
 
-    connection.query(query, function (error, personsArray) {
-      connection.query(`SELECT LAST_INSERT_ID()`, function (error, lastId) {
+    connection.query(query, function(error, personsArray) {
+      connection.query(`SELECT LAST_INSERT_ID()`, function(error, lastId) {
         log.setId(lastId[0][`LAST_INSERT_ID()`]);
 
         if (callback) {

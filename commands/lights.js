@@ -5,9 +5,22 @@ let lightState = require(`node-hue-api`).lightState;
 module.exports = class Lights extends Command {
   constructor() {
     super();
-    this.commands = [
-      {trigger: `off`, function: `off`, description: `Turn off the lights`, timeout: 1000, executed: {}, hidden: false},
-      {trigger: `on`, function: `on`, description: `Turn on the lights`, timeout: 1000, executed: {}, hidden: false}
+    this.commands = [{
+        trigger: `off`,
+        function: `off`,
+        description: `Turn off the lights`,
+        timeout: 1000,
+        executed: {},
+        hidden: false
+      },
+      {
+        trigger: `on`,
+        function: `on`,
+        description: `Turn on the lights`,
+        timeout: 1000,
+        executed: {},
+        hidden: false
+      }
     ];
   }
 
