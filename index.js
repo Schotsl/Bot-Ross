@@ -10,15 +10,12 @@ global.emotionValue = 0;
 global.emotionState = 0;
 
 //Other packages
-global.Ssh = require(`simple-ssh`);
 global.MySQL = require(`mysql`);
 global.Discord = require(`discord.js`);
 global.Sentiment = require(`sentiment`);
 
 //Non constructors
 global.fs = require(`fs`);
-global.uniqid = require('uniqid');
-global.request = require(`request`);
 global.settings = require(`./settings.json`);
 global.functions = require(`./functions.js`);
 
@@ -32,16 +29,12 @@ global.sentiment = new Sentiment();
 
 //Credentials
 const hueCredentialsLocation = `./credentials/hue.json`;
-const sshCredentialsLocation = `./credentials/shh.json`;
 const mySQLCredentialsLocation = `./credentials/mysql.json`;
 const discordCredentialsLocation = `./credentials/discord.json`;
-const scontrolCredentialsLocation = `./credentials/scontrol.json`;
 
 if (fs.existsSync(hueCredentialsLocation)) global.hueCredentials = require(hueCredentialsLocation);
-if (fs.existsSync(sshCredentialsLocation)) global.sshCredentials = require(sshCredentialsLocation);
 if (fs.existsSync(mySQLCredentialsLocation)) global.mySQLCredentials = require(mySQLCredentialsLocation);
 if (fs.existsSync(discordCredentialsLocation)) global.discordCredentials = require(discordCredentialsLocation);
-if (fs.existsSync(scontrolCredentialsLocation)) global.scontrolCredentials = require(scontrolCredentialsLocation);
 
 global.bot = new Discord.Client();
 global.commandArray = new Array();
