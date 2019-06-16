@@ -40,17 +40,19 @@ module.exports = class Watch extends Protocol {
         else state = "undeafened";
       }
 
-      personRepository.getByDiscord(newMember.id, (personCollection) => {
-        let person = personCollection.getPersons()[0];
+      if (typeof(state) !== `undefined`) {
+        personRepository.getByDiscord(newMember.id, (personCollection) => {
+          let person = personCollection.getPersons()[0];
 
-        //Not ideal, if user is still being registered to the database they wont be logged
-        if (typeof(person) !== `undefined`) {
-          let log = new Log();
-          log.setPerson(person.getId());
-          log.setState(state);
-          logRepository.saveLog(log);
-        }
-      })
+          //Not ideal, if user is still being registered to the database they wont be logged
+          if (typeof(person) !== `undefined`) {
+            let log = new Log();
+            log.setPerson(person.getId());
+            log.setState(state);
+            logRepository.saveLog(log);
+          }
+        });
+      }
     });
 
     bot.on(`presenceUpdate`, function(oldMember, newMember) {
@@ -59,17 +61,19 @@ module.exports = class Watch extends Protocol {
         state = newMember.user.presence.status
       }
 
-      personRepository.getByDiscord(newMember.id, (personCollection) => {
-        let person = personCollection.getPersons()[0];
+      if (typeof(state) !== `undefined`) {
+        personRepository.getByDiscord(newMember.id, (personCollection) => {
+          let person = personCollection.getPersons()[0];
 
-        //Not ideal, if user is still being registered to the database they wont be logged
-        if (typeof(person) !== `undefined`) {
-          let log = new Log();
-          log.setPerson(person.getId());
-          log.setState(state);
-          logRepository.saveLog(log);
-        }
-      })
+          //Not ideal, if user is still being registered to the database they wont be logged
+          if (typeof(person) !== `undefined`) {
+            let log = new Log();
+            log.setPerson(person.getId());
+            log.setState(state);
+            logRepository.saveLog(log);
+          }
+        });
+      }
     });
   }
 }
