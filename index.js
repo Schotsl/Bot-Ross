@@ -47,13 +47,13 @@ global.bot = new Discord.Client();
 global.commandArray = new Array();
 global.protocolArray = new Array();
 
-function getMapperFactory() {
+global.getMapperFactory = function() {
   let MapperFactory = require(`./classes/Mapper/MapperFactory.js`);
   return new MapperFactory();
 }
 
-function getRepositoryFactory() {
-  let RepositoryFactory = require('./classes/Mapper/MapperFactory.js');
+global.getRepositoryFactory = function() {
+  let RepositoryFactory = require('./classes/Repository/RepositoryFactory.js');
   return new RepositoryFactory(getMapperFactory());
 }
 
