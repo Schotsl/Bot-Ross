@@ -14,11 +14,11 @@ module.exports = class Stalk extends Command {
   }
 
   notify(input, message) {
-    sentenceRepository.getClosestIntention(`confirm`, emotionValue, (sentenceCollection) => {
+    getRepositoryFactory().getSentenceRepository().getClosestIntention(`confirm`, emotionValue, (sentenceCollection) => {
       message.channel.send(sentenceCollection.getSentences()[0].getContent());
     });
 
-    personRepository.getByFirst(input[0], (personCollection) => {
+    getRepositoryFactory().getPersonRepository().getByFirst(input[0], (personCollection) => {
       let personObject = personCollection.getPersons()[0];
 
       bot.on(`voiceStateUpdate`, function(oldMember, newMember) {

@@ -14,7 +14,7 @@ module.exports = class Command {
           commandArray.executed[message.author.id] = new Date().getTime();
           this[commandArray.function](params, message);
         } else {
-          sentenceRepository.getClosestIntention(`deny`, emotionValue, (sentenceCollection) => {
+          getRepositoryFactory().getSentenceRepository().getClosestIntention(`deny`, emotionValue, (sentenceCollection) => {
             message.channel.send(sentenceCollection.getSentences()[0].getContent());
           });
           report.log(`${message.author.tag} (${message.author.id}) was timed out`);

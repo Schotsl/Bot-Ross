@@ -25,16 +25,16 @@ module.exports = class Lights extends Command {
   }
 
   off(input, message) {
-    sentenceRepository.getClosestIntention(`confirm`, emotionValue, (sentenceCollection) => {
+    getRepositoryFactory().getSentenceRepository().getClosestIntention(`confirm`, emotionValue, (sentenceCollection) => {
       message.channel.send(sentenceCollection.getSentences()[0].getContent());
     });
 
-    sentenceRepository.getClosestIntention(`off`, emotionValue, (sentenceCollection) => {
+    getRepositoryFactory().getSentenceRepository().getClosestIntention(`off`, emotionValue, (sentenceCollection) => {
       message.channel.send(sentenceCollection.getSentences()[0].getContent());
     });
 
     let newLightState = lightState.create();
-    lightRepository.getAll((lightCollection) => {
+    getRepositoryFactory().getLightRepository().getAll((lightCollection) => {
       let lightArray = lightCollection.getLights();
 
       lightArray.forEach((lightSingle) => {
@@ -44,16 +44,16 @@ module.exports = class Lights extends Command {
   }
 
   on(input, message) {
-    sentenceRepository.getClosestIntention(`confirm`, emotionValue, (sentenceCollection) => {
+    getRepositoryFactory().getSentenceRepository().getClosestIntention(`confirm`, emotionValue, (sentenceCollection) => {
       message.channel.send(sentenceCollection.getSentences()[0].getContent());
     });
 
-    sentenceRepository.getClosestIntention(`on`, emotionValue, (sentenceCollection) => {
+    getRepositoryFactory().getSentenceRepository().getClosestIntention(`on`, emotionValue, (sentenceCollection) => {
       message.channel.send(sentenceCollection.getSentences()[0].getContent());
     });
 
     let newLightState = lightState.create();
-    lightRepository.getAll((lightCollection) => {
+    getRepositoryFactory().getLightRepository().getAll((lightCollection) => {
       let lightArray = lightCollection.getLights();
 
       lightArray.forEach((lightSingle) => {

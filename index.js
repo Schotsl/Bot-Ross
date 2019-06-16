@@ -47,46 +47,6 @@ global.bot = new Discord.Client();
 global.commandArray = new Array();
 global.protocolArray = new Array();
 
-//Collection entity
-let LogCollection = require('./classes/Collection/LogCollection.js');
-let LightCollection = require('./classes/Collection/LightCollection.js');
-let PersonCollection = require('./classes/Collection/PersonCollection.js');
-let SentenceCollection = require('./classes/Collection/SentenceCollection.js');
-
-//Mapper entity
-let LogMapper = require(`./classes/Mapper/Log.js`);
-let LightMapper = require(`./classes/Mapper/Light.js`);
-let PersonMapper = require(`./classes/Mapper/Person.js`);
-let SentenceMapper = require(`./classes/Mapper/Sentence.js`);
-
-let LogCollectionMapper = require(`./classes/Mapper/LogCollection.js`);
-let LightCollectionMapper = require(`./classes/Mapper/LightCollection.js`);
-let PersonCollectionMapper = require(`./classes/Mapper/PersonCollection.js`);
-let SentenceCollectionMapper = require(`./classes/Mapper/SentenceCollection.js`);
-
-//Repository entity
-let LogRepository = require(`./classes/Repository/LogRepository.js`);
-let LightRepository = require(`./classes/Repository/LightRepository.js`);
-let PersonRepository = require(`./classes/Repository/PersonRepository.js`);
-let SentenceRepository = require(`./classes/Repository/SentenceRepository.js`);
-
-//Create mapper
-let logMapper = new LogMapper();
-let lightMapper = new LightMapper();
-let personMapper = new PersonMapper();
-let sentenceMapper = new SentenceMapper();
-
-let logCollectionMapper = new LogCollectionMapper(logMapper);
-let lightCollectionMapper = new LightCollectionMapper(lightMapper);
-let personCollectionMapper = new PersonCollectionMapper(personMapper);
-let sentenceCollectionMapper = new SentenceCollectionMapper(sentenceMapper);
-
-//Create repositories
-global.logRepository = new LogRepository(logCollectionMapper);
-global.lightRepository = new LightRepository(lightCollectionMapper);
-global.personRepository = new PersonRepository(personCollectionMapper);
-global.sentenceRepository = new SentenceRepository(sentenceCollectionMapper);
-
 function getMapperFactory() {
   let MapperFactory = require(`./classes/Mapper/MapperFactory.js`);
   return new MapperFactory();
@@ -174,7 +134,7 @@ bot.on(`message`, async (message) => {
   });
 
   //Detect person score
-  personRepository.getByDiscord(message.author.id, (personCollection) => {
+  getRepositoryFactory().getPersonRepository().getByDiscord(message.author.id, (personCollection) => {
     let person = personCollection.getPersons()[0];
 
     if (typeof(person) === `undefined`) {
@@ -182,12 +142,12 @@ bot.on(`message`, async (message) => {
 
       person = new Person();
       person.setDiscord(message.author.id);
-      personRepository.saveUser(person, () => {
+      getRepositoryFactory().getPersonRepository().saveUser(person, () => {
         person.score += sentiment.analyze(message.content).comparative;
         person.discord_url = bot.users.get(message.author.id).avatarURL;
         person.discord_user = message.author.user;
 
-        personRepository.updateUser(person);
+        getRepositoryFactory().getPersonRepository().updateUser(person);
       });
     } else {
       person.score += sentiment.analyze(message.content).comparative;

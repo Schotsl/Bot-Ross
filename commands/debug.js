@@ -14,7 +14,7 @@ module.exports = class Debug extends Command {
   }
 
   shutdown(input, message) {
-    sentenceRepository.getClosestIntention(`shutdown`, emotionValue, (sentenceCollection) => {
+    getRepositoryFactory().getSentenceRepository().getClosestIntention(`shutdown`, emotionValue, (sentenceCollection) => {
       message.channel.send(sentenceCollection.getSentences()[0].getContent()).then(() => {
 
         //Kill node process

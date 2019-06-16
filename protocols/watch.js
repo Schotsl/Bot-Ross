@@ -41,7 +41,7 @@ module.exports = class Watch extends Protocol {
       }
 
       if (typeof(state) !== `undefined`) {
-        personRepository.getByDiscord(newMember.id, (personCollection) => {
+        getRepositoryFactory().getPersonRepository().getByDiscord(newMember.id, (personCollection) => {
           let person = personCollection.getPersons()[0];
 
           //Not ideal, if user is still being registered to the database they wont be logged
@@ -49,7 +49,7 @@ module.exports = class Watch extends Protocol {
             let log = new Log();
             log.setPerson(person.getId());
             log.setState(state);
-            logRepository.saveLog(log);
+            getRepositoryFactory().getLogRepository().saveLog(log);
           }
         });
       }
@@ -62,7 +62,7 @@ module.exports = class Watch extends Protocol {
       }
 
       if (typeof(state) !== `undefined`) {
-        personRepository.getByDiscord(newMember.id, (personCollection) => {
+        getRepositoryFactory().getPersonRepository().getByDiscord(newMember.id, (personCollection) => {
           let person = personCollection.getPersons()[0];
 
           //Not ideal, if user is still being registered to the database they wont be logged
@@ -70,7 +70,7 @@ module.exports = class Watch extends Protocol {
             let log = new Log();
             log.setPerson(person.getId());
             log.setState(state);
-            logRepository.saveLog(log);
+            getRepositoryFactory().getLogRepository().saveLog(log);
           }
         });
       }
