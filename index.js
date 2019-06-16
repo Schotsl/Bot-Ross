@@ -147,7 +147,7 @@ bot.on(`message`, async (message) => {
       person.discord_url = bot.users.get(message.author.id).avatarURL;
       person.discord_user = message.author.username;
 
-      personRepository.updateUser(person);
+      getRepositoryFactory().getPersonRepository().updateUser(person);
     }
   })
 
