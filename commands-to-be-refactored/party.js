@@ -36,16 +36,16 @@ module.exports = class Party extends Command {
           that.mediaPlayer.setVolumePromise(65);
           that.mediaPlayer.stopClientPromise().then(() => {
             that.mediaPlayer.playUrlPromise(that.url).then(() => {
-              sentenceRepository.getClosestIntention('confirm', emotionValue, (sentenceCollection) => {
+              getRepositoryFactory().getSentenceRepository().getClosestIntention('confirm', emotionValue, (sentenceCollection) => {
                 message.channel.send(sentenceCollection.getSentences()[0].getContent());
               });
 
-              sentenceRepository.getClosestIntention('party', emotionValue, (sentenceCollection) => {
+              getRepositoryFactory().getSentenceRepository().getClosestIntention('party', emotionValue, (sentenceCollection) => {
                 message.channel.send(sentenceCollection.getSentences()[0].getContent());
               });
 
               let startTime = functions.getTimeInMillis();
-              lightRepository.getAll((lightCollection) => {
+              getRepositoryFactory().getLightRepository().getAll((lightCollection) => {
                 let lightArray = lightCollection.getLights();
 
                 lightArray.forEach((lightSingle) => {
