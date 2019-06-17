@@ -1,5 +1,7 @@
 "use strict";
 
+let MySQL = require(`mysql`);
+
 module.exports = class LightRepository {
   constructor(lightCollectionMapper) {
     this.lightCollectionMapper = lightCollectionMapper;
