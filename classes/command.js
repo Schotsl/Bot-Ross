@@ -6,6 +6,9 @@ module.exports = class Command {
   }
 
   execute(command, params, message, respond, person) {
+    //Temp fix
+    let emotionValue = 1;
+
     this.commands.forEach((commandArray) => {
       if (commandArray.trigger === command) {
 
@@ -17,7 +20,7 @@ module.exports = class Command {
           getRepositoryFactory().getSentenceRepository().getClosestIntention(`deny`, emotionValue, (sentenceCollection) => {
             respond(sentenceCollection.getSentences()[0].getContent());
           });
-          report.log(`${message.author.tag} (${message.author.id}) was timed out`);
+          report.log(`${person.getFullName()} was timed out`);
         }
       }
     });

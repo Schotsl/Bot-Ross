@@ -14,14 +14,18 @@ module.exports = class Basics extends Command {
   }
 
   help(input, message, respond, person) {
-    let helpReply = `\`\`\``;
+    let helpReply = ``;
 
     commandArray.forEach((commandObject) => {
       commandObject.commands.forEach((commandArray) => {
-        if (!commandArray.hidden) helpReply += `${commandArray.trigger}: ${commandArray.description}\n`;
+        if (!commandArray.hidden) {
+          let commandTrigger = functions.capitalizeFirstLetter(commandArray.trigger);
+          let commandDescription = functions.capitalizeFirstLetter(commandArray.description);
+
+          helpReply += `- **${commandTrigger}**: ${commandDescription}\n`;
+        }
       });
     });
-    helpReply += `\`\`\``;
 
     respond(helpReply);
   }
