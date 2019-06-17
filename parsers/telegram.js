@@ -29,9 +29,12 @@ telegram.on(`message`, async (telegramMessageObject) => {
       telegram.sendMessage(telegramMessageObject.chat.id, response);
     }
 
+    //Get actual message
+    let message = telegramMessageObject.text;
+
     if (typeof(person) !== `undefined`) {
       //If user is already stored in the database
-      emitter.emit('message', person, respond);
+      emitter.emit('message', message, respond, person)
     } else {
       //If user isn't already stored in the database construct a new user
       person = new Person();
@@ -40,8 +43,8 @@ telegram.on(`message`, async (telegramMessageObject) => {
       person.setLast(telegramMessageObject.from.last_name);
 
       //Save user to database and return user with database ID
-      getRepositoryFactory().getPersonRepository().saveUser(person, function(person, respond) {
-        emitter.emit('message', person, respond)
+      getRepositoryFactory().getPersonRepository().saveUser(person, function(person) {
+        emitter.emit('message', message, respond, person)
       });
     }
   });

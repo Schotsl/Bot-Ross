@@ -24,6 +24,8 @@ module.exports = {
 
     if (fs.existsSync(telegramCredentialsLocation)) global.telegramCredentials = require(telegramCredentialsLocation);
     else report.log(`Telegram credentials are missing`);
+
+    report.log(`Successfully loaded credentials`);
   },
   loadFactories: function() {
     report.log(`Loading factories`);
@@ -39,5 +41,20 @@ module.exports = {
       let RepositoryFactory = require('./classes/Repository/RepositoryFactory.js');
       return new RepositoryFactory(getMapperFactory());
     }
+
+    report.log(`Successfully loaded factories`);
+  },
+  loadCommands: function() {
+    report.log(`Loading commands`);
+
+    fs.readdirSync(`./commands`).forEach(file => {
+      if (functions.getFileExtension(file) === `.js`) {
+        let tempClass = require(`./commands/${file}`);
+        let tempObject = new tempClass();
+        commandArray.push(tempObject);
+      }
+    });
+
+    report.log(`Successfully loaded commands`);
   }
 }

@@ -13,7 +13,7 @@ module.exports = class Basics extends Command {
     }];
   }
 
-  help(input, message) {
+  help(input, message, respond, person) {
     let helpReply = `\`\`\``;
 
     commandArray.forEach((commandObject) => {
@@ -23,6 +23,6 @@ module.exports = class Basics extends Command {
     });
     helpReply += `\`\`\``;
 
-    message.channel.send(helpReply);
+    respond(helpReply);
   }
 }
