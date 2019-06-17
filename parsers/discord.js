@@ -14,6 +14,9 @@ discord.on(`error`, function(data) {
 });
 
 discord.on(`message`, async (discordMessageObject) => {
+  //If person is a bot
+  if (discordMessageObject.author.bot) return;
+
   //Attempt to get user by Discord ID
   getRepositoryFactory().getPersonRepository().getByDiscord(discordMessageObject.author.id, (personCollection) => {
     //Get single person from array
