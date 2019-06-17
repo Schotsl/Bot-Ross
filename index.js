@@ -8,10 +8,8 @@ global.functions = require(`./functions.js`);
 global.Events = require('events');
 global.Report = require(`./classes/report.js`);
 global.Command = require(`./classes/command.js`);
-global.Protocol = require(`./classes/protocol.js`);
 
 global.commandArray = new Array();
-global.protocolArray = new Array();
 
 global.report = new Report();
 global.emitter = new Events.EventEmitter();
