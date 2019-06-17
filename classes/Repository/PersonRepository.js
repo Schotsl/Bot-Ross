@@ -37,6 +37,16 @@ module.exports = class PersonRepository {
     });
   }
 
+  getByTelegram(telegram, callback) {
+    let that = this;
+    let connection = MySQL.createConnection(mySQLCredentials);
+
+    connection.query(`SELECT \`id\`, \`score\`, \`first\`, \`last\`, \`email\`, \`adress\`, \`postal\`, \`city\`, \`birthday\`, \`insta\`, \`discord\`, \`telegram\`, \`twitter\`, \`ip\` FROM \`persons\` WHERE \`telegram\` LIKE '%${telegram}%'`, function(error, personsArray) {
+      connection.end();
+      callback(that.personCollectionMapper.createAndMap(personsArray));
+    });
+  }
+
   updateUser(user, callback) {
     let that = this;
     let connection = MySQL.createConnection(mySQLCredentials);
