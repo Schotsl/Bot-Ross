@@ -15,24 +15,30 @@ telegram.on(`error`, function(data) {
   report.error(data);
 });
 
-telegram.on(`message`, async (message) => {
+telegram.on(`message`, async (telegramMessageObject) => {
   //Attempt to get user by Telegram ID
-  getRepositoryFactory().getPersonRepository().getByTelegram(message.from.id, (personCollection) => {
+  getRepositoryFactory().getPersonRepository().getByTelegram(telegramMessageObject.from.id, (personCollection) => {
+    //Get single person from array
     let person = personCollection.getPersons()[0];
+
+    //Create respond function to pass along
+    let respond = function(response) {
+      telegram.sendMessage(telegramMessageObject.chat.id, response);
+    }
 
     if (typeof(person) !== `undefined`) {
       //If user is already stored in the database
-      emitter.emit('message', person);
+      emitter.emit('message', person, respond);
     } else {
       //If user isn't already stored in the database construct a new user
       person = new Person();
-      person.setTelegram(message.from.id);
-      person.setFirst(message.from.first_name);
-      person.setLast(message.from.last_name);
+      person.setTelegram(telegramMessageObject.from.id);
+      person.setFirst(telegramMessageObject.from.first_name);
+      person.setLast(telegramMessageObject.from.last_name);
 
       //Save user to database and return user with database ID
-      getRepositoryFactory().getPersonRepository().saveUser(person, function(person) {
-        emitter.emit('message', person)
+      getRepositoryFactory().getPersonRepository().saveUser(person, function(person, respond) {
+        emitter.emit('message', person, respond)
       });
     }
   });

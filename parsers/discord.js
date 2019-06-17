@@ -13,22 +13,27 @@ discord.on(`error`, function(data) {
   report.error(data);
 });
 
-discord.on(`message`, async (message) => {
+discord.on(`message`, async (discordMessageObject) => {
   //Attempt to get user by Discord ID
-  getRepositoryFactory().getPersonRepository().getByDiscord(message.author.id, (personCollection) => {
+  getRepositoryFactory().getPersonRepository().getByDiscord(discordMessageObject.author.id, (personCollection) => {
+    //Get single person from array
     let person = personCollection.getPersons()[0];
+
+    let respond = function(response) {
+      discordMessageObject.channel.send(response);
+    }
 
     if (typeof(person) !== `undefined`) {
       //If user is already stored in the database
-      emitter.emit('message', person);
+      emitter.emit('message', person, respond);
     } else {
       //If user isn't already stored in the database construct a new user
       person = new Person();
-      person.setDiscord(message.author.id);
+      person.setDiscord(discordMessageObject.author.id);
 
       //Save user to database and return user with database ID
       getRepositoryFactory().getPersonRepository().saveUser(person, function(person) {
-        emitter.emit('message', person)
+        emitter.emit('message', person, respond)
       });
     }
   });
