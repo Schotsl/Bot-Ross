@@ -62,13 +62,3 @@ em.on('FirstEvent', function (data) {
 
 // Raising FirstEvent
 em.emit('FirstEvent', 'This is my first Node.js event emitter example.');
-
-//Load commands into array
-fs.readdirSync(`./commands`).forEach(file => {
-  if (functions.getFileExtension(file) === `.js`) {
-    let tempClass = require(`./commands/${file}`);
-    let tempObject = new tempClass();
-    commandArray.push(tempObject);
-  }
-});
-report.log(`Loaded ${commandArray.length} commands`);
