@@ -36,13 +36,13 @@ module.exports = class MapperFactory {
   }
 
 
-  getSentenceRepository() {
+  getSentenceMapper() {
     let SentenceMapper = require(`./Sentence.js`);
     return new SentenceMapper();
   }
 
-  getSentenceCollectionRepository() {
+  getSentenceCollectionMapper() {
     let SentenceCollectionMapper = require(`./SentenceCollection.js`);
-    return new SentenceCollectionMapper(this.getSentenceRepository());
+    return new SentenceCollectionMapper(this.getSentenceMapper());
   }
 }

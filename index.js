@@ -1,8 +1,8 @@
 "use strict";
 
 //Non constructors
-global.functions = require(`./functions.js`);
 global.loader = require(`./loader.js`);
+global.functions = require(`./functions.js`);
 
 //Custom classes
 global.Events = require('events');
@@ -18,10 +18,19 @@ global.emitter = new Events.EventEmitter();
 
 loader.loadCredentials();
 loader.loadFactories();
+loader.loadCommands();
 
 require('./parsers/telegram.js');
 require('./parsers/discord.js');
 
-emitter.on('message', function(person, respond) {
-  respond('yeet');
+emitter.on('message', function(message, respond, person) {
+  //Parse command
+  let splitMessage = message.split(" ");
+  let command = splitMessage[0].substring(1);
+  let params = splitMessage.slice(1);
+
+  //Execute command
+  commandArray.forEach((commandObject) => {
+    commandObject.execute(command, params, message, respond, person);
+  });
 });

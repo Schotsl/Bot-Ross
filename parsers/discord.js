@@ -22,13 +22,17 @@ discord.on(`message`, async (discordMessageObject) => {
     //Get single person from array
     let person = personCollection.getPersons()[0];
 
+    //Create respond function to pass along
     let respond = function(response) {
       discordMessageObject.channel.send(response);
     }
 
+    //Get actual message
+    let message = discordMessageObject.content;
+
     if (typeof(person) !== `undefined`) {
       //If user is already stored in the database
-      emitter.emit('message', person, respond);
+      emitter.emit('message', message, respond, person)
     } else {
       //If user isn't already stored in the database construct a new user
       person = new Person();
@@ -36,7 +40,7 @@ discord.on(`message`, async (discordMessageObject) => {
 
       //Save user to database and return user with database ID
       getRepositoryFactory().getPersonRepository().saveUser(person, function(person) {
-        emitter.emit('message', person, respond)
+        emitter.emit('message', message, respond, person)
       });
     }
   });

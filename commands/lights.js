@@ -24,13 +24,16 @@ module.exports = class Lights extends Command {
     ];
   }
 
-  off(input, message) {
+  off(input, message, respond, person) {
+    //Temp fix
+    let emotionValue = 1;
+
     getRepositoryFactory().getSentenceRepository().getClosestIntention(`confirm`, emotionValue, (sentenceCollection) => {
-      message.channel.send(sentenceCollection.getSentences()[0].getContent());
+      respond(sentenceCollection.getSentences()[0].getContent());
     });
 
     getRepositoryFactory().getSentenceRepository().getClosestIntention(`off`, emotionValue, (sentenceCollection) => {
-      message.channel.send(sentenceCollection.getSentences()[0].getContent());
+      respond(sentenceCollection.getSentences()[0].getContent());
     });
 
     let newLightState = lightState.create();
@@ -43,13 +46,16 @@ module.exports = class Lights extends Command {
     });
   }
 
-  on(input, message) {
+  on(input, message, respond, person) {
+    //Temp fix
+    let emotionValue = 1;
+
     getRepositoryFactory().getSentenceRepository().getClosestIntention(`confirm`, emotionValue, (sentenceCollection) => {
-      message.channel.send(sentenceCollection.getSentences()[0].getContent());
+      respond(sentenceCollection.getSentences()[0].getContent());
     });
 
     getRepositoryFactory().getSentenceRepository().getClosestIntention(`on`, emotionValue, (sentenceCollection) => {
-      message.channel.send(sentenceCollection.getSentences()[0].getContent());
+      respond(sentenceCollection.getSentences()[0].getContent());
     });
 
     let newLightState = lightState.create();
