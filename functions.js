@@ -38,5 +38,10 @@ module.exports = {
         emotionState = 0;
       }
     }
+  },
+  capitalizeFirstLetter: function(inputString) {
+    let firstCharacter = inputString.charAt(0);
+    let remainingString = inputString.slice(1);
+    return firstCharacter.toUpperCase() + remainingString;
   }
 };
