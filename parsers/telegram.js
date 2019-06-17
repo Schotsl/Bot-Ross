@@ -16,6 +16,9 @@ telegram.on(`error`, function(data) {
 });
 
 telegram.on(`message`, async (telegramMessageObject) => {
+  //If person is a bot
+  if (telegramMessageObject.from.bot) return;
+
   //Attempt to get user by Telegram ID
   getRepositoryFactory().getPersonRepository().getByTelegram(telegramMessageObject.from.id, (personCollection) => {
     //Get single person from array
