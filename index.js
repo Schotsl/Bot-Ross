@@ -2,7 +2,6 @@
 
 //Non constructors
 global.fs = require(`fs`);
-global.settings = require(`./settings.json`);
 global.functions = require(`./functions.js`);
 
 //Custom classes
@@ -40,3 +39,7 @@ global.getRepositoryFactory = function() {
 
 require('./parsers/telegram.js');
 require('./parsers/discord.js');
+
+emitter.on('message', function(person, respond) {
+  respond('yeet');
+});
