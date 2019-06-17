@@ -1,6 +1,6 @@
 "use strict";
 
-fs = require(`fs`);
+let fs = require(`fs`);
 
 module.exports = class Report {
   constructor() {
