@@ -1,5 +1,7 @@
 "use strict";
 
+let MySQL = require(`mysql`);
+
 module.exports = class RepositoryFactory {
   constructor(mapperFactory) {
     this.mapperFactory = mapperFactory;

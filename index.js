@@ -10,7 +10,6 @@ global.emotionValue = 0;
 global.emotionState = 0;
 
 //Other packages
-global.MySQL = require(`mysql`);
 global.Discord = require(`discord.js`);
 global.Sentiment = require(`sentiment`);
 
@@ -49,6 +48,20 @@ global.getRepositoryFactory = function() {
   let RepositoryFactory = require('./classes/Repository/RepositoryFactory.js');
   return new RepositoryFactory(getMapperFactory());
 }
+
+// get the reference of EventEmitter class of events module
+var events = require('events');
+
+//create an object of EventEmitter class by using above reference
+var em = new events.EventEmitter();
+
+//Subscribe for FirstEvent
+em.on('FirstEvent', function (data) {
+    console.log('First subscriber: ' + data);
+});
+
+// Raising FirstEvent
+em.emit('FirstEvent', 'This is my first Node.js event emitter example.');
 
 //Load commands into array
 fs.readdirSync(`./commands`).forEach(file => {
