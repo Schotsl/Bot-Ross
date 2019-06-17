@@ -13,6 +13,7 @@ module.exports = class Person {
     this.birthday;
     this.insta;
     this.discord;
+    this.telegram;
     this.twitter;
     this.ip;
   }
@@ -59,6 +60,10 @@ module.exports = class Person {
 
   setDiscord(discord) {
     this.discord = discord;
+  }
+
+  setTelegram(telegram) {
+    this.telegram = telegram;
   }
 
   setTwitter(twitter) {
@@ -111,6 +116,10 @@ module.exports = class Person {
 
   getDiscord() {
     return this.discord;
+  }
+
+  getTelegram() {
+    return this.telegram;
   }
 
   getTwitter() {

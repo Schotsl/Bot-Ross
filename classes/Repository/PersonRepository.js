@@ -11,7 +11,7 @@ module.exports = class PersonRepository {
     let that = this;
     let connection = MySQL.createConnection(mySQLCredentials);
 
-    connection.query(`SELECT \`id\`, \`score\`, \`first\`, \`last\`, \`email\`, \`adress\`, \`postal\`, \`city\`, \`birthday\`, \`insta\`, \`discord\`, \`twitter\`, \`ip\` FROM \`persons\` WHERE 1`, function(error, personsArray) {
+    connection.query(`SELECT \`id\`, \`score\`, \`first\`, \`last\`, \`email\`, \`adress\`, \`postal\`, \`city\`, \`birthday\`, \`insta\`, \`discord\`, \`telegram\`, \`twitter\`, \`ip\` FROM \`persons\` WHERE 1`, function(error, personsArray) {
       connection.end();
       callback(that.personCollectionMapper.createAndMap(personsArray));
     });
@@ -21,7 +21,7 @@ module.exports = class PersonRepository {
     let that = this;
     let connection = MySQL.createConnection(mySQLCredentials);
 
-    connection.query(`SELECT \`id\`, \`score\`, \`first\`, \`last\`, \`email\`, \`adress\`, \`postal\`, \`city\`, \`birthday\`, \`insta\`, \`discord\`, \`twitter\`, \`ip\` FROM \`persons\` WHERE \`first\` LIKE '%${first}%'`, function(error, personsArray) {
+    connection.query(`SELECT \`id\`, \`score\`, \`first\`, \`last\`, \`email\`, \`adress\`, \`postal\`, \`city\`, \`birthday\`, \`insta\`, \`discord\`, \`telegram\`, \`twitter\`, \`ip\` FROM \`persons\` WHERE \`first\` LIKE '%${first}%'`, function(error, personsArray) {
       connection.end();
       callback(that.personCollectionMapper.createAndMap(personsArray));
     });
@@ -31,7 +31,7 @@ module.exports = class PersonRepository {
     let that = this;
     let connection = MySQL.createConnection(mySQLCredentials);
 
-    connection.query(`SELECT \`id\`, \`score\`, \`first\`, \`last\`, \`email\`, \`adress\`, \`postal\`, \`city\`, \`birthday\`, \`insta\`, \`discord\`, \`twitter\`, \`ip\` FROM \`persons\` WHERE \`discord\` LIKE '%${discord}%'`, function(error, personsArray) {
+    connection.query(`SELECT \`id\`, \`score\`, \`first\`, \`last\`, \`email\`, \`adress\`, \`postal\`, \`city\`, \`birthday\`, \`insta\`, \`discord\`, \`telegram\`, \`twitter\`, \`ip\` FROM \`persons\` WHERE \`discord\` LIKE '%${discord}%'`, function(error, personsArray) {
       connection.end();
       callback(that.personCollectionMapper.createAndMap(personsArray));
     });
@@ -53,6 +53,7 @@ module.exports = class PersonRepository {
     if (typeof(user.postal) !== `undefined`) query += `\`postal\` = '${user.postal}', `;
     if (typeof(user.twitter) !== `undefined`) query += `\`twitter\` = '${user.twitter}', `;
     if (typeof(user.discord) !== `undefined`) query += `\`discord\` = '${user.discord}', `;
+    if (typeof(user.telegram) !== `undefined`) query += `\`telegram\` = '${user.telegram}', `;
     if (typeof(user.discord_url) !== `undefined`) query += `\`discord_url\` = '${user.discord_url}', `;
     if (typeof(user.discord_user) !== `undefined`) query += `\`discord_user\` = '${user.discord_user}', `;
     if (typeof(user.birthday) !== `undefined`) query += `\`birthday\` = '${user.birthday.getFullYear()}-${user.birthday.getMonth() + 1}-${user.birthday.getDate()}', `;
@@ -80,6 +81,7 @@ module.exports = class PersonRepository {
     if (typeof(user.postal) !== `undefined`) query += `\`postal\`, `;
     if (typeof(user.twitter) !== `undefined`) query += `\`twitter\`, `;
     if (typeof(user.discord) !== `undefined`) query += `\`discord\`, `;
+    if (typeof(user.telegram) !== `undefined`) query += `\`telegram\`, `;
     if (typeof(user.discord_url) !== `undefined`) query += `\`discord_url\`, `;
     if (typeof(user.discord_user) !== `undefined`) query += `\`discord_user\`, `;
     if (typeof(user.birthday) !== `undefined`) query += `\`birthday\`, `;
@@ -96,6 +98,7 @@ module.exports = class PersonRepository {
     if (typeof(user.postal) !== `undefined`) query += `'${user.postal}', `;
     if (typeof(user.twitter) !== `undefined`) query += `'${user.twitter}', `;
     if (typeof(user.discord) !== `undefined`) query += `'${user.discord}', `;
+    if (typeof(user.telegram) !== `undefined`) query += `'${user.telegram}', `;
     if (typeof(user.discord_url) !== `undefined`) query += `'${user.discord_url}', `;
     if (typeof(user.discord_user) !== `undefined`) query += `'${user.discord_user}', `;
     if (typeof(user.birthday) !== `undefined`) query += `'${user.birthday.getFullYear()}-${user.birthday.getMonth() + 1}-${user.birthday.getDate()}', `;

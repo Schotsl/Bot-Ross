@@ -20,6 +20,7 @@ module.exports = class PersonMapper {
     if (typeof(personArray.postal) !== `undefined` && personArray.postal !== null) personObject.setPostal(personArray.postal);
     if (typeof(personArray.twitter) !== `undefined` && personArray.twitter !== null) personObject.setTwitter(personArray.twitter);
     if (typeof(personArray.discord) !== `undefined` && personArray.discord !== null) personObject.setDiscord(personArray.discord);
+    if (typeof(personArray.telegram) !== `undefined` && personArray.telegram !== null) personObject.setTelegram(personArray.telegram);
     if (typeof(personArray.birthday) !== `undefined` && personArray.birthday !== null) personObject.setBirthday(personArray.birthday);
 
     return personObject;
