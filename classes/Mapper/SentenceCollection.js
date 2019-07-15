@@ -1,24 +1,24 @@
 "use strict";
 
-let SentenceCollection = require(`./../Collection/SentenceCollection.js`);
+let StatusCollection = require(`./../Collection/StatusCollection.js`);
 
-module.exports = class SentenceCollectionMapper {
+module.exports = class StatusCollectionMapper {
   constructor(sentenceMapper) {
-    this.sentenceMapper = sentenceMapper;
+    this.statusMapper = statusMapper;
   }
 
-  map(sentenceCollectionObject, sentencesArray) {
+  map(statusCollectionObject, statusArray) {
     let that = this;
 
-    sentencesArray.forEach(function(sentenceArray) {
-      let sentenceObject = that.sentenceMapper.createAndMap(sentenceArray);
-      sentenceCollectionObject.addSentence(sentenceObject);
+    statusArray.forEach(function(statusArray) {
+      let statusObject = that.statusMapper.createAndMap(statusArray);
+      statusCollectionObject.addStatus(statusObject);
     });
 
-    return sentenceCollectionObject;
+    return statusCollectionObject;
   }
 
-  createAndMap(sentencesArray) {
-    return this.map(new SentenceCollection, sentencesArray);
+  createAndMap(statusArray) {
+    return this.map(new StatusCollection, statusArray);
   }
 }
