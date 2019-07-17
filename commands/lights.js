@@ -20,6 +20,14 @@ module.exports = class Lights extends Command {
         timeout: 1000,
         executed: {},
         hidden: false
+      },
+      {
+        trigger: `party`,
+        function: `party`,
+        description: `Start a party!`,
+        timeout: 1000,
+        executed: {},
+        hidden: false
       }
     ];
   }
@@ -64,6 +72,28 @@ module.exports = class Lights extends Command {
 
       lightArray.forEach((lightSingle) => {
         lightSingle.setState(newLightState.on());
+      });
+    });
+  }
+
+  party(input, message, respond, person) {
+    //Temp fix
+    let emotionValue = 1;
+
+    getRepositoryFactory().getSentenceRepository().getClosestIntention(`confirm`, emotionValue, (sentenceCollection) => {
+      respond(sentenceCollection.getSentences()[0].getContent());
+    });
+
+    getRepositoryFactory().getSentenceRepository().getClosestIntention(`on`, emotionValue, (sentenceCollection) => {
+      respond(sentenceCollection.getSentences()[0].getContent());
+    });
+
+    let newLightState = lightState.create();
+    getRepositoryFactory().getLightRepository().getAll((lightCollection) => {
+      let lightArray = lightCollection.getLights();
+
+      lightArray.forEach((lightSingle) => {
+        lightSingle.setRGB(functions.getRandomInteger(0, 255), functions.getRandomInteger(0, 255), functions.getRandomInteger(0, 255));
       });
     });
   }
