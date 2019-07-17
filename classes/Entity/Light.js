@@ -1,7 +1,7 @@
 "use strict";
 
 let HueApi = require(`node-hue-api`).HueApi;
-let LightState = require("node-hue-api").lightState;
+let lightState = require("node-hue-api").lightState;
 
 module.exports = class Light {
   constructor() {
@@ -50,8 +50,8 @@ module.exports = class Light {
   }
 
   setRGB(red, green, blue, callback) {
-    let newState = new LightState();
+    let newState = lightState.create();
     newState.rgb(red, green, blue);
-    this.setState(setRGB, callback);
+    this.setState(newState, callback);
   }
 }
