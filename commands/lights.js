@@ -93,7 +93,23 @@ module.exports = class Lights extends Command {
       let lightArray = lightCollection.getLights();
 
       lightArray.forEach((lightSingle) => {
-        lightSingle.setRGB(functions.getRandomInteger(0, 255), functions.getRandomInteger(0, 255), functions.getRandomInteger(0, 255));
+        for (let i = 0; i < 100; i ++) {
+          setTimeout(function() {
+
+            let red = functions.getRandomInteger(0, 255);
+            let blue = functions.getRandomInteger(0, 255);
+            let green = functions.getRandomInteger(0, 255);
+            let brightness = functions.getRandomInteger(0, 255);
+
+            let newState = lightState.create();
+
+            newState.rgb(red, green, blue);
+            newState.bri(brightness);
+
+            lightSingle.setState(newState);
+
+          }, i * functions.getRandomInteger(250, 500));
+        }
       });
     });
   }
