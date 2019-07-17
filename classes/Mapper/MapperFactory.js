@@ -35,7 +35,6 @@ module.exports = class MapperFactory {
     return new PersonCollectionMapper(this.getPersonMapper());
   }
 
-
   getSentenceMapper() {
     let SentenceMapper = require(`./Sentence.js`);
     return new SentenceMapper();
@@ -44,5 +43,15 @@ module.exports = class MapperFactory {
   getSentenceCollectionMapper() {
     let SentenceCollectionMapper = require(`./SentenceCollection.js`);
     return new SentenceCollectionMapper(this.getSentenceMapper());
+  }
+
+  getStatusMapper() {
+    let StatusMapper = require(`./Status.js`);
+    return new StatusMapper();
+  }
+
+  getStatusCollectionMapper() {
+    let StatusCollectionMapper = require(`./StatusCollection.js`);
+    return new StatusCollectionMapper(this.getStatusMapper());
   }
 }

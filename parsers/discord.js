@@ -2,6 +2,7 @@
 
 let Discord = require(`discord.js`);
 let Person = require(`./../classes/Entity/Person.js`);
+let Status = require(`./../classes/Entity/Status.js`);
 
 let discord = new Discord.Client();
 
@@ -18,9 +19,7 @@ discord.on(`message`, async (discordMessageObject) => {
   if (discordMessageObject.author.bot) return;
 
   //Attempt to get user by Discord ID
-  getRepositoryFactory().getPersonRepository().getByDiscord(discordMessageObject.author.id, (personCollection) => {
-    //Get single person from array
-    let person = personCollection.getPersons()[0];
+  discordIdToPersonObject(discordMessageObject.author.id, (person) => {
 
     //Create respond function to pass along
     let respond = function(response) {
@@ -30,20 +29,50 @@ discord.on(`message`, async (discordMessageObject) => {
     //Get actual message
     let message = discordMessageObject.content;
 
-    if (typeof(person) !== `undefined`) {
-      //If user is already stored in the database
-      emitter.emit('message', message, respond, person)
-    } else {
-      //If user isn't already stored in the database construct a new user
-      person = new Person();
-      person.setDiscord(discordMessageObject.author.id);
-
-      //Save user to database and return user with database ID
-      getRepositoryFactory().getPersonRepository().saveUser(person, function(person) {
-        emitter.emit('message', message, respond, person)
-      });
-    }
+    //Emit custom message event
+    emitter.emit('message', message, respond, person)
   });
 });
 
+discord.on("presenceUpdate", function(oldDiscordUserObject, newDiscordUserObject) {
+  let oldStatus = oldDiscordUserObject.presence.status;
+  let newStatus = newDiscordUserObject.presence.status;
+
+  //If status has changed
+  if (oldStatus !== newStatus) {
+    discordIdToPersonObject(newDiscordUserObject.id, function(person) {
+      let status = new Status();
+
+      status.setPerson(person.id);
+      status.setPlatform(`discord`);
+      status.setState(newStatus);
+
+      getRepositoryFactory().getStatusRepository().saveStatus(status);
+    })
+  }
+
+});
+
 discord.login(discordCredentials.token);
+
+function discordIdToPersonObject(discordId, callback) {
+  getRepositoryFactory().getPersonRepository().getByDiscord(discordId, (personCollection) => {
+    //Get single person from array
+    let person = personCollection.getPersons()[0];
+
+    //If person object is found in database
+    if (typeof(person) !== `undefined`) {
+      //Return person object
+      callback(person);
+    } else {
+      //Create new person object
+      person = new Person();
+      person.setDiscord(discordId);
+
+      //Save user to database and return user with database ID
+      getRepositoryFactory().getPersonRepository().saveUser(person, function(person) {
+        callback(person);
+      });
+    }
+  });
+}

@@ -18,8 +18,14 @@ loader.loadCredentials();
 loader.loadFactories();
 loader.loadCommands();
 
-require('./parsers/telegram.js');
-require('./parsers/discord.js');
+global.platforms = [
+  'telegram',
+  'discord'
+];
+
+platforms.forEach(function(platform) {
+  require(`./parsers/${platform}.js`);
+});
 
 emitter.on('message', function(message, respond, person) {
   //Parse command
