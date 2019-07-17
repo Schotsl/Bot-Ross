@@ -13,7 +13,7 @@ module.exports = class Status {
   }
 
   setState(state) {
-    this.status = status;
+    this.state = state;
   }
 
   setPerson(person) {

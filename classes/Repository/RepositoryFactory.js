@@ -22,6 +22,11 @@ module.exports = class RepositoryFactory {
     return new PersonRepository(this.mapperFactory.getPersonCollectionMapper());
   }
 
+  getStatusRepository() {
+    let StatusRepository = require(`./StatusRepository.js`);
+    return new StatusRepository(this.mapperFactory.getStatusCollectionMapper());
+  }
+
   getSentenceRepository() {
     let SentenceRepository = require(`./SentenceRepository.js`);
     return new SentenceRepository(this.mapperFactory.getSentenceCollectionMapper());
