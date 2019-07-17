@@ -48,10 +48,4 @@ module.exports = class Light {
       })
       .fail((error) => report.error(error))
   }
-
-  setRGB(red, green, blue, callback) {
-    let newState = lightState.create();
-    newState.rgb(red, green, blue);
-    this.setState(newState, callback);
-  }
 }
