@@ -6,6 +6,7 @@ module.exports = class Status {
     this.state;
     this.person;
     this.platform;
+    this.datetime;
   }
 
   setId(id) {
@@ -25,6 +26,10 @@ module.exports = class Status {
     else report.error(`Unsupported platform (${platform}) has been attempted to set`);
   }
 
+  setDatetime(datetime) {
+    this.datetime = datetime;
+  }
+
   getId() {
     return this.id;
   }
@@ -39,5 +44,9 @@ module.exports = class Status {
 
   getPlatform() {
     return this.platform;
+  }
+
+  getDatetime() {
+    return this.datetime;
   }
 }

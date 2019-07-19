@@ -5,7 +5,7 @@ module.exports = class StatusCollection {
     this.statuses = [];
   }
 
-  addSentence(status) {
+  addStatus(status) {
     this.statuses.push(status);
   }
 
