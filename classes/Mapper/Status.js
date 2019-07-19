@@ -12,6 +12,7 @@ module.exports = class StatusMapper {
     if (typeof(statusArray.state) !== `undefined` && statusArray.state !== null) statusObject.setState(statusArray.state);
     if (typeof(statusArray.person) !== `undefined` && statusArray.person !== null) statusObject.setPerson(statusArray.person);
     if (typeof(statusArray.platform) !== `undefined` && statusArray.platform !== null) statusObject.setPlatform(statusArray.platform);
+    if (typeof(statusArray.datetime) !== `undefined` && statusArray.datetime !== null) statusObject.setDatetime(statusArray.datetime);
 
     return statusObject;
   }
