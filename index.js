@@ -59,3 +59,9 @@ app.get('/status', function(request, response) {
   response.send(JSON.stringify(results));
 });
 });
+
+app.get('/person', function(request, response) {
+  getRepositoryFactory().getPersonRepository().getAll(function(results) {
+  response.send(JSON.stringify(results));
+});
+});
