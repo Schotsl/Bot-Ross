@@ -3,6 +3,7 @@
 let Discord = require(`discord.js`);
 let Person = require(`./../classes/Entity/Person.js`);
 let Status = require(`./../classes/Entity/Status.js`);
+let Message = require(`./../classes/Entity/Message.js`);
 
 let discord = new Discord.Client();
 
@@ -23,14 +24,27 @@ discord.on(`message`, async (discordMessageObject) => {
 
     //Create respond function to pass along
     let respond = function(response) {
-      discordMessageObject.channel.send(response);
+      let messageObject = new Message();
+      messageObject.setPerson(person.id);
+      messageObject.setContent(response);
+      messageObject.setRecieved(0);
+
+      getRepositoryFactory().getMessageRepository().saveMessage(messageObject, function() {
+        //Emit custom message event
+        discordMessageObject.channel.send(messageObject.content);
+      });
     }
 
     //Get actual message
-    let message = discordMessageObject.content;
+    let messageObject = new Message();
+    messageObject.setPerson(person.id);
+    messageObject.setContent(discordMessageObject.content);
+    messageObject.setRecieved(1);
 
-    //Emit custom message event
-    emitter.emit('message', message, respond, person)
+    getRepositoryFactory().getMessageRepository().saveMessage(messageObject, function() {
+      //Emit custom message event
+      emitter.emit('message', messageObject.content, respond, person)
+    });
   });
 });
 
