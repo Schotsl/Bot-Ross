@@ -5,6 +5,7 @@ module.exports = class Message {
     this.id;
     this.person;
     this.content;
+    this.recieved;
   }
 
   setId(id) {
@@ -19,6 +20,10 @@ module.exports = class Message {
     this.content = content;
   }
 
+  setRecieved(recieved) {
+    this.recieved = recieved;
+  }
+
   getId() {
     return this.id;
   }
@@ -29,5 +34,9 @@ module.exports = class Message {
 
   getContent() {
     return this.content;
+  }
+
+  getRecieved() {
+    return this.recieved;
   }
 }
