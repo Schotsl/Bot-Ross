@@ -11,7 +11,17 @@ module.exports = class StatusRepository {
     let that = this;
     let connection = MySQL.createConnection(mySQLCredentials);
 
-    connection.query(`SELECT \`id\`, \`person\`, \`state\`, \`platform\`, \`datetime\` FROM \`status\` WHERE 1`, function(error, statusArray) {
+    connection.query(`SELECT \`id\`, \`person\`, \`state\`, \`platform\`, \`datetime\` FROM \`status\` WHERE 1 ORDER BY \`datetime\` DESC`, function(error, statusArray) {
+      connection.end();
+      callback(that.statusCollectionMapper.createAndMap(statusArray));
+    });
+  }
+
+  getByPerson(personId, callback) {
+    let that = this;
+    let connection = MySQL.createConnection(mySQLCredentials);
+
+    connection.query(`SELECT \`id\`, \`person\`, \`state\`, \`platform\`, \`datetime\` FROM \`status\` WHERE \`person\` = ${personId} ORDER BY \`datetime\` DESC`, function(error, statusArray) {
       connection.end();
       callback(that.statusCollectionMapper.createAndMap(statusArray));
     });
