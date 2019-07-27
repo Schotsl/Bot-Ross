@@ -9,11 +9,11 @@ module.exports = class StatusCollection {
     this.statuses.push(status);
   }
 
-  setSentences(statuses) {
+  setStatuses(statuses) {
     this.statuses = statuses;
   }
 
-  getSentences() {
+  getStatuses() {
     return this.statuses;
   }
 }
