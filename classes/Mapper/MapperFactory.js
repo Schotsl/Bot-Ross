@@ -15,14 +15,14 @@ module.exports = class MapperFactory {
     return new LightCollectionMapper(this.getLightMapper());
   }
 
-  getLogMapper() {
-    let LogMapper = require(`./Log.js`);
-    return new LogMapper();
+  getMessageMapper() {
+    let MessageMapper = require(`./Message.js`);
+    return new MessageMapper();
   }
 
-  getLogCollectionMapper() {
-    let LogCollectionMapper = require(`./LogCollection.js`);
-    return new LogCollectionMapper(this.getLogMapper());
+  getMessageCollectionMapper() {
+    let MessageCollectionMapper = require(`./MessageCollection.js`);
+    return new MessageCollectionMapper(this.getMessageMapper());
   }
 
   getPersonMapper() {

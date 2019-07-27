@@ -1,33 +1,33 @@
 "use strict";
 
-module.exports = class Log {
+module.exports = class Message {
   constructor() {
     this.id;
-    this.state
     this.person;
+    this.content;
   }
 
   setId(id) {
     this.id = id;
   }
 
-  setState(state) {
-    this.state = state;
-  }
-
   setPerson(person) {
     this.person = person;
+  }
+
+  setContent(content) {
+    this.content = content;
   }
 
   getId() {
     return this.id;
   }
 
-  getState() {
-    return this.state;
-  }
-
   getPerson(person) {
     return this.person;
+  }
+
+  getContent() {
+    return this.content;
   }
 }
