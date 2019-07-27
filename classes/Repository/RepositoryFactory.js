@@ -12,9 +12,9 @@ module.exports = class RepositoryFactory {
     return new LightRepository(this.mapperFactory.getLightCollectionMapper());
   }
 
-  getLogRepository() {
-    let LogRepository = require(`./LogRepository.js`);
-    return new LogRepository(this.mapperFactory.getLogCollectionMapper());
+  getMessageRepository() {
+    let MessageRepository = require(`./MessageRepository.js`);
+    return new MessageRepository(this.mapperFactory.getMessageCollectionMapper());
   }
 
   getPersonRepository() {
