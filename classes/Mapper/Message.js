@@ -11,6 +11,7 @@ module.exports = class MessageMapper {
     if (typeof(messageArray.id) !== `undefined` && messageArray.id !== null) messageObject.setId(messageArray.id);
     if (typeof(messageArray.person) !== `undefined` && messageArray.person !== null) messageObject.setPerson(messageArray.person);
     if (typeof(messageArray.content) !== `undefined` && messageArray.content !== null) messageObject.setContent(messageArray.content);
+    if (typeof(messageArray.recieved) !== `undefined` && messageArray.recieved !== null) messageObject.setRecieved(messageArray.recieved); 
 
     return messageObject;
   }

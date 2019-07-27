@@ -11,7 +11,7 @@ module.exports = class MessageRepository {
     let that = this;
     let connection = MySQL.createConnection(mySQLCredentials);
 
-    connection.query(`SELECT \`id\`, \`person\`, \`content\` FROM \`messages\` WHERE 1`, function(error, messagesArray) {
+    connection.query(`SELECT \`id\`, \`person\`, \`recieved\`, \`content\` FROM \`messages\` WHERE 1`, function(error, messagesArray) {
       connection.end();
       callback(that.messageCollectionMapper.createAndMap(messagesArray));
     });
