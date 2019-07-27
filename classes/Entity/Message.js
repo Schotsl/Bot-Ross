@@ -24,6 +24,10 @@ module.exports = class Message {
     this.recieved = recieved;
   }
 
+  setDatetime(datetime) {
+    this.datetime = datetime;
+  }
+
   getId() {
     return this.id;
   }
@@ -38,5 +42,9 @@ module.exports = class Message {
 
   getRecieved() {
     return this.recieved;
+  }
+
+  getDatetime() {
+    return this.datetime;
   }
 }
