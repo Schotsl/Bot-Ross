@@ -17,6 +17,16 @@ module.exports = class MessageRepository {
     });
   }
 
+  getByPerson(personId, callback) {
+    let that = this;
+    let connection = MySQL.createConnection(mySQLCredentials);
+
+    connection.query(`SELECT \`id\`, \`person\`, \`recieved\`, \`content\` FROM \`messages\` WHERE \`person\` = ${personId}`, function(error, messagesArray) {
+      connection.end();
+      callback(that.messageCollectionMapper.createAndMap(messagesArray));
+    });
+  }
+
   saveMessage(message, callback) {
     let that = this;
     let connection = MySQL.createConnection(mySQLCredentials);
