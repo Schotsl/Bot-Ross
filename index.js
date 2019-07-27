@@ -46,22 +46,33 @@ const Express = require(`express`);
 const app = Express();
 app.use(Express.json());
 app.listen(3000);
-app.use(function (req, res, next) {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-    res.setHeader('Access-Control-Allow-Credentials', true);
-    next();
+app.use(function(req, res, next) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  next();
 });
 
-app.get('/status', function(request, response) {
-  getRepositoryFactory().getStatusRepository().getAll(function(results) {
-  response.send(JSON.stringify(results));
+
+app.get('/status/:personId', function(request, response) {
+  let personId = request.params.personId;
+
+  getRepositoryFactory().getStatusRepository().getByPerson(personId, function(results) {
+    response.send(JSON.stringify(results));
+  });
 });
+
+app.get('/message/:personId', function(request, response) {
+  let personId = request.params.personId;
+
+  getRepositoryFactory().getMessageRepository().getByPerson(personId, function(results) {
+    response.send(JSON.stringify(results));
+  });
 });
 
 app.get('/person', function(request, response) {
   getRepositoryFactory().getPersonRepository().getAll(function(results) {
-  response.send(JSON.stringify(results));
-});
+    response.send(JSON.stringify(results));
+  });
 });
