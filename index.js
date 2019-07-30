@@ -27,6 +27,8 @@ platforms.forEach(function(platform) {
   require(`./parsers/${platform}.js`);
 });
 
+global.emotionValue = 0;
+
 emitter.on('message', function(message, respond, person) {
   //Parse command
   let splitMessage = message.split(" ");
@@ -42,10 +44,13 @@ emitter.on('message', function(message, respond, person) {
 //Temp quick backend
 const Express = require(`express`);
 
+var bodyParser = require('body-parser')
+
 // Create server
 const app = Express();
 app.use(Express.json());
 app.listen(3000);
+app.use(bodyParser.json());
 app.use(function(req, res, next) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
@@ -75,4 +80,13 @@ app.get('/person', function(request, response) {
   getRepositoryFactory().getPersonRepository().getAll(function(results) {
     response.send(JSON.stringify(results));
   });
+});
+
+app.get('/emotion', function(request, response) {
+  response.send(JSON.stringify(emotionValue));
+});
+
+app.patch('/emotion', function(request, response) {
+  emotionValue = request.body.emotion;
+  response.send(JSON.stringify(emotionValue));
 });

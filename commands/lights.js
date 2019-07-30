@@ -33,8 +33,6 @@ module.exports = class Lights extends Command {
   }
 
   off(input, message, respond, person) {
-    //Temp fix
-    let emotionValue = 1;
 
     getRepositoryFactory().getSentenceRepository().getClosestIntention(`confirm`, emotionValue, (sentenceCollection) => {
       respond(sentenceCollection.getSentences()[0].getContent());
@@ -55,8 +53,6 @@ module.exports = class Lights extends Command {
   }
 
   on(input, message, respond, person) {
-    //Temp fix
-    let emotionValue = 1;
 
     getRepositoryFactory().getSentenceRepository().getClosestIntention(`confirm`, emotionValue, (sentenceCollection) => {
       respond(sentenceCollection.getSentences()[0].getContent());
@@ -77,8 +73,6 @@ module.exports = class Lights extends Command {
   }
 
   party(input, message, respond, person) {
-    //Temp fix
-    let emotionValue = 1;
 
     getRepositoryFactory().getSentenceRepository().getClosestIntention(`confirm`, emotionValue, (sentenceCollection) => {
       respond(sentenceCollection.getSentences()[0].getContent());
