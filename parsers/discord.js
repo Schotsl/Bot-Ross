@@ -29,10 +29,10 @@ discord.on(`message`, async (discordMessageObject) => {
       messageObject.setContent(response);
       messageObject.setRecieved(0);
 
-      getRepositoryFactory().getMessageRepository().saveMessage(messageObject, function() {
-        //Emit custom message event
-        discordMessageObject.channel.send(messageObject.content);
-      });
+      // getRepositoryFactory().getMessageRepository().saveMessage(messageObject, function() {
+      //   //Emit custom message event
+      //   discordMessageObject.channel.send(messageObject.content);
+      // });
     }
 
     //Get actual message
@@ -41,10 +41,10 @@ discord.on(`message`, async (discordMessageObject) => {
     messageObject.setContent(discordMessageObject.content);
     messageObject.setRecieved(1);
 
-    getRepositoryFactory().getMessageRepository().saveMessage(messageObject, function() {
-      //Emit custom message event
-      emitter.emit('message', messageObject.content, respond, person)
-    });
+    // getRepositoryFactory().getMessageRepository().saveMessage(messageObject, function() {
+    //   //Emit custom message event
+    //   emitter.emit('message', messageObject.content, respond, person)
+    // });
   });
 });
 
@@ -61,7 +61,7 @@ discord.on("presenceUpdate", function(oldDiscordUserObject, newDiscordUserObject
       status.setPlatform(`discord`);
       status.setState(newStatus);
 
-      getRepositoryFactory().getStatusRepository().saveStatus(status);
+      // getRepositoryFactory().getStatusRepository().saveStatus(status);
     })
   }
 
