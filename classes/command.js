@@ -6,8 +6,6 @@ module.exports = class Command {
   }
 
   execute(command, params, message, respond, person) {
-    //Temp fix
-    let emotionValue = 1;
 
     this.commands.forEach((commandArray) => {
       if (commandArray.trigger === command) {
