@@ -10,10 +10,13 @@ module.exports = class SentenceCollectionMapper {
   map(sentenceCollectionObject, sentencesArray) {
     let that = this;
 
-    sentencesArray.forEach(function(sentenceArray) {
-      let sentenceObject = that.sentenceMapper.createAndMap(sentenceArray);
-      sentenceCollectionObject.addSentence(sentenceObject);
-    });
+    //Something causes empty arrays to be parsed this is a hot fix
+    if (typeof(sentencesArray) !== `undefined` || sentencesArray.length > 0) {
+      sentencesArray.forEach(function(sentenceArray) {
+        let sentenceObject = that.sentenceMapper.createAndMap(sentenceArray);
+        sentenceCollectionObject.addSentence(sentenceObject);
+      });
+    }
 
     return sentenceCollectionObject;
   }

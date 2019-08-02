@@ -10,10 +10,13 @@ module.exports = class LightCollectionMapper {
   map(lightCollectionObject, lightsArray) {
     let that = this;
 
-    lightsArray.forEach(function(lightArray) {
-      let lightObject = that.lightMapper.createAndMap(lightArray);
-      lightCollectionObject.addLight(lightObject);
-    });
+    //Something causes empty arrays to be parsed this is a hot fix
+    if (typeof(lightsArray) !== `undefined` || lightsArray.length > 0) {
+      lightsArray.forEach(function(lightArray) {
+        let lightObject = that.lightMapper.createAndMap(lightArray);
+        lightCollectionObject.addLight(lightObject);
+      });
+    }
 
     return lightCollectionObject;
   }
