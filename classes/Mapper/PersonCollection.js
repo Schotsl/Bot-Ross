@@ -10,10 +10,13 @@ module.exports = class PersonCollectionMapper {
   map(personCollectionObject, personsArray) {
     let that = this;
 
-    personsArray.forEach(function(personArray) {
-      let personObject = that.personMapper.createAndMap(personArray);
-      personCollectionObject.addPerson(personObject);
-    });
+    //Something causes empty arrays to be parsed this is a hot fix
+    if (typeof(personsArray) !== `undefined` || personsArray.length > 0) {
+      personsArray.forEach(function(personArray) {
+        let personObject = that.personMapper.createAndMap(personArray);
+        personCollectionObject.addPerson(personObject);
+      });
+    }
 
     return personCollectionObject;
   }
