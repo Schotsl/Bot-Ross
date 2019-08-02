@@ -78,7 +78,7 @@ module.exports = class Lights extends Command {
       respond(sentenceCollection.getSentences()[0].getContent());
     });
 
-    getRepositoryFactory().getSentenceRepository().getClosestIntention(`on`, emotionValue, (sentenceCollection) => {
+    getRepositoryFactory().getSentenceRepository().getClosestIntention(`party`, emotionValue, (sentenceCollection) => {
       respond(sentenceCollection.getSentences()[0].getContent());
     });
 
