@@ -14,7 +14,7 @@ module.exports = class PersonCollectionMapper {
     if (typeof(personsArray) !== `undefined` || personsArray.length > 0) {
       personsArray.forEach(function(personArray) {
         let personObject = that.personMapper.createAndMap(personArray);
-        personCollectionObject.addPerson(personObject);
+        personCollectionObject.addPersonObject(personObject);
       });
     }
 

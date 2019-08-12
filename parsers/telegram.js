@@ -22,7 +22,7 @@ telegram.on(`message`, async (telegramMessageObject) => {
   //Attempt to get user by Telegram ID
   getRepositoryFactory().getPersonRepository().getByTelegram(telegramMessageObject.from.id, (personCollection) => {
     //Get single person from array
-    let person = personCollection.getPersons()[0];
+    let person = personCollection.getPersonArray()[0];
 
     //Create respond function to pass along
     let respond = function(response) {

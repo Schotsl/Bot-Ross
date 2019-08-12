@@ -14,7 +14,7 @@ module.exports = class SentenceCollectionMapper {
     if (typeof(sentencesArray) !== `undefined` || sentencesArray.length > 0) {
       sentencesArray.forEach(function(sentenceArray) {
         let sentenceObject = that.sentenceMapper.createAndMap(sentenceArray);
-        sentenceCollectionObject.addSentence(sentenceObject);
+        sentenceCollectionObject.addSentenceObject(sentenceObject);
       });
     }
 

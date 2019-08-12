@@ -14,7 +14,7 @@ module.exports = class StatusCollectionMapper {
     if (typeof(statusArray) !== `undefined` || statusArray.length > 0) {
       statusArray.forEach(function(statusArray) {
         let statusObject = that.statusMapper.createAndMap(statusArray);
-        statusCollectionObject.addStatus(statusObject);
+        statusCollectionObject.addStatusObject(statusObject);
       });
     }
 

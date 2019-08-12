@@ -14,7 +14,7 @@ module.exports = class DataCollectionMapper {
     if (typeof(datasArray) !== `undefined` || datasArray.length > 0) {
       datasArray.forEach(function(dataArray) {
         let dataObject = that.dataMapper.createAndMap(dataArray);
-        dataCollectionObject.addData(dataObject);
+        dataCollectionObject.addDataObject(dataObject);
       });
     }
 

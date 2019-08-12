@@ -14,7 +14,7 @@ module.exports = class LightCollectionMapper {
     if (typeof(lightsArray) !== `undefined` || lightsArray.length > 0) {
       lightsArray.forEach(function(lightArray) {
         let lightObject = that.lightMapper.createAndMap(lightArray);
-        lightCollectionObject.addLight(lightObject);
+        lightCollectionObject.addLightObject(lightObject);
       });
     }
 
