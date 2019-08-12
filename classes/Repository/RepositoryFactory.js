@@ -17,6 +17,11 @@ module.exports = class RepositoryFactory {
     return new MessageRepository(this.mapperFactory.getMessageCollectionMapper());
   }
 
+  getDataRepository() {
+    let DataRepository = require(`./DataRepository.js`);
+    return new DataRepository(this.mapperFactory.getDataCollectionMapper());
+  }
+
   getPersonRepository() {
     let PersonRepository = require(`./PersonRepository.js`);
     return new PersonRepository(this.mapperFactory.getPersonCollectionMapper());

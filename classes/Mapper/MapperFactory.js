@@ -25,6 +25,16 @@ module.exports = class MapperFactory {
     return new MessageCollectionMapper(this.getMessageMapper());
   }
 
+  getDataMapper() {
+    let DataMapper = require(`./Data.js`);
+    return new DataMapper();
+  }
+
+  getDataCollectionMapper() {
+    let DataCollectionMapper = require(`./DataCollection.js`);
+    return new DataCollectionMapper(this.getDataMapper());
+  }
+
   getPersonMapper() {
     let PersonMapper = require(`./Person.js`);
     return new PersonMapper();
