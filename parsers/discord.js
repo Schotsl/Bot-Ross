@@ -72,7 +72,7 @@ discord.login(discordCredentials.token);
 function discordIdToPersonObject(discordId, callback) {
   getRepositoryFactory().getPersonRepository().getByDiscord(discordId, (personCollection) => {
     //Get single person from array
-    let person = personCollection.getPersons()[0];
+    let person = personCollection.getPersonArray()[0];
 
     //If person object is found in database
     if (typeof(person) !== `undefined`) {

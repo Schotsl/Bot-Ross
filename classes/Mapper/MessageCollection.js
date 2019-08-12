@@ -14,7 +14,7 @@ module.exports = class MessageCollectionMapper {
     if (typeof(messagesArray) !== `undefined` || messagesArray.length > 0) {
       messagesArray.forEach(function(messageArray) {
         let messageObject = that.messageMapper.createAndMap(messageArray);
-        messageCollectionObject.addMessage(messageObject);
+        messageCollectionObject.addMessageObject(messageObject);
       });
     }
 

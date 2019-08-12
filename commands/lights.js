@@ -35,16 +35,16 @@ module.exports = class Lights extends Command {
   off(input, message, respond, person) {
 
     getRepositoryFactory().getSentenceRepository().getClosestIntention(`confirm`, emotionValue, (sentenceCollection) => {
-      respond(sentenceCollection.getSentences()[0].getContent());
+      respond(sentenceCollection.getSentenceArray()[0].getContent());
     });
 
     getRepositoryFactory().getSentenceRepository().getClosestIntention(`off`, emotionValue, (sentenceCollection) => {
-      respond(sentenceCollection.getSentences()[0].getContent());
+      respond(sentenceCollection.getSentenceArray()[0].getContent());
     });
 
     let newLightState = lightState.create();
     getRepositoryFactory().getLightRepository().getAll((lightCollection) => {
-      let lightArray = lightCollection.getLights();
+      let lightArray = lightCollection.getLightArray();
 
       lightArray.forEach((lightSingle) => {
         lightSingle.setState(newLightState.off());
