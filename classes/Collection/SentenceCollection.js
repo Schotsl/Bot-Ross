@@ -2,18 +2,22 @@
 
 module.exports = class SentenceCollection {
   constructor() {
-    this.sentences = [];
+    this.sentenceArray = [];
   }
 
-  addSentence(sentence) {
-    this.sentences.push(sentence);
+  addSentenceObject(sentenceObject) {
+    this.sentenceArray.push(sentenceObject);
   }
 
-  setSentences(sentences) {
-    this.sentences = sentences;
+  addDataArray(sentenceArray) {
+    this.sentenceArray.concat(sentenceArray);
   }
 
-  getSentences() {
-    return this.sentences;
+  setSentenceArray(sentenceArray) {
+    this.sentenceArray = sentenceArray;
+  }
+
+  getSentenceArray() {
+    return this.sentenceArray;
   }
 }

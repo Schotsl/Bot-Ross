@@ -2,18 +2,22 @@
 
 module.exports = class StatusCollection {
   constructor() {
-    this.statuses = [];
+    this.statusArray = [];
   }
 
-  addStatus(status) {
-    this.statuses.push(status);
+  addStatusObject(statusObject) {
+    this.statusArray.push(statusObject);
   }
 
-  setStatuses(statuses) {
-    this.statuses = statuses;
+  addStatusArray(statusArray) {
+    this.statusArray.concat(statusArray);
   }
 
-  getStatuses() {
-    return this.statuses;
+  setStatusArray(statusArray) {
+    this.statusArray = statusArray;
+  }
+
+  getStatusArray() {
+    return this.statusArray;
   }
 }

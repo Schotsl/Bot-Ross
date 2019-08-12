@@ -2,18 +2,22 @@
 
 module.exports = class MessageCollection {
   constructor() {
-    this.messages = [];
+    this.messageArray = [];
   }
 
-  addMessage(message) {
-    this.messages.push(message);
+  addMessageObject(messageObject) {
+    this.messageArray.push(messageObject);
   }
 
-  setMessages(messages) {
-    this.messages = messages;
+  addMessageArray(messageArray) {
+    this.messageArray.concat(messageArray);
   }
 
-  getMessages() {
-    return this.messages;
+  setMessageArray(messageArray) {
+    this.messageArray = messageArray;
+  }
+
+  getMessageArray() {
+    return this.messageArray;
   }
 }
