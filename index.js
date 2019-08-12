@@ -59,7 +59,7 @@ app.use(function(req, res, next) {
   next();
 });
 
-
+//Status endpoint
 app.get('/status/:personId', function(request, response) {
   let personId = request.params.personId;
 
@@ -68,6 +68,32 @@ app.get('/status/:personId', function(request, response) {
   });
 });
 
+//Data endpoint
+app.get('/data/:label', function(request, response) {
+  let label = request.params.label;
+
+  getRepositoryFactory().getDataRepository().getByLabel(label, function(results) {
+    response.send(JSON.stringify(results));
+  })
+})
+
+let Data = require('./classes/Entity/Data.js');
+
+app.post('/data', function(request, response) {
+  let content = request.body.content;
+  let label = request.body.label;
+
+  let newObject = new Data();
+  newObject.setContent(content);
+  newObject.setLabel(label);
+
+  getRepositoryFactory().getDataRepository().saveData(newObject, function(dataObject) {
+    response.send(JSON.stringify(dataObject));
+  });
+});
+
+
+//Message endpoint
 app.get('/message/:personId', function(request, response) {
   let personId = request.params.personId;
 
@@ -82,6 +108,7 @@ app.get('/person', function(request, response) {
   });
 });
 
+//Emotion endpoint
 app.get('/emotion', function(request, response) {
   response.send(JSON.stringify(emotionValue));
 });
