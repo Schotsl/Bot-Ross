@@ -2,18 +2,22 @@
 
 module.exports = class DataCollection {
   constructor() {
-    this.datas = [];
+    this.dataArray = [];
   }
 
-  addData(data) {
-    this.datas.push(data);
+  addDataObject(dataObject) {
+    this.dataArray.push(dataObject);
   }
 
-  setDatas(datas) {
-    this.datas = datas;
+  addDataArray(dataArray) {
+    this.dataArray.concat(dataArray);
   }
 
-  getDatas() {
-    return this.datas;
+  setDataArray(dataArray) {
+    this.dataArray = dataArray;
+  }
+
+  getDataArray() {
+    return this.dataArray;
   }
 }

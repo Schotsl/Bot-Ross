@@ -2,18 +2,22 @@
 
 module.exports = class PersonCollection {
   constructor() {
-    this.persons = [];
+    this.personArray = [];
   }
 
-  addPerson(person) {
-    this.persons.push(person);
+  addPersonObject(personObject) {
+    this.personArray.push(personObject);
   }
 
-  setPersons(persons) {
-    this.persons = persons;
+  addPersonArray(personArray) {
+    this.personArray.concat(personArray);
   }
 
-  getPersons() {
-    return this.persons;
+  setPersonArray(personArray) {
+    this.personArray = personArray;
+  }
+
+  getPersonArray() {
+    return this.personArray;
   }
 }

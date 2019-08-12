@@ -2,18 +2,22 @@
 
 module.exports = class LightCollection {
   constructor() {
-    this.lights = [];
+    this.lightArray = [];
   }
 
-  addLight(light) {
-    this.lights.push(light);
+  addLightObject(lightObject) {
+    this.lightArray.push(lightObject);
   }
 
-  setLights(lights) {
-    this.lights = lights;
+  addLightArray(lightArray) {
+    this.lightArray.concat(lightArray);
   }
 
-  getLights() {
-    return this.lights;
+  setLightArray(lightArray) {
+    this.lightArray = lightArray;
+  }
+
+  getLightArray() {
+    return this.lightArray;
   }
 }
