@@ -48,24 +48,24 @@ discord.on(`error`, function(data) {
 //   });
 // });
 
-discord.on("presenceUpdate", function(oldDiscordUserObject, newDiscordUserObject) {
-  let oldStatus = oldDiscordUserObject.presence.status;
-  let newStatus = newDiscordUserObject.presence.status;
-
-  //If status has changed
-  if (oldStatus !== newStatus) {
-    discordIdToPersonObject(newDiscordUserObject.id, function(person) {
-      let status = new Status();
-
-      status.setPerson(person.id);
-      status.setPlatform(`discord`);
-      status.setState(newStatus);
-
-      getRepositoryFactory().getStatusRepository().saveStatus(status);
-    })
-  }
-
-});
+// discord.on("presenceUpdate", function(oldDiscordUserObject, newDiscordUserObject) {
+//   let oldStatus = oldDiscordUserObject.presence.status;
+//   let newStatus = newDiscordUserObject.presence.status;
+//
+//   //If status has changed
+//   if (oldStatus !== newStatus) {
+//     discordIdToPersonObject(newDiscordUserObject.id, function(person) {
+//       let status = new Status();
+//
+//       status.setPerson(person.id);
+//       status.setPlatform(`discord`);
+//       status.setState(newStatus);
+//
+//       getRepositoryFactory().getStatusRepository().saveStatus(status);
+//     })
+//   }
+//
+// });
 
 discord.login(discordCredentials.token);
 
