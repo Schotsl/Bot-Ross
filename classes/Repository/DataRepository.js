@@ -17,30 +17,40 @@ module.exports = class DataRepository {
     });
   }
 
-  // saveMessage(message, callback) {
-  //   let that = this;
-  //   let connection = MySQL.createConnection(mySQLCredentials);
+  getByLabel(label, callback) {
+    let that = this;
+    let connection = MySQL.createConnection(mySQLCredentials);
 
-  //   let query = `INSERT INTO \`messages\` (`;
-  //   if (typeof(message.person) !== `undefined`) query += `\`person\`, `;
-  //   if (typeof(message.content) !== `undefined`) query += `\`content\`, `;
-  //   if (typeof(message.recieved) !== `undefined`) query += `\`recieved\`, `;
-  //   query = `${query.substring(0, query.length - 2)} ) VALUES (`;
+    connection.query(`SELECT \`id\`, \`content\`, \`label\`, \`version\` FROM \`data\` WHERE \`label\` LIKE '%${label}%'`, function(error, datasArray) {
+      connection.end();
+      callback(that.dataCollectionMapper.createAndMap(datasArray));
+    });
+  }
 
-  //   if (typeof(message.person) !== `undefined`) query += `'${message.person}', `;
-  //   if (typeof(message.content) !== `undefined`) query += `'${message.content}', `;
-  //   if (typeof(message.recieved) !== `undefined`) query += `'${message.recieved}', `;
-  //   query = `${query.substring(0, query.length - 2)})`;
+  saveData(data, callback) {
+    let that = this;
+    let connection = MySQL.createConnection(mySQLCredentials);
 
-  //   connection.query(query, function(error, personsArray) {
-  //     connection.query(`SELECT LAST_INSERT_ID()`, function(error, lastId) {
-  //       message.setId(lastId[0][`LAST_INSERT_ID()`]);
-  //
-  //       if (callback) {
-  //         connection.end();
-  //         callback(message);
-  //       }
-  //     });
-  //   });
-  // }
+    let query = `INSERT INTO \`data\` (`;
+    if (typeof(message.label) !== `undefined`) query += `\`label\`, `;
+    if (typeof(message.content) !== `undefined`) query += `\`content\`, `;
+    if (typeof(message.version) !== `undefined`) query += `\`version\`, `;
+    query = `${query.substring(0, query.length - 2)} ) VALUES (`;
+
+    if (typeof(message.label) !== `undefined`) query += `'${message.label}', `;
+    if (typeof(message.content) !== `undefined`) query += `'${message.content}', `;
+    if (typeof(message.version) !== `undefined`) query += `'${message.version}', `;
+    query = `${query.substring(0, query.length - 2)})`;
+
+    connection.query(query, function(error, dataArray) {
+      connection.query(`SELECT LAST_INSERT_ID()`, function(error, lastId) {
+        data.setId(lastId[0][`LAST_INSERT_ID()`]);
+
+        if (callback) {
+          connection.end();
+          callback(message);
+        }
+      });
+    });
+  }
 }
