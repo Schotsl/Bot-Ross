@@ -32,14 +32,14 @@ module.exports = class DataRepository {
     let connection = MySQL.createConnection(mySQLCredentials);
 
     let query = `INSERT INTO \`data\` (`;
-    if (typeof(message.label) !== `undefined`) query += `\`label\`, `;
-    if (typeof(message.content) !== `undefined`) query += `\`content\`, `;
-    if (typeof(message.version) !== `undefined`) query += `\`version\`, `;
+    if (typeof(data.label) !== `undefined`) query += `\`label\`, `;
+    if (typeof(data.content) !== `undefined`) query += `\`content\`, `;
+    if (typeof(data.version) !== `undefined`) query += `\`version\`, `;
     query = `${query.substring(0, query.length - 2)} ) VALUES (`;
 
-    if (typeof(message.label) !== `undefined`) query += `'${message.label}', `;
-    if (typeof(message.content) !== `undefined`) query += `'${message.content}', `;
-    if (typeof(message.version) !== `undefined`) query += `'${message.version}', `;
+    if (typeof(data.label) !== `undefined`) query += `'${data.label}', `;
+    if (typeof(data.content) !== `undefined`) query += `'${data.content}', `;
+    if (typeof(data.version) !== `undefined`) query += `'${data.version}', `;
     query = `${query.substring(0, query.length - 2)})`;
 
     connection.query(query, function(error, dataArray) {
@@ -48,7 +48,7 @@ module.exports = class DataRepository {
 
         if (callback) {
           connection.end();
-          callback(message);
+          callback(data);
         }
       });
     });
