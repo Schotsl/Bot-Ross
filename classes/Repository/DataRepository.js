@@ -43,8 +43,14 @@ module.exports = class DataRepository {
     query = `${query.substring(0, query.length - 2)})`;
 
     connection.query(query, function(error, dataArray) {
-      connection.end();
-      callback(data);
+      connection.query(`SELECT LAST_INSERT_ID()`, function(error, lastId) {
+        data.setId(lastId[0][`LAST_INSERT_ID()`]);
+
+        if (callback) {
+          connection.end();
+          callback(data);
+        }
+      });
     });
   }
 }
