@@ -47,10 +47,8 @@ module.exports = class StatusRepository {
       connection.query(`SELECT LAST_INSERT_ID()`, function(error, lastId) {
         status.setId(lastId[0][`LAST_INSERT_ID()`]);
 
-        if (callback) {
-          connection.end();
-          callback(status);
-        }
+        connection.end();
+        if (callback) callback(status);
       });
     });
   }
