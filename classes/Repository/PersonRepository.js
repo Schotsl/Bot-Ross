@@ -118,10 +118,8 @@ module.exports = class PersonRepository {
       connection.query(`SELECT LAST_INSERT_ID()`, function(error, lastId) {
         user.setId(lastId[0][`LAST_INSERT_ID()`]);
 
-        if (callback) {
-          connection.end();
-          callback(user);
-        }
+        connection.end();
+        if (callback) callback(user);
       });
     });
   }
