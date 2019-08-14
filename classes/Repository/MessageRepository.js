@@ -43,8 +43,12 @@ module.exports = class MessageRepository {
     query = `${query.substring(0, query.length - 2)})`;
 
     connection.query(query, function(error, personsArray) {
-      connection.end();
-      callback(message);
+      connection.query(`SELECT LAST_INSERT_ID()`, function(error, lastId) {
+        message.setId(lastId[0][`LAST_INSERT_ID()`]);
+
+        connection.end();
+        if (callback) callback(message);
+      });
     });
   }
 }
