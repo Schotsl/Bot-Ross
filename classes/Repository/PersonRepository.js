@@ -115,8 +115,12 @@ module.exports = class PersonRepository {
     query = `${query.substring(0, query.length - 2)})`;
 
     connection.query(query, function(error, personsArray) {
-      connection.end();
-      callback(user);
+      connection.query(`SELECT LAST_INSERT_ID()`, function(error, lastId) {
+        user.setId(lastId[0][`LAST_INSERT_ID()`]);
+
+        connection.end();
+        if (callback) callback(user);
+      });
     });
   }
 }

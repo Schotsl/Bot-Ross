@@ -64,6 +64,7 @@ discord.on("presenceUpdate", function(oldDiscordUserObject, newDiscordUserObject
       getRepositoryFactory().getStatusRepository().saveStatus(status);
     })
   }
+
 });
 
 discord.login(discordCredentials.token);
