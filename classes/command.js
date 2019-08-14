@@ -16,7 +16,7 @@ module.exports = class Command {
           this[commandArray.function](params, message, respond, person);
         } else {
           getRepositoryFactory().getSentenceRepository().getClosestIntention(`deny`, emotionValue, (sentenceCollection) => {
-            respond(sentenceCollection.getSentences()[0].getContent());
+            respond(sentenceCollection.getSentenceArray()[0].getContent());
           });
           report.log(`${person.getFullName()} was timed out`);
         }
