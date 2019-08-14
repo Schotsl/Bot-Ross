@@ -55,11 +55,11 @@ module.exports = class Lights extends Command {
   on(input, message, respond, person) {
 
     getRepositoryFactory().getSentenceRepository().getClosestIntention(`confirm`, emotionValue, (sentenceCollection) => {
-      respond(sentenceCollection.getSentences()[0].getContent());
+      respond(sentenceCollection.getSentenceArray()[0].getContent());
     });
 
     getRepositoryFactory().getSentenceRepository().getClosestIntention(`on`, emotionValue, (sentenceCollection) => {
-      respond(sentenceCollection.getSentences()[0].getContent());
+      respond(sentenceCollection.getSentenceArray()[0].getContent());
     });
 
     let newLightState = lightState.create();
@@ -75,11 +75,11 @@ module.exports = class Lights extends Command {
   party(input, message, respond, person) {
 
     getRepositoryFactory().getSentenceRepository().getClosestIntention(`confirm`, emotionValue, (sentenceCollection) => {
-      respond(sentenceCollection.getSentences()[0].getContent());
+      respond(sentenceCollection.getSentenceArray()[0].getContent());
     });
 
     getRepositoryFactory().getSentenceRepository().getClosestIntention(`party`, emotionValue, (sentenceCollection) => {
-      respond(sentenceCollection.getSentences()[0].getContent());
+      respond(sentenceCollection.getSentenceArray()[0].getContent());
     });
 
     let newLightState = lightState.create();
