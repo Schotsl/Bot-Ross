@@ -49,7 +49,6 @@ var bodyParser = require('body-parser')
 // Create server
 const app = Express();
 app.use(Express.json());
-app.listen(3000);
 app.use(bodyParser.json());
 app.use(function(req, res, next) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -153,3 +152,12 @@ app.get('/birthday/:birthdayId', function(request, response) {
     fs.createReadStream(path).pipe(response)
   }
 });
+
+const https = require('https');
+const privateKey = fs.readFileSync('credentials/privatekey.pem');
+const certificate = fs.readFileSync('credentials/certificate.pem');
+
+https.createServer({
+    key: privateKey,
+    cert: certificate
+}, app).listen(3000);
