@@ -74,4 +74,14 @@ module.exports = class MapperFactory {
     let CardCollectionMapper = require(`./CardCollection.js`);
     return new CardCollectionMapper(this.getCardMapper());
   }
+
+  getNotifcationMapper() {
+    let NotifcationMapper = require(`./Notifcation.js`);
+    return new NotifcationMapper();
+  }
+
+  getNotifcationCollectionMapper() {
+    let NotifcationCollectionMapper = require(`./NotifcationCollection.js`);
+    return new NotifcationCollectionMapper(this.getNotifcationMapper());
+  }
 }
