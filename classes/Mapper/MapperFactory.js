@@ -64,4 +64,14 @@ module.exports = class MapperFactory {
     let StatusCollectionMapper = require(`./StatusCollection.js`);
     return new StatusCollectionMapper(this.getStatusMapper());
   }
+
+  getCardMapper() {
+    let CardMapper = require(`./Card.js`);
+    return new CardMapper();
+  }
+
+  getCardCollectionMapper() {
+    let CardCollectionMapper = require(`./CardCollection.js`);
+    return new CardCollectionMapper(this.getCardMapper());
+  }
 }
