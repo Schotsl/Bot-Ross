@@ -36,4 +36,9 @@ module.exports = class RepositoryFactory {
     let SentenceRepository = require(`./SentenceRepository.js`);
     return new SentenceRepository(this.mapperFactory.getSentenceCollectionMapper());
   }
+
+  getCardRepository() {
+    let CardRepository = require(`./CardRepository.js`);
+    return new CardRepository(this.mapperFactory.getCardCollectionMapper());
+  }
 }
