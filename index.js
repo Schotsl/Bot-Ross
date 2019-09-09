@@ -107,6 +107,13 @@ app.get('/person', function(request, response) {
   });
 });
 
+app.get('/notifcation', function(request, response) {
+  getRepositoryFactory().getNotifcationRepository().getAll(function(results) {
+    console.log(results);
+    response.send(JSON.stringify(results));
+  });
+});
+
 //Emotion endpoint
 app.get('/emotion', function(request, response) {
   response.send(JSON.stringify(emotionValue));

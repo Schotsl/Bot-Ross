@@ -41,4 +41,9 @@ module.exports = class RepositoryFactory {
     let CardRepository = require(`./CardRepository.js`);
     return new CardRepository(this.mapperFactory.getCardCollectionMapper());
   }
+
+  getNotifcationRepository() {
+    let NotifcationRepository = require(`./NotifcationRepository.js`);
+    return new NotifcationRepository(this.mapperFactory.getNotifcationCollectionMapper());
+  }
 }
