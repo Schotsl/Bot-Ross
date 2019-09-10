@@ -107,9 +107,16 @@ app.get('/person', function(request, response) {
   });
 });
 
+app.delete('/notifcation/:notificationId', function(request, response) {
+  let notificationId = request.params.notificationId;
+
+  getRepositoryFactory().getNotifcationRepository().deleteNotifcation(notificationId, function(results) {
+    response.send(JSON.stringify(results));
+  });
+});
+
 app.get('/notifcation', function(request, response) {
   getRepositoryFactory().getNotifcationRepository().getAll(function(results) {
-    console.log(results);
     response.send(JSON.stringify(results));
   });
 });

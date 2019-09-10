@@ -16,4 +16,14 @@ module.exports = class NotifcationRepository {
       callback(that.notifcationCollectionMapper.createAndMap(notifcationsArray));
     });
   }
+
+  deleteNotifcation(cardId, callback) {
+    let that = this;
+    let connection = MySQL.createConnection(mySQLCredentials);
+
+    connection.query(`DELETE FROM \`notifications\` WHERE \`id\` = ${cardId}`, function(error) {
+      connection.end();
+      callback(true);
+    });
+  }
 }
