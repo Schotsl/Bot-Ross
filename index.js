@@ -144,11 +144,14 @@ app.get('/birthday/:birthdayId', function(request, response) {
   if (range) {
     const parts = range.replace(/bytes=/, "").split("-")
     const start = parseInt(parts[0], 10)
-    const end = parts[1]
-      ? parseInt(parts[1], 10)
-      : fileSize-1
-    const chunksize = (end-start)+1
-    const file = fs.createReadStream(path, {start, end})
+    const end = parts[1] ?
+      parseInt(parts[1], 10) :
+      fileSize - 1
+    const chunksize = (end - start) + 1
+    const file = fs.createReadStream(path, {
+      start,
+      end
+    })
     const head = {
       'Content-Range': `bytes ${start}-${end}/${fileSize}`,
       'Accept-Ranges': 'bytes',
@@ -167,11 +170,13 @@ app.get('/birthday/:birthdayId', function(request, response) {
   }
 });
 
-const https = require('https');
-const privateKey = fs.readFileSync('credentials/privatekey.pem');
-const certificate = fs.readFileSync('credentials/certificate.pem');
+if (fs.existsSync('./credentials/privatekey.pem') && fs.existsSync('./credentials/certificate.pem')) {
+  const https = require('https');
+  const privateKey = fs.readFileSync('credentials/privatekey.pem');
+  const certificate = fs.readFileSync('credentials/certificate.pem');
 
-https.createServer({
+  https.createServer({
     key: privateKey,
     cert: certificate
-}, app).listen(3000);
+  }, app).listen(3000, () => report.log('Started listening on port 3000 using HTTPS'));
+} else app.listen(3000, () => report.log('Started listening on port 3000 using HTTP'));
