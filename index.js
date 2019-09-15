@@ -178,5 +178,5 @@ if (fs.existsSync('./credentials/privatekey.pem') && fs.existsSync('./credential
   https.createServer({
     key: privateKey,
     cert: certificate
-  }, app).listen(3000, () => report.log('Started listening on port 3000 using HTTPS'));
-} else app.listen(3000, () => report.log('Started listening on port 3000 using HTTP'));
+  }, app).listen(6385, () => report.log('Started listening on port 3000 using HTTPS'));
+} else app.listen(6385, () => report.log('Started listening on port 3000 using HTTP'));
