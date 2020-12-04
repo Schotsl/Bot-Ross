@@ -1,6 +1,6 @@
 import { getSettings } from "./helper.ts"
 
-import { YoutubeAPI, Part } from "./Bot-Ross-server/youtube/index.ts";
+import { YoutubeAPI, Part } from "./youtube/index.ts";
 import { TodoistAPI } from "./todoist/index.ts";
 
 const settings = getSettings();
