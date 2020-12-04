@@ -1,12 +1,5 @@
-.directory
-persons/
-blacklist.json
-node_modules
-logs/*
-protocols/*.json
-recordings/*.pcm
-*.tmp
+# Ignore credentials
+settings.json
 
-# All credentials
-credentials/*
-!credentials/*.sample
+# Ignore .vscode config
+.vscode
