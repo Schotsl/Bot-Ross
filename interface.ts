@@ -1,8 +1,15 @@
 export interface Settings {
-  todoistToken?: string,
-  youtubeToken?: string,
-  discordToken?: string,
+  youtubeToken: string,
+  todoistToken: string,
+}
 
-  discordMaster?: string,
-  youtubePlaylist?: string,
+export enum Status {
+  Deleted = `deleted`,
+  Modified = `modified`,
+  Untracked = `untracked`,
+}
+
+export interface File {
+  status: Status,
+  filename: string,
 }

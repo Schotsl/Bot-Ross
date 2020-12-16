@@ -1,23 +1,14 @@
-import { getSettings } from "./helper.ts"
+import { getSettings } from "./helper.ts";
 
-import { YoutubeAPI, Part } from "./youtube/index.ts";
-import { TodoistAPI } from "./todoist/index.ts";
+const settings = await getSettings();
+const protocols = [];
 
-const settings = getSettings();
-const todoistAPI = new TodoistAPI(settings.todoistToken!);
-const youtubeAPI = new YoutubeAPI(settings.youtubeToken!);
+import { Eagle } from "./protocol/Eagle.ts";
+import { Canary } from "./protocol/Canary.ts";
 
-setInterval(executeYoutube, 1000 * 60 * 60);
-executeYoutube();
+protocols.push(new Eagle(settings));
+protocols.push(new Canary(settings));
 
-async function executeYoutube() {
-  // Make sure there isn't already a 'Sort Youtube Music playlist'
-  const tasks = await todoistAPI.getTask();
-  for (let i = 0; i < tasks.length; i ++) {
-    if (tasks[i].content === `Sort Youtube Music playlist`) return;
-  }
-  
-  // If there are more or ten items
-  const playlist = await youtubeAPI.getPlaylist(Part.Id, settings.youtubePlaylist!, 10);
-  if (playlist.items.length >= 10) todoistAPI.addTask({ content: `Sort Youtube Music playlist` });
-}
+protocols.forEach(protocol => {
+  protocol.initialize();
+})
