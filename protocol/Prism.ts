@@ -24,7 +24,10 @@ export class Prism {
 
     ensureDirSync(currentDirectory);
 
-    const currentFilename = `${currentString} ${currentDate.getHours()}:${currentDate.getMinutes()}.jpeg`;
+    const hoursFormatted = `0${currentDate.getHours()}`.slice(-2);
+    const minutesFormatted = `0${currentDate.getMinutes()}`.slice(-2);
+
+    const currentFilename = `${currentString} ${hoursFormatted}:${minutesFormatted}.jpeg`;
 
     if (!existsSync(`${currentDirectory}/${currentFilename}`)) {
       const destination: Destination = {
