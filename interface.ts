@@ -13,3 +13,8 @@ export interface File {
   status: Status,
   filename: string,
 }
+
+export interface Protocol {
+  name: string,
+  enabled: boolean,
+}

@@ -7,3 +7,4 @@ settings.json
 
 # Ignore storage folder
 /storage
+/database
