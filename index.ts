@@ -1,11 +1,13 @@
 import { getSettings } from "./helper.ts";
 import { Database } from 'https://deno.land/x/aloedb/mod.ts'
-import { Protocol } from "./interface.ts";
+
+import { Schema } from "./interface.ts";
+import { Protocol } from "./protocol/Protocol.ts";
 
 // Initialize some variables
-const database = new Database<Protocol>('./database/protocols.json');
+const database = new Database<Schema>('./database/protocols.json');
 const settings = await getSettings();
-const protocols = [];
+const protocols: Array<Protocol> = [];
 
 // Load every protocol class
 import { Eagle } from "./protocol/Eagle.ts";
@@ -26,13 +28,26 @@ protocols.forEach(async protocol => {
     // Disable it by default
     await database.insertOne({
       name: name,
-      error: false,
       enabled: false,
     });
   }
 
   // If the protocol has been enabled load it
   if (result && result.enabled === true) {
+    const permissions = protocol.required;
+
+    // Loop over every required setting
+    for (var i = 0; i < permissions.length; i ++) {
+      const permission = permissions[i];
+
+      // Abort if the settings is missing
+      if (!settings.hasOwnProperty(permission)) {
+        console.log(`${name} requires ${permission} to be set`);
+        return;
+      }
+    }
+
+    // If all is good start the protocol
     console.log(`Initializing ${name}`);
     protocol.initialize();
   }

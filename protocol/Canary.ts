@@ -1,10 +1,14 @@
+import { Protocol } from "./Protocol.ts";
+
 import { isGitSync } from "https://deno.land/x/is_git/mod.ts";
 import { walkSync } from "https://deno.land/std@0.78.0/fs/mod.ts";
 
 import { repositoryPull, repositoryStatus } from "../helper.ts";
 import { Settings } from "../interface.ts";
 
-export class Canary {
+export class Canary implements Protocol {
+  public required = [];
+
   private directoryDepth = 1;
   private directoryPaths = [`/usr/local/var/www/Get\ Interactive`]
 
@@ -16,7 +20,7 @@ export class Canary {
     this.execute();
   }
   
-  private async execute() {
+  public async execute() {
     const repositories = [];
 
     // Get every single repository folder

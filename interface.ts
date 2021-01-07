@@ -1,6 +1,7 @@
 export interface Settings {
-  youtubeToken: string,
-  todoistToken: string,
+  youtube: string,
+  todoist: string,
+  playlist: string,
 }
 
 export enum Status {
@@ -14,7 +15,7 @@ export interface File {
   filename: string,
 }
 
-export interface Protocol {
+export interface Schema {
   name: string,
   enabled: boolean,
 }

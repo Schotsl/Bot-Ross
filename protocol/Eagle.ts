@@ -1,8 +1,12 @@
+import { Protocol } from "./Protocol.ts";
+
 import { Settings } from "../interface.ts";
 import { TodoistAPI } from "../api/todoist/index.ts";
 import { YoutubeAPI, Part } from "../api/youtube/index.ts";
 
-export class Eagle {
+export class Eagle implements Protocol {
+  public required = [`todoist`, `youtube`];
+
   private todoistAPI: TodoistAPI;
   private youtubeAPI: YoutubeAPI;
 
@@ -11,8 +15,8 @@ export class Eagle {
   private todoistLabel = `Sort Youtube Music playlist`;
 
   constructor(settings: Settings) {
-    this.youtubeAPI = new YoutubeAPI(settings.youtubeToken);
-    this.todoistAPI = new TodoistAPI(settings.todoistToken);
+    this.youtubeAPI = new YoutubeAPI(settings.youtube);
+    this.todoistAPI = new TodoistAPI(settings.todoist);
   }
 
   public async initialize() {
