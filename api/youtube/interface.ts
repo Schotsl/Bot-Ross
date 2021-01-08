@@ -1,65 +1,65 @@
 interface Info {
-  totalResults: Number,
-  resultsPerPage: Number,
+  totalResults: number;
+  resultsPerPage: number;
 }
 
 interface Resource {
-  kind: string,
-  videoId: string,
+  kind: string;
+  videoId: string;
 }
 
 interface Thumbnail {
-  url: string,
-  width: number,
-  height: number,
+  url: string;
+  width: number;
+  height: number;
 }
 
 interface Thumbnails {
-  high: Thumbnail,
-  medium: Thumbnail,
-  default: Thumbnail,
-  maxres?: Thumbnail,
-  standart?: Thumbnail,
+  high: Thumbnail;
+  medium: Thumbnail;
+  default: Thumbnail;
+  maxres?: Thumbnail;
+  standart?: Thumbnail;
 }
 
 interface Details {
-  note: string,
-  endAt: string,
-  videoId: string,
-  startAt: string,
-  videoPublishedAt: Date
+  note: string;
+  endAt: string;
+  videoId: string;
+  startAt: string;
+  videoPublishedAt: Date;
 }
 
 interface Status {
-  privacyStatus: string,
+  privacyStatus: string;
 }
 
 interface Snippet {
-  title: string,
-  position: number,
-  channelId: string,
-  playlistId: string,
-  resourceId: Resource,
-  thumbnails: Thumbnails,
-  publishedAt: Date
-  description: string,
-  channelTitle: string,
+  title: string;
+  position: number;
+  channelId: string;
+  playlistId: string;
+  resourceId: Resource;
+  thumbnails: Thumbnails;
+  publishedAt: Date;
+  description: string;
+  channelTitle: string;
 }
 
 export interface Video {
-  id: string,
-  kind: string,
-  etag: string,
-  status?: Status
-  snippet?: Snippet,
-  contentDetails?: Details,
+  id: string;
+  kind: string;
+  etag: string;
+  status?: Status;
+  snippet?: Snippet;
+  contentDetails?: Details;
 }
 
 export interface Playlist {
-  kind: string,
-  etag: string,
-  items: Array<Video>,
-  pageInfo: Info,
-  nextPageToken?: string,
-  prevPageToken?: string,
+  kind: string;
+  etag: string;
+  items: Array<Video>;
+  pageInfo: Info;
+  nextPageToken?: string;
+  prevPageToken?: string;
 }

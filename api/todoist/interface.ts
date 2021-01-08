@@ -17,7 +17,7 @@ export interface Section extends Abstract {
 
 export interface Project extends Abstract {
   name: string;
-  color?: number
+  color?: number;
   shared?: boolean;
   sync_id?: number;
   favorite?: boolean;

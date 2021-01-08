@@ -16,7 +16,7 @@ export class YoutubeAPI {
 
   private async getAbstract<T>(url: string): Promise<T> {
     const response = await fetch(url, {
-      method: `GET`, 
+      method: `GET`,
     });
 
     return await response.json();
@@ -24,17 +24,25 @@ export class YoutubeAPI {
 
   // GET
 
-  public getPlaylist(part: Part, playlist: string, limit?: number, page?: string, video?: string): Promise<Playlist> {
+  public getPlaylist(
+    part: Part,
+    playlist: string,
+    limit?: number,
+    page?: string,
+    video?: string,
+  ): Promise<Playlist> {
     const parameters = new URLSearchParams({
       key: this.key,
       part: part,
       playlistId: playlist,
     });
 
-    if (page) parameters.append('pageToken', page);
-    if (video) parameters.append('videoId', video);
-    if (limit) parameters.append('maxResults', limit.toString());
+    if (page) parameters.append("pageToken", page);
+    if (video) parameters.append("videoId", video);
+    if (limit) parameters.append("maxResults", limit.toString());
 
-    return this.getAbstract(`https://youtube.googleapis.com/youtube/v3/playlistItems?${parameters}`);
+    return this.getAbstract(
+      `https://youtube.googleapis.com/youtube/v3/playlistItems?${parameters}`,
+    );
   }
 }

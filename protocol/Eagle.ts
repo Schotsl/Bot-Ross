@@ -1,39 +1,51 @@
 import { Protocol } from "./Protocol.ts";
 
+import { Required } from "../enum.ts";
 import { Settings } from "../interface.ts";
 import { TodoistAPI } from "../api/todoist/index.ts";
-import { YoutubeAPI, Part } from "../api/youtube/index.ts";
+import { Part, YoutubeAPI } from "../api/youtube/index.ts";
 
 export class Eagle implements Protocol {
-  public required = [`todoist`, `youtube`];
+  public requiredSettings = [
+    Required.Youtube,
+    Required.Todoist,
+    Required.Playlist,
+  ];
 
   private todoistAPI: TodoistAPI;
   private youtubeAPI: YoutubeAPI;
 
   private songLimit = 10;
-  private playlistId = `PLBmwW77rdwR3qDx6QrjVIWnlbtXUugXLw`;
+  private playlistId = ``;
   private todoistLabel = `Sort Youtube Music playlist`;
 
   constructor(settings: Settings) {
-    this.youtubeAPI = new YoutubeAPI(settings.youtube);
-    this.todoistAPI = new TodoistAPI(settings.todoist);
+    this.playlistId = settings.youtubePlaylist;
+    this.youtubeAPI = new YoutubeAPI(settings.youtubeAPI);
+    this.todoistAPI = new TodoistAPI(settings.todoistAPI);
   }
 
-  public async initialize() {
+  public async initializeProtocol() {
     // Execute the function once and set an interval
-    setInterval(this.execute.bind(this), 10000);
-    this.execute();
+    setInterval(this.executeProtocol.bind(this), 10000);
+    await this.executeProtocol();
   }
 
-  public async execute() {
+  public async executeProtocol() {
     // Make sure there isn't already a taks with this label
     const tasks = await this.todoistAPI.getTask();
-    for (let i = 0; i < tasks.length; i ++) {
+    for (let i = 0; i < tasks.length; i++) {
       if (tasks[i].content === this.todoistLabel) return;
     }
 
     // If there are more or ten items
-    const playlist = await this.youtubeAPI.getPlaylist(Part.Id, this.playlistId, this.songLimit);
-    if (playlist.items.length >= 10) this.todoistAPI.addTask({ content: this.todoistLabel });
+    const playlist = await this.youtubeAPI.getPlaylist(
+      Part.Id,
+      this.playlistId,
+      this.songLimit,
+    );
+    if (playlist.items.length >= 10) {
+      this.todoistAPI.addTask({ content: this.todoistLabel });
+    }
   }
 }

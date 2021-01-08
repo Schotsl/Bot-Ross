@@ -1,21 +1,17 @@
-export interface Settings {
-  youtube: string,
-  todoist: string,
-  playlist: string,
-}
+import { Status } from "./enum.ts";
 
-export enum Status {
-  Deleted = `deleted`,
-  Modified = `modified`,
-  Untracked = `untracked`,
+export interface Settings {
+  youtubeAPI: string;
+  todoistAPI: string;
+  youtubePlaylist: string;
 }
 
 export interface File {
-  status: Status,
-  filename: string,
+  status: Status;
+  filename: string;
 }
 
 export interface Schema {
-  name: string,
-  enabled: boolean,
+  name: string;
+  enabled: boolean;
 }

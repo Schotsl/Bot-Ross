@@ -14,31 +14,31 @@ export class TodoistAPI {
       "Authorization": `Bearer ${this.key}`,
       "Content-Type": `application/json`,
       "X-Request-Id": uuid(),
-    }
+    };
   }
-  
+
   private async getAbstract<T>(url: string): Promise<Array<T>> {
     const response = await fetch(url, {
-      method: `GET`, 
+      method: `GET`,
       headers: this.generateHeaders(),
     });
 
     return await response.json();
   }
-  
+
   private async addAbstract<T>(object: T, url: string): Promise<T> {
     const response = await fetch(url, {
       body: JSON.stringify(object),
       method: `POST`,
       headers: this.generateHeaders(),
     });
-    
+
     return await response.json();
   }
-  
-  private async deleteAbstract(url: string): Promise<void> { 
+
+  private async deleteAbstract(url: string): Promise<void> {
     await fetch(url, {
-      method: `DELETE`, 
+      method: `DELETE`,
       headers: this.generateHeaders(),
     });
 
@@ -52,15 +52,23 @@ export class TodoistAPI {
   }
 
   public getSection(project?: number): Promise<Array<Section>> {
-    const parameters = new URLSearchParams;
-    
+    const parameters = new URLSearchParams();
+
     if (project) parameters.append(`project_id`, project.toString());
 
-    return this.getAbstract(`https://api.todoist.com/rest/v1/sections?${parameters}`);
+    return this.getAbstract(
+      `https://api.todoist.com/rest/v1/sections?${parameters}`,
+    );
   }
 
-  public getTask(project?: number, label?: number, filter?: string, language?: string, ids?: string): Promise<Array<Task>> {
-    const parameters = new URLSearchParams;
+  public getTask(
+    project?: number,
+    label?: number,
+    filter?: string,
+    language?: string,
+    ids?: string,
+  ): Promise<Array<Task>> {
+    const parameters = new URLSearchParams();
 
     if (ids) parameters.append(`ids`, ids);
     if (label) parameters.append(`label_id`, label.toString());
@@ -68,31 +76,43 @@ export class TodoistAPI {
     if (project) parameters.append(`project_id`, project.toString());
     if (language) parameters.append(`lang`, language.toString());
 
-    return this.getAbstract(`https://api.todoist.com/rest/v1/tasks?${parameters}`);
+    return this.getAbstract(
+      `https://api.todoist.com/rest/v1/tasks?${parameters}`,
+    );
   }
 
   // POST
 
-  public addTask(task: Task): Promise<Task> { 
-    return this.addAbstract(task, `https://api.todoist.com/rest/v1/tasks`); 
+  public addTask(task: Task): Promise<Task> {
+    return this.addAbstract(task, `https://api.todoist.com/rest/v1/tasks`);
   }
 
   public addSection(section: Section): Promise<Section> {
-    return this.addAbstract(section, `https://api.todoist.com/rest/v1/sections`);
+    return this.addAbstract(
+      section,
+      `https://api.todoist.com/rest/v1/sections`,
+    );
   }
 
   public addProject(project: Project): Promise<Project> {
-    return this.addAbstract(project, `https://api.todoist.com/rest/v1/projects`);
+    return this.addAbstract(
+      project,
+      `https://api.todoist.com/rest/v1/projects`,
+    );
   }
 
   // DELETE
 
   public deleteProject(project: number): Promise<void> {
-    return this.deleteAbstract(`https://api.todoist.com/rest/v1/projects/${project}`);
+    return this.deleteAbstract(
+      `https://api.todoist.com/rest/v1/projects/${project}`,
+    );
   }
 
   public deleteSection(section: number): Promise<void> {
-    return this.deleteAbstract(`https://api.todoist.com/rest/v1/sections/${section}`);
+    return this.deleteAbstract(
+      `https://api.todoist.com/rest/v1/sections/${section}`,
+    );
   }
 
   public deleteTask(task: number): Promise<void> {
