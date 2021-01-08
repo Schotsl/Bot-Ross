@@ -1,7 +1,7 @@
 import { TodoistAPI } from "./index.ts";
 import { Abstract } from "./interface.ts";
 
-const todoistKey = Deno.env.get("PORT");
+const todoistKey = Deno.env.get("TODOIST");
 const todoistAPI = new TodoistAPI(todoistKey!);
 
 function findMatch(object: Abstract, array: Array<Abstract>): boolean {
