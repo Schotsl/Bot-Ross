@@ -33,3 +33,6 @@ jobs:
 
       - name: Run deno test
         run: deno test -A --unstable
+        env:
+          ci: TRUE
+          TODOIST: ${{ secrets.TODOIST }}
