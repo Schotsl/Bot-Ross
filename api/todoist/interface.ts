@@ -5,7 +5,7 @@ interface Due {
   timezone?: string;
 }
 
-export interface Abstract {
+interface Abstract {
   id?: number;
   order?: number;
 }
