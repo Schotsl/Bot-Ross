@@ -1,14 +1,9 @@
-import { Status } from "./enum.ts";
-
 export interface Settings {
   youtubeAPI: string;
   todoistAPI: string;
-  youtubePlaylist: string;
-}
-
-export interface File {
-  status: Status;
-  filename: string;
+  discordAPI: string;
+  playlistId: string;
+  discordId: string;
 }
 
 export interface Schema {

@@ -1,5 +1,9 @@
 import { getSettings } from "./helper.ts";
 import { Database } from "https://deno.land/x/aloedb/mod.ts";
+import {
+  Intents,
+  startBot,
+} from "https://deno.land/x/discordeno@10.0.1/mod.ts";
 
 import { Schema } from "./interface.ts";
 import { Protocol } from "./protocol/Protocol.ts";
@@ -8,6 +12,12 @@ import { Protocol } from "./protocol/Protocol.ts";
 const database = new Database<Schema>("./database/protocols.json");
 const settings = await getSettings();
 const protocols: Array<Protocol> = [];
+
+// Start Discord bot
+startBot({
+  token: settings.discordAPI,
+  intents: [Intents.DIRECT_MESSAGES],
+});
 
 // Load every protocol class
 import { Eagle } from "./protocol/Eagle.ts";

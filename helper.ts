@@ -1,7 +1,6 @@
 import { existsSync } from "https://deno.land/std/fs/mod.ts";
 
-import { Status } from "./enum.ts";
-import { File, Settings } from "./interface.ts";
+import { Settings } from "./interface.ts";
 
 export function getSettings(): Settings {
   // Make sure the file actually exists

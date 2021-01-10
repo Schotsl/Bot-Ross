@@ -1,11 +1,6 @@
-export enum Status {
-  Deleted = `deleted`,
-  Modified = `modified`,
-  Untracked = `untracked`,
-}
-
 export enum Required {
+  Discord = `discordId`,
   Youtube = `youtubeAPI`,
   Todoist = `todoistAPI`,
-  Playlist = `youtubePlaylist`,
+  Playlist = `playlistId`,
 }
