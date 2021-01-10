@@ -33,9 +33,7 @@ protocols.forEach(async (protocol) => {
   const name = protocol.constructor.name;
   const result = await database.findOne({ name });
 
-  // If this protocol is new
   if (!result) {
-    // Disable it by default
     await database.insertOne({
       name: name,
       enabled: false,
@@ -46,19 +44,16 @@ protocols.forEach(async (protocol) => {
   if (result && result.enabled === true) {
     const permissions = protocol.requiredSettings;
 
-    // Loop over every required setting
     for (let i = 0; i < permissions.length; i++) {
       const permission = permissions[i];
 
       // Abort if the settings is missing
       if (!settings.hasOwnProperty(permission)) {
-        console.log(`${name} requires ${permission} to be set`);
+        console.log(`🔐 [${name}] Permission ${permission} is missing`);
         return;
       }
     }
 
-    // If all is good start the protocol
-    console.log(`Initializing ${name}`);
     protocol.initializeProtocol();
   }
 });

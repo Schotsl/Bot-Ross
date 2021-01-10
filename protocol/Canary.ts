@@ -39,8 +39,10 @@ export class Canary implements Protocol {
 
   public async initializeProtocol() {
     // Execute the function once and set an interval
+    console.log(`⌛ [${this.constructor.name}] Starting protocol`);
     setInterval(this.executeProtocol.bind(this), 1000 * 60 * 60);
     await this.executeProtocol();
+    console.log(`🙌 [${this.constructor.name}] Started protocol`);
   }
 
   public async executeProtocol() {
@@ -100,7 +102,7 @@ export class Canary implements Protocol {
       const oldest = results[0].creation;
       const newest = results[results.length - 1].creation;
       const difference = newest - oldest;
-      if (difference < 1000) return;
+      if (difference < 1000 * 60 * 60 * 24 * 7) return;
 
       // Make sure ever datapoint is the same
       for (let i = 0; i < datapoints.length - 1; i++) {
@@ -133,6 +135,7 @@ export class Canary implements Protocol {
         this.discordId,
         `You might want to discard or commit these changes`,
       );
+      console.log(`ℹ️ [${this.constructor.name}] Notified user`);
     }
   }
 

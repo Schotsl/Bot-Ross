@@ -20,8 +20,6 @@ export class Eagle implements Protocol {
   private songLimit = 10;
   private discordId = ``;
   private playlistId = ``;
-  private discordLabel = `I added a Todoist sort task`;
-  private todoistLabel = `Sort Youtube Music playlist`;
 
   constructor(settings: Settings) {
     this.discordId = settings.discordId;
@@ -32,15 +30,17 @@ export class Eagle implements Protocol {
 
   public async initializeProtocol() {
     // Execute the function once and set an interval
+    console.log(`⌛ [${this.constructor.name}] Starting protocol`);
     setInterval(this.executeProtocol.bind(this), 10000);
     await this.executeProtocol();
+    console.log(`🙌 [${this.constructor.name}] Started protocol`);
   }
 
   public async executeProtocol() {
     // Make sure there isn't already a taks with this label
     const tasks = await this.todoistAPI.getTask();
     for (let i = 0; i < tasks.length; i++) {
-      if (tasks[i].content === this.todoistLabel) return;
+      if (tasks[i].content === `Sort Youtube Music playlist`) return;
     }
 
     // If there are more or ten items
@@ -50,8 +50,9 @@ export class Eagle implements Protocol {
       this.songLimit,
     );
     if (playlist.items.length >= 10) {
-      sendDirectMessage(this.discordId, this.discordLabel);
-      this.todoistAPI.addTask({ content: this.todoistLabel });
+      sendDirectMessage(this.discordId, `I added a Todoist sort task`);
+      this.todoistAPI.addTask({ content: `Sort Youtube Music playlist` });
+      console.log(`ℹ️  [${this.constructor.name}] Added sorting task`);
     }
   }
 }

@@ -14,8 +14,10 @@ export class Prism implements Protocol {
 
   public async initializeProtocol() {
     // Execute the function once and set an interval
+    console.log(`⌛ [${this.constructor.name}] Starting protocol`);
     setInterval(this.executeProtocol.bind(this), 1000 * 60);
     await this.executeProtocol();
+    console.log(`🙌 [${this.constructor.name}] Started protocol`);
   }
 
   public async executeProtocol() {
