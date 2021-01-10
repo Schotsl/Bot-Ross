@@ -3,6 +3,7 @@ Bot-Ross is my oldest project and has switched from role to role, at first being
 
 ## Console emojis
 - ⚠️ General error
+- ⌛ General awaiting
 - ℹ️ General information
-- 🧰 Succesfully loading protocol
-- 🔐 Protocol missing permission
+- 🙌 General success
+- 🔐 General permission missing
