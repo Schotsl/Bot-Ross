@@ -1,28 +1,27 @@
-import { getSettings } from "./helper.ts";
-import { Database } from "https://deno.land/x/aloedb/mod.ts";
-import {
-  Intents,
-  startBot,
-} from "https://deno.land/x/discordeno@10.0.1/mod.ts";
-
+// Import packages local
 import { Schema } from "./interface.ts";
-import { Protocol } from "./protocol/Protocol.ts";
+import { getSettings } from "./helper.ts";
+import { Abstraction } from "./protocol/Protocol.ts";
+
+// Import packages from URL
+import { Database } from "https://deno.land/x/aloedb/mod.ts";
+import { Intents, startBot } from "https://deno.land/x/discordeno@10.0.1/mod.ts";
 
 // Initialize some variables
 const database = new Database<Schema>("./database/protocols.json");
 const settings = await getSettings();
-const protocols: Array<Protocol> = [];
+const protocols: Array<Abstraction> = [];
 
 // Start Discord bot
 startBot({
-  token: settings.discordAPI,
+  token: settings.discordAPI!,
   intents: [Intents.DIRECT_MESSAGES],
 });
 
 // Load every protocol class
-import { Eagle } from "./protocol/Eagle.ts";
-import { Prism } from "./protocol/Prism.ts";
-import { Canary } from "./protocol/Canary.ts";
+import { Eagle } from "./protocol/Eagle/index.ts";
+import { Prism } from "./protocol/Prism/index.ts";
+import { Canary } from "./protocol/Canary/index.ts";
 
 // Create an instance of every class
 protocols.push(new Eagle(settings));
@@ -33,6 +32,7 @@ protocols.forEach(async (protocol) => {
   const name = protocol.constructor.name;
   const result = await database.findOne({ name });
 
+  // If the protocol is new insert it into the database
   if (!result) {
     await database.insertOne({
       name: name,
@@ -54,6 +54,10 @@ protocols.forEach(async (protocol) => {
       }
     }
 
-    protocol.initializeProtocol();
+    // Set interval and run once
+    console.log(`⌛ [${name}] Starting protocol`);
+    setInterval(protocol.executeProtocol.bind(this), 1000 * 60 * 60);
+    protocol.executeProtocol();
+    console.log(`🙌 [${name}] Started protocol`);
   }
 });
