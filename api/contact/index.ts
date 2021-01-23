@@ -9,9 +9,9 @@ export class ContactAPI {
   get contacts(): Array<Contact> {
     // Read the JSON file and parse it
     const decoder = new TextDecoder(`utf-8`);
-    const bytes = Deno.readFileSync(`data.json`);
+    const bytes = Deno.readFileSync(`api/contact/data.json`);
     const decode = decoder.decode(bytes);
-    const data = JSON.parse(decode);
+    const data = JSON.parse(JSON.parse(decode));
 
     // Transform the JSON array to Contacts
     const contacts = data.map((contact: Contact) => {
@@ -24,6 +24,17 @@ export class ContactAPI {
     });
 
     return contacts;
+  }
+
+  public getContact(uuid: string): Contact | null {
+    for (let i = 0; i < this.contacts.length; i ++) {
+      const contact = this.contacts[i];
+
+      // Return the matching user
+      if (contact.uuid == uuid) return contact;
+    };
+
+    return null;
   }
 
   public searchContacts(query: string): Array<Contact> {

@@ -1,9 +1,7 @@
 export class Contact {
   public uuid: string;
-
   public lastname: string;
   public firstname: string;
-
   public insertion?: string;
 
   constructor(uuid: string, firstname: string, lastname: string, insertion?: string) {
@@ -11,8 +9,7 @@ export class Contact {
 
     this.lastname = lastname;
     this.firstname = firstname;
-
-    if (insertion) this.insertion;
+    this.insertion = insertion;
   }
 
   get fullname(): string {
