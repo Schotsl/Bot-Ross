@@ -1,15 +1,14 @@
 // Import packages local
-import { Abstraction } from "./../Protocol.ts";
-import { Required } from "../../enum.ts";
-import { Settings } from "../../interface.ts";
-import { TodoistAPI } from "../../api/todoist/index.ts";
-import { Part, YoutubeAPI } from "../../api/youtube/index.ts";
+import { Abstraction } from "../../Protocol.ts";
+import { Required } from "../../../enum.ts";
+import { Settings } from "../../../interface.ts";
+import { TodoistAPI } from "../../../api/todoist/index.ts";
+import { Part, YoutubeAPI } from "../../../api/youtube/index.ts";
 
 // Import packages from URL
 import { sendDirectMessage } from "https://deno.land/x/discordeno@10.0.1/mod.ts";
 
-
-export class Eagle implements Abstraction {
+export class Eagle extends Abstraction {
   public systemSettings: Settings = { };
   public requiredSettings = [
     Required.Youtube,
@@ -23,6 +22,7 @@ export class Eagle implements Abstraction {
   private songLimit = 10;
 
   constructor(settingsObject: Settings) {
+    super(settingsObject);
     this.systemSettings = settingsObject;
     this.youtubeAPI = new YoutubeAPI(settingsObject.youtubeAPI!);
     this.todoistAPI = new TodoistAPI(settingsObject.todoistAPI!);

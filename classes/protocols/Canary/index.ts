@@ -1,8 +1,8 @@
 // Import packages local
 import { Schema } from "./interface.ts";
-import { Required } from "../../enum.ts";
-import { Settings } from "../../interface.ts";
-import { Abstraction } from "./../Protocol.ts";
+import { Required } from "../../../enum.ts";
+import { Settings } from "../../../interface.ts";
+import { Abstraction } from "../../Protocol.ts";
 import { repositoryStatus, repositoryPull } from "./helper.ts";
 
 // Import packages from URL
