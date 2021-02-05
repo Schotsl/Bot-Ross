@@ -8,3 +8,5 @@ settings.json
 # Ignore storage folder
 /storage
 /database
+
+# Ignore Deno files
