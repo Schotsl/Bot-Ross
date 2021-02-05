@@ -3,12 +3,11 @@ import { Schema } from "./interface.ts";
 import { Required } from "../../../enum.ts";
 import { Settings } from "../../../interface.ts";
 import { Abstraction } from "../../Protocol.ts";
+import { globalDatabase } from "../../../database.ts";
 import { repositoryStatus, repositoryPull } from "./helper.ts";
 
 // Import packages from URL
-import { Database } from "https://deno.land/x/aloedb/mod.ts";
 import { walkSync } from "https://deno.land/std@0.78.0/fs/mod.ts";
-import { moreThan } from "https://deno.land/x/aloedb@0.1.0/lib/operators.ts";
 import { isGitSync } from "https://deno.land/x/is_git/mod.ts";
 import { sendDirectMessage } from "https://deno.land/x/discordeno@10.0.1/mod.ts";
 
@@ -18,7 +17,7 @@ export class Canary implements Abstraction {
 
   private directoryDepth = 1;
   private directoryPaths = [`/usr/local/var/www/Get\ Interactive`];
-  private repositoryDatabase = new Database<Schema>(`./database/canary.json`);
+  private repositoryDatabase = globalDatabase.collection<Schema>("morgan");
 
   constructor(settingsObject: Settings) {
     this.systemSettings = settingsObject;
@@ -52,7 +51,7 @@ export class Canary implements Abstraction {
 
     // Get every entry from the last 8 days
     const previous = Date.now() - 1000 * 60 * 60 * 24 * 8;
-    const results = await this.repositoryDatabase.findMany({ creation: moreThan(previous) });
+    const results = await this.repositoryDatabase.find({ creation: { $gt: previous } });
 
     // Create a array with the name of every stored repository
     const uniques = [...new Set(results.map((repository) => repository.repository))];

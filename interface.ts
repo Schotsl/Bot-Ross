@@ -10,3 +10,8 @@ export interface Schema {
   name: string;
   enabled: boolean;
 }
+
+export interface Label {
+  emoji: string;
+  titel: string;
+}

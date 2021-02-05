@@ -6,9 +6,9 @@ import { ContactAPI } from "../../../api/contact/index.ts";
 import { Abstraction } from "../../Protocol.ts";
 import { wildcardMatch } from "../../../helper.ts";
 import { Dictionary, Expense } from "./interface.ts";
+import { globalDatabase } from "../../../database.ts";
 
 // Import packages from URL
-import { Database } from "https://deno.land/x/aloedb/mod.ts";
 import { Message, sendDirectMessage } from "https://deno.land/x/discordeno@10.0.1/mod.ts";
 
 export class Morgan implements Abstraction {
@@ -17,7 +17,7 @@ export class Morgan implements Abstraction {
   public requiredSettings = [Required.Discord];
 
   private contactAPI: ContactAPI;
-  private databaseAPI = new Database<Expense>(`./database/morgan.json`);
+  private databaseAPI = globalDatabase.collection<Expense>(`morgan`);
 
   private storedAmount?: number;
   private storedContent?: string;
@@ -35,7 +35,7 @@ export class Morgan implements Abstraction {
     if (wildcardMatch(content, [`Let's yeet this yeast`, `Report`])) {
       let message = `>>> ${content}`;
 
-      const expenses = await this.databaseAPI.findMany();
+      const expenses = await this.databaseAPI.find();
       const dictionary: Dictionary = {};
 
       if (expenses.length === 0) {

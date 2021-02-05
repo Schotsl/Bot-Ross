@@ -10,5 +10,7 @@ const manager = new Manager();
 manager.initializeManager();
 
 application.use(oakCors());
+application.use(router.allowedMethods());
 application.use(router.routes())
+
 application.listen({ port: 420 });
