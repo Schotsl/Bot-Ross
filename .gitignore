@@ -10,3 +10,4 @@ settings.json
 /database
 
 # Ignore Deno files
+.deno_plugins
