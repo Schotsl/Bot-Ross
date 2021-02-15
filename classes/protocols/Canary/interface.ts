@@ -7,7 +7,7 @@ export enum Status {
 export type File = {
   status: Status;
   filename: string;
-};
+}
 
 export interface Schema {
   files: File[];

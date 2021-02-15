@@ -9,7 +9,10 @@ import { Dictionary, Expense } from "./interface.ts";
 import { globalDatabase } from "../../../database.ts";
 
 // Import packages from URL
-import { Message, sendDirectMessage } from "https://deno.land/x/discordeno@10.0.1/mod.ts";
+import {
+  Message,
+  sendDirectMessage,
+} from "https://deno.land/x/discordeno@10.0.1/mod.ts";
 
 export class Morgan implements Abstraction {
   public systemSettings: Settings = {};
@@ -56,7 +59,7 @@ export class Morgan implements Abstraction {
       });
 
       // Loop over every contact in the dictionary and format it
-      for (let key in dictionary) {
+      for (const key in dictionary) {
         const value = dictionary[key];
         const contact = this.contactAPI.getContact(key);
 

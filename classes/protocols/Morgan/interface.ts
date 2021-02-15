@@ -1,6 +1,6 @@
 export interface Expense {
   amount: number;
-  contacts: Array<string>,
+  contacts: Array<string>;
   insertion: number;
   description: string;
 }

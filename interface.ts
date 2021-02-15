@@ -1,3 +1,5 @@
+import { ObjectId } from "https://deno.land/x/mongo@v0.13.0/mod.ts";
+
 export interface Settings {
   youtubeAPI?: string;
   todoistAPI?: string;
@@ -12,6 +14,13 @@ export interface Schema {
 }
 
 export interface Label {
+  id: ObjectId;
   emoji: string;
-  titel: string;
+  title: string;
+}
+
+export interface Mark {
+  id: ObjectId;
+  date: string;
+  label: ObjectId;
 }

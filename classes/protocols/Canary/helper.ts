@@ -1,9 +1,17 @@
-import { Status, File } from "./interface.ts";
+import { File, Status } from "./interface.ts";
 
-export async function repositoryStatus(directory: string): Promise<Array<File>> {
+export async function repositoryStatus(
+  directory: string,
+): Promise<Array<File>> {
   // Run the command through the terminal
   const command = Deno.run({
-    cmd: [`git`, `--git-dir=${directory}/.git`, `--work-tree=${directory}`, `status`, `--porcelain`],
+    cmd: [
+      `git`,
+      `--git-dir=${directory}/.git`,
+      `--work-tree=${directory}`,
+      `status`,
+      `--porcelain`,
+    ],
     stdout: `piped`,
     stderr: `piped`,
   });
@@ -48,7 +56,13 @@ export async function repositoryStatus(directory: string): Promise<Array<File>> 
 export async function repositoryPull(directory: string): Promise<void> {
   // Call the `git remote update` command
   let command = Deno.run({
-    cmd: [`git`, `--git-dir=${directory}/.git`, `--work-tree=${directory}`, `remote`, `update`],
+    cmd: [
+      `git`,
+      `--git-dir=${directory}/.git`,
+      `--work-tree=${directory}`,
+      `remote`,
+      `update`,
+    ],
     stdout: `piped`,
     stderr: `piped`,
   });
@@ -58,7 +72,13 @@ export async function repositoryPull(directory: string): Promise<void> {
 
   // Fetch the new commits if the working tree is clean
   command = Deno.run({
-    cmd: [`git`, `--git-dir=${directory}/.git`, `--work-tree=${directory}`, `merge`, `--ff-only`],
+    cmd: [
+      `git`,
+      `--git-dir=${directory}/.git`,
+      `--work-tree=${directory}`,
+      `merge`,
+      `--ff-only`,
+    ],
     stdout: `piped`,
     stderr: `piped`,
   });

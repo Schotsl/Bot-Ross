@@ -2,7 +2,12 @@ import { Settings } from "../interface.ts";
 import { Abstraction } from "./Protocol.ts";
 import { getSettings, wildcardMatch } from "../helper.ts";
 
-import { Intents, startBot, Message, sendDirectMessage } from "https://deno.land/x/discordeno@10.0.1/mod.ts";
+import {
+  Intents,
+  Message,
+  sendDirectMessage,
+  startBot,
+} from "https://deno.land/x/discordeno@10.0.1/mod.ts";
 
 // Import every protocol class
 import { Eagle } from "./protocols/Eagle/index.ts";
@@ -10,10 +15,9 @@ import { Prism } from "./protocols/Prism/index.ts";
 import { Morgan } from "./protocols/Morgan/index.ts";
 import { Canary } from "./protocols/Canary/index.ts";
 
-
 export class Manager {
   private session?: Abstraction;
-  private settings: Settings = {}
+  private settings: Settings = {};
   private protocols: Array<Abstraction> = [];
 
   async initializeManager() {
@@ -25,7 +29,7 @@ export class Manager {
     this.protocols.push(new Canary(this.settings));
 
     // Check every protocol
-    for (let i = 0; i < this.protocols.length; i ++) {
+    for (let i = 0; i < this.protocols.length; i++) {
       const protocol = this.protocols[i];
 
       // Fetch some variable with the index
@@ -37,7 +41,7 @@ export class Manager {
         const permission = permissions[j];
 
         // Abort if the settings is missing
-        if (!this.settings.hasOwnProperty(permission)) {
+        if (!this.settings.hasProperty(permission)) {
           console.log(`🔐 [${constructor}] Permission ${permission} is missing`);
           return;
         }
@@ -49,7 +53,7 @@ export class Manager {
 
         setInterval(protocol.executeProtocol.bind(this), 1000 * 60 * 60);
         protocol.executeProtocol();
-        
+
         console.log(`🙌 [${constructor}] Started protocol`);
       }
     }
@@ -57,8 +61,8 @@ export class Manager {
     // Start the Discord bot
     startBot({
       token: this.settings.discordAPI!,
-      intents: [ Intents.DIRECT_MESSAGES ],
-      eventHandlers: { messageCreate: message => this.onMessage(message) }
+      intents: [Intents.DIRECT_MESSAGES],
+      eventHandlers: { messageCreate: (message) => this.onMessage(message) },
     });
 
     // For some reason if I remove this line the code crashes
@@ -71,7 +75,9 @@ export class Manager {
 
     // A debug command
     if (message.content === `-session`) {
-      const response = this.session ? `You're talking to ${this.session.constructor.name}` : `I'm sorry too say, but you're screaming into the void`;
+      const response = this.session
+        ? `You're talking to ${this.session.constructor.name}`
+        : `I'm sorry too say, but you're screaming into the void`;
       message.reply(response);
       return;
     }
@@ -82,11 +88,11 @@ export class Manager {
       if (!this.session.executeMessage!(message)) this.session = undefined;
       return;
     }
-    
+
     // Check every protocol
-    for (let i = 0; i < this.protocols.length; i ++) {
+    for (let i = 0; i < this.protocols.length; i++) {
       const protocol = this.protocols[i];
-  
+
       // If triggers and a handler have been set
       if (protocol.messageTriggers && protocol.executeMessage) {
         const triggers = protocol.messageTriggers;
@@ -94,7 +100,6 @@ export class Manager {
 
         // If the command has been messaged
         if (match) {
-
           // Store the session if execute returns true
           const result = await protocol.executeMessage(message);
           if (result) this.session = protocol;

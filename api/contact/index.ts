@@ -27,12 +27,12 @@ export class ContactAPI {
   }
 
   public getContact(uuid: string): Contact | null {
-    for (let i = 0; i < this.contacts.length; i ++) {
+    for (let i = 0; i < this.contacts.length; i++) {
       const contact = this.contacts[i];
 
       // Return the matching user
       if (contact.uuid == uuid) return contact;
-    };
+    }
 
     return null;
   }

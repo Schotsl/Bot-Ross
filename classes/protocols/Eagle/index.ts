@@ -9,7 +9,7 @@ import { Part, YoutubeAPI } from "../../../api/youtube/index.ts";
 import { sendDirectMessage } from "https://deno.land/x/discordeno@10.0.1/mod.ts";
 
 export class Eagle extends Abstraction {
-  public systemSettings: Settings = { };
+  public systemSettings: Settings = {};
   public requiredSettings = [
     Required.Youtube,
     Required.Todoist,
@@ -36,9 +36,16 @@ export class Eagle extends Abstraction {
     }
 
     // If there are more or ten items
-    const playlist = await this.youtubeAPI.getPlaylist(Part.Id, this.systemSettings.playlistId!, this.songLimit);
+    const playlist = await this.youtubeAPI.getPlaylist(
+      Part.Id,
+      this.systemSettings.playlistId!,
+      this.songLimit,
+    );
     if (playlist.items.length >= 10) {
-      sendDirectMessage(this.systemSettings.discordId!, `I added a Todoist sort task`);
+      sendDirectMessage(
+        this.systemSettings.discordId!,
+        `I added a Todoist sort task`,
+      );
       this.todoistAPI.addTask({ content: `Sort Youtube Music playlist` });
       console.log(`ℹ️  [${this.constructor.name}] Added sorting task`);
     }

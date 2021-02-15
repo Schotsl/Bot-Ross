@@ -4,7 +4,12 @@ export class Contact {
   public firstname: string;
   public insertion?: string;
 
-  constructor(uuid: string, firstname: string, lastname: string, insertion?: string) {
+  constructor(
+    uuid: string,
+    firstname: string,
+    lastname: string,
+    insertion?: string,
+  ) {
     this.uuid = uuid;
 
     this.lastname = lastname;
@@ -13,10 +18,12 @@ export class Contact {
   }
 
   get fullname(): string {
-    return this.insertion ? `${this.firstname} ${this.insertion} ${this.lastname}` : `${this.firstname} ${this.lastname}`;
+    return this.insertion
+      ? `${this.firstname} ${this.insertion} ${this.lastname}`
+      : `${this.firstname} ${this.lastname}`;
   }
 
-  get keywords(): Array<String> {
+  get keywords(): Array<string> {
     const array = [];
 
     array.push(this.firstname);
