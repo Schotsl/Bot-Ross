@@ -41,7 +41,7 @@ export class Manager {
         const permission = permissions[j];
 
         // Abort if the settings is missing
-        if (!this.settings.hasProperty(permission)) {
+        if (!(permission in this.settings)) {
           console.log(`🔐 [${constructor}] Permission ${permission} is missing`);
           return;
         }
