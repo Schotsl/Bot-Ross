@@ -9,7 +9,7 @@ const manager = new Manager();
 
 manager.initializeManager();
 
-application.use(oakCors());
+application.use(oakCors({ origin: "*" }));
 application.use(router.allowedMethods());
 application.use(router.routes());
 
