@@ -12,13 +12,13 @@ const router = new Router();
 
 // Add the label endpoints
 router.get("/label", getLabels);
-router.put("/label/:uuid", updateLabel);
+router.put("/label/:id", updateLabel);
 router.post("/label", addLabel);
-router.delete("/label/:uuid", deleteLabel);
+router.delete("/label/:id", deleteLabel);
 
 // Add the label endpoints
 router.get("/mark/:date", getMarks);
 router.post("/mark", addMark);
-router.delete("/mark/:uuid", deleteMark);
+router.delete("/mark/:id", deleteMark);
 
 export default router;

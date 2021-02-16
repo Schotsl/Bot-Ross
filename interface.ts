@@ -14,13 +14,13 @@ export interface Schema {
 }
 
 export interface Label {
-  id: ObjectId;
   emoji: string;
   title: string;
+  offset: number;
+  divider: number;
 }
 
 export interface Mark {
-  id: ObjectId;
   date: string;
   label: ObjectId;
 }

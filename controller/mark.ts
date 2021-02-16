@@ -3,12 +3,12 @@ import { Label, Mark } from "../interface.ts";
 import { globalDatabase } from "../database.ts";
 
 // Import packages from URL
-import { format } from "https://deno.land/std@0.87.0/datetime/mod.ts";
+import { format, parse } from "https://deno.land/std@0.87.0/datetime/mod.ts";
 import { ObjectId } from "https://deno.land/x/mongo@v0.13.0/ts/types.ts";
 import { Request, Response } from "https://deno.land/x/oak/mod.ts";
 
-const markDatabase = globalDatabase.collection<Mark>("marks");
 const labelDatabase = globalDatabase.collection<Label>("labels");
+const markDatabase = globalDatabase.collection<Mark>("marks");
 
 const addMark = async (
   { request, response }: { request: Request; response: Response },
@@ -25,12 +25,30 @@ const addMark = async (
     return;
   }
 
-  // Generate the date string
-  const now = new Date();
-  const date = format(now, `d-M-yyyy`);
+  // Make sure the date is a valid
+  try {
+    parse(value.date, "d-M-yyyy");
+  } catch(e) {
+    response.body = `Invalid 'date' property`;
+    response.status = 400;
+    return;
+  }
+
+  // This will transform 36-2-2021 into 8-3-2021
+  const parsed = parse(value.date, "d-M-yyyy");
+  const date = format(parsed, "d-M-yyyy");
+
+  // Prevent double entries on the same label and date
+  const result = await markDatabase.findOne({ label, date });
+
+  if (result) {
+    response.body = result;
+    response.status = 200;
+    return;
+  }
 
   // Return to the user
-  const id = markDatabase.insertOne({ label, date });
+  const id = await markDatabase.insertOne({ label, date });
   response.body = { id, label, date };
   response.status = 200;
 };
@@ -39,8 +57,7 @@ const getMarks = async (
   { params, response }: { params: { date: string }; response: Response },
 ) => {
   // Get the date from the URL
-  const date = params.date;
-  const marks = await markDatabase.find({ date: date });
+  const marks = await markDatabase.find({ date: params.date });
 
   // Return results to the user
   if (marks) {
@@ -55,8 +72,7 @@ const deleteMark = async (
   { params, response }: { params: { id: string }; response: Response },
 ) => {
   // Delete the mark
-  const id = params.id;
-  const result = await markDatabase.deleteOne({ _id: ObjectId(id) });
+  const result = await markDatabase.deleteOne({ _id: ObjectId(params.id) });
 
   // Return results to the user
   response.status = result ? 204 : 404;
