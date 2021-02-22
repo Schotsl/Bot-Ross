@@ -24,3 +24,7 @@ export interface Mark {
   date: string;
   label: ObjectId;
 }
+
+export interface Taxonomy {
+  title: string;
+}

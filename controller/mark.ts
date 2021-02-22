@@ -28,7 +28,7 @@ const addMark = async (
   // Make sure the date is a valid
   try {
     parse(value.date, "d-M-yyyy");
-  } catch(e) {
+  } catch (e) {
     response.body = `Invalid 'date' property`;
     response.status = 400;
     return;

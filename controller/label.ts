@@ -122,7 +122,12 @@ const updateLabel = async (
   }
 
   // Return results to the user
-  const id = await labelDatabase.updateOne({ _id: ObjectId(params.id) }, { emoji, title, divider, offset });
+  const id = await labelDatabase.updateOne({ _id: ObjectId(params.id) }, {
+    emoji,
+    title,
+    divider,
+    offset,
+  });
   response.body = { id, emoji, title, divider, offset };
   response.status = 200;
 };
