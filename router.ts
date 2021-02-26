@@ -18,19 +18,19 @@ const router = new Router();
 
 // Add the label endpoints
 router.get("/label", getLabels);
-router.put("/label/:id", updateLabel);
+router.put("/label/:_id", updateLabel);
 router.post("/label", addLabel);
-router.delete("/label/:id", deleteLabel);
+router.delete("/label/:_id", deleteLabel);
 
 // Add the taxonomy endpoints
 router.get("/taxonomy", getTaxonomies);
-router.put("/taxonomy/:id", updateTaxonomy);
+router.put("/taxonomy/:_id", updateTaxonomy);
 router.post("/taxonomy", addTaxonomy);
-router.delete("/taxonomy/:id", deleteTaxonomy);
+router.delete("/taxonomy/:_id", deleteTaxonomy);
 
 // Add the label endpoints
 router.get("/mark/:date", getMarks);
 router.post("/mark", addMark);
-router.delete("/mark/:id", deleteMark);
+router.delete("/mark/:_id", deleteMark);
 
 export default router;

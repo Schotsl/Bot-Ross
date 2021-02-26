@@ -14,7 +14,6 @@ const addTaxonomy = async (
   // Fetch the body parameters
   const body = await request.body();
   const value = await body.value;
-
   const title = value.title;
 
   // Validate string property
@@ -25,8 +24,8 @@ const addTaxonomy = async (
   }
 
   // Insert the taxononmy and return to the user
-  const id = await taxonomyDatabase.insertOne({ title });
-  response.body = { id, title };
+  const _id = await taxonomyDatabase.insertOne({ title });
+  response.body = { _id, title };
   response.status = 200;
 };
 
@@ -46,10 +45,10 @@ const getTaxonomies = async (
 };
 
 const deleteTaxonomy = async (
-  { params, response }: { params: { id: string }; response: Response },
+  { params, response }: { params: { _id: string }; response: Response },
 ) => {
   // Delete the taxonomy
-  const result = await taxonomyDatabase.deleteOne({ _id: ObjectId(params.id) });
+  const result = await taxonomyDatabase.deleteOne({ _id: ObjectId(params._id) });
 
   // Return results to the user
   response.status = result ? 204 : 404;
@@ -57,15 +56,15 @@ const deleteTaxonomy = async (
 
 const updateTaxonomy = async (
   { params, request, response }: {
-    params: { id: string };
+    params: { _id: string };
     request: Request;
     response: Response;
   },
 ) => {
+  const _id = ObjectId(params._id);
+
   // Get the stored taxonomy
-  const taxonomy: Taxonomy | null = await taxonomyDatabase.findOne({
-    _id: ObjectId(params.id),
-  });
+  const taxonomy: Taxonomy | null = await taxonomyDatabase.findOne({ _id });
 
   // If no taxononmy has been found
   if (!taxonomy) {
@@ -76,7 +75,6 @@ const updateTaxonomy = async (
   // Fetch the body parameters
   const body = await request.body();
   const value = await body.value;
-
   const title = value.title;
 
   // Validate string property
@@ -86,11 +84,13 @@ const updateTaxonomy = async (
     return;
   }
 
-  // Return results to the user
-  const id = await taxonomyDatabase.updateOne({ _id: ObjectId(params.id) }, {
+  // Update taxonomy value
+  await taxonomyDatabase.updateOne({ _id: ObjectId(params._id) }, {
     title,
   });
-  response.body = { id, title };
+
+  // Return results to the user 
+  response.body = { _id, title };
   response.status = 200;
 };
 

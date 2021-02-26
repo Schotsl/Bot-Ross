@@ -41,8 +41,8 @@ const addLabel = async (
   }
 
   // Insert the label and return to the user
-  const id = await labelDatabase.insertOne({ emoji, title, divider, offset });
-  response.body = { id, emoji, title, divider, offset };
+  const _id = await labelDatabase.insertOne({ emoji, title, divider, offset });
+  response.body = { _id, emoji, title, divider, offset };
   response.status = 200;
 };
 
@@ -62,13 +62,13 @@ const getLabels = async (
 };
 
 const deleteLabel = async (
-  { params, response }: { params: { id: string }; response: Response },
+  { params, response }: { params: { _id: string }; response: Response },
 ) => {
   // Delete marks with refrences to the label
-  await markDatabase.find({ label: ObjectId(params.id) });
+  await markDatabase.find({ label: ObjectId(params._id) });
 
   // Delete the label
-  const result = await labelDatabase.deleteOne({ _id: ObjectId(params.id) });
+  const result = await labelDatabase.deleteOne({ _id: ObjectId(params._id) });
 
   // Return results to the user
   response.status = result ? 204 : 404;
@@ -76,15 +76,15 @@ const deleteLabel = async (
 
 const updateLabel = async (
   { params, request, response }: {
-    params: { id: string };
+    params: { _id: string };
     request: Request;
     response: Response;
   },
 ) => {
+  const _id = ObjectId(params._id);
+
   // Get the stored label
-  const label: Label | null = await labelDatabase.findOne({
-    _id: ObjectId(params.id),
-  });
+  const label: Label | null = await labelDatabase.findOne({ _id });
 
   // If no label has been found
   if (!label) {
@@ -121,14 +121,16 @@ const updateLabel = async (
     return;
   }
 
-  // Return results to the user
-  const id = await labelDatabase.updateOne({ _id: ObjectId(params.id) }, {
+  // Update label value
+  await labelDatabase.updateOne({ _id }, {
     emoji,
     title,
     divider,
     offset,
   });
-  response.body = { id, emoji, title, divider, offset };
+
+  // Return results to the user
+  response.body = { _id, emoji, title, divider, offset };
   response.status = 200;
 };
 

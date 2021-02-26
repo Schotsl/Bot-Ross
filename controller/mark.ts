@@ -48,8 +48,8 @@ const addMark = async (
   }
 
   // Return to the user
-  const id = await markDatabase.insertOne({ label, date });
-  response.body = { id, label, date };
+  const _id = await markDatabase.insertOne({ label, date });
+  response.body = { _id, label, date };
   response.status = 200;
 };
 
@@ -69,10 +69,10 @@ const getMarks = async (
 };
 
 const deleteMark = async (
-  { params, response }: { params: { id: string }; response: Response },
+  { params, response }: { params: { _id: string }; response: Response },
 ) => {
   // Delete the mark
-  const result = await markDatabase.deleteOne({ _id: ObjectId(params.id) });
+  const result = await markDatabase.deleteOne({ _id: ObjectId(params._id) });
 
   // Return results to the user
   response.status = result ? 204 : 404;
