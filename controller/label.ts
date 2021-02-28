@@ -31,9 +31,9 @@ const addLabel = async (
   }
 
   // Validate the divider value
-  if (!Number.isInteger(divider) || !Number.isInteger(offset)) {
+  if (isNaN(+divider!) || isNaN(+offset!)) {
     // Get the name of the invalid property
-    const property = Number.isInteger(divider) ? `offset` : `divider`;
+    const property = isNaN(+divider!) ? `offset` : `divider`;
 
     response.body = `Invalid '${property}' property`;
     response.status = 400;
@@ -112,9 +112,9 @@ const updateLabel = async (
   }
 
   // Validate the divider value
-  if (!Number.isInteger(divider) || !Number.isInteger(offset)) {
+  if (isNaN(+divider!) || isNaN(+offset!)) {
     // Get the name of the invalid property
-    const property = Number.isInteger(divider) ? `offset` : `divider`;
+    const property = isNaN(+divider!) ? `offset` : `divider`;
 
     response.body = `Invalid '${property}' property`;
     response.status = 400;
