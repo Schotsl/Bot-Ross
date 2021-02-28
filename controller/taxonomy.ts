@@ -32,8 +32,35 @@ const addTaxonomy = async (
 const getTaxonomies = async (
   { request, response }: { request: Request; response: Response },
 ) => {
+  // Fetch limit and offset from the GET parameters for pagination
+  let limit = request.url.searchParams.get(`limit`)
+    ? request.url.searchParams.get(`limit`)
+    : 5;
+
+  let offset = request.url.searchParams.get(`offset`)
+    ? request.url.searchParams.get(`offset`)
+    : 0;
+
+  // Validate limit is a number
+  if (isNaN(+offset!)) {
+    response.body = `Invalid 'limit' property`;
+    response.status = 400;
+    return;
+  }
+
+  // Validate offset is a number
+  if (isNaN(+offset!)) {
+    response.body = `Invalid 'offset' property`;
+    response.status = 400;
+    return;
+  }
+
+  // Transform the strings into numbers
+  limit = Number(limit);
+  offset = Number(offset);
+
   // Get every taxonomy
-  const taxonomies = await taxonomyDatabase.find();
+  const taxonomies = await taxonomyDatabase.find().limit(limit).skip(offset);
 
   // Return results to the user
   if (taxonomies) {
@@ -48,7 +75,9 @@ const deleteTaxonomy = async (
   { params, response }: { params: { _id: string }; response: Response },
 ) => {
   // Delete the taxonomy
-  const result = await taxonomyDatabase.deleteOne({ _id: ObjectId(params._id) });
+  const result = await taxonomyDatabase.deleteOne({
+    _id: ObjectId(params._id),
+  });
 
   // Return results to the user
   response.status = result ? 204 : 404;
@@ -89,7 +118,7 @@ const updateTaxonomy = async (
     title,
   });
 
-  // Return results to the user 
+  // Return results to the user
   response.body = { _id, title };
   response.status = 200;
 };
