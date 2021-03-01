@@ -56,12 +56,29 @@ const addMark = async (
 const getMarks = async (
   { request, response }: { request: Request; response: Response },
 ) => {
-  // Fetch the date property
-  const date = request.url.searchParams.get(`date`);
+  // Fetch limit and offset from the GET parameters for pagination
+  let limit = request.url.searchParams.get(`limit`)
+    ? request.url.searchParams.get(`limit`)
+    : 5;
 
-  // Return error if no date property has been provided
-  if (!date) {
-    response.body = `Invalid 'date' property`;
+  let offset = request.url.searchParams.get(`offset`)
+    ? request.url.searchParams.get(`offset`)
+    : 0;
+
+  let date = request.url.searchParams.get(`date`)
+    ? request.url.searchParams.get(`date`)
+    : format(new Date(), "d-M-yyyy");
+
+  // Validate limit is a number
+  if (isNaN(+offset!)) {
+    response.body = `Invalid 'limit' property`;
+    response.status = 400;
+    return;
+  }
+
+  // Validate offset is a number
+  if (isNaN(+offset!)) {
+    response.body = `Invalid 'offset' property`;
     response.status = 400;
     return;
   }
@@ -75,8 +92,11 @@ const getMarks = async (
     return;
   }
 
-  // Get the date from the URL
-  const marks = await markDatabase.find({ date: date! });
+  // Transform the strings into numbers
+  limit = Number(limit);
+  offset = Number(offset);
+
+  const marks = await markDatabase.find({ date: date! }).limit(limit).skip(offset);
 
   // Return results to the user
   if (marks) {
