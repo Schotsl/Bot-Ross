@@ -29,7 +29,7 @@ router.post("/taxonomy", addTaxonomy);
 router.delete("/taxonomy/:_id", deleteTaxonomy);
 
 // Add the label endpoints
-router.get("/mark/:date", getMarks);
+router.get("/mark", getMarks);
 router.post("/mark", addMark);
 router.delete("/mark/:_id", deleteMark);
 

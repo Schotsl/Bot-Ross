@@ -54,10 +54,29 @@ const addMark = async (
 };
 
 const getMarks = async (
-  { params, response }: { params: { date: string }; response: Response },
+  { request, response }: { request: Request; response: Response },
 ) => {
+  // Fetch the date property
+  const date = request.url.searchParams.get(`date`);
+
+  // Return error if no date property has been provided
+  if (!date) {
+    response.body = `Invalid 'date' property`;
+    response.status = 400;
+    return;
+  }
+
+  // Make sure the date is a valid
+  try {
+    parse(date!, "d-M-yyyy");
+  } catch (e) {
+    response.body = `Invalid 'date' property`;
+    response.status = 400;
+    return;
+  }
+
   // Get the date from the URL
-  const marks = await markDatabase.find({ date: params.date });
+  const marks = await markDatabase.find({ date: date! });
 
   // Return results to the user
   if (marks) {
