@@ -8,11 +8,6 @@ export interface Settings {
   discordId?: string;
 }
 
-export interface Schema {
-  name: string;
-  enabled: boolean;
-}
-
 export class Label {
   public _id?: ObjectId;
   public emoji?: string;
