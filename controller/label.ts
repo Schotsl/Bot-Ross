@@ -77,14 +77,19 @@ const getLabels = async (
 
   // Get every label
   const labels = await labelDatabase.find().limit(limit).skip(offset);
+  const total = await labelDatabase.count();
 
   // Return results to the user
   if (labels) {
-    response.body = labels;
     response.status = 200;
-  } else {
-    response.status = 404;
+    response.body = {
+      labels,
+      offset,
+      total,
+    };
   }
+
+  response.status = 404;
 };
 
 const deleteLabel = async (

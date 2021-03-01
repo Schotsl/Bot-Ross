@@ -97,14 +97,19 @@ const getMarks = async (
   offset = Number(offset);
 
   const marks = await markDatabase.find({ date: date! }).limit(limit).skip(offset);
+  const total = await markDatabase.count({ date: date! })
 
   // Return results to the user
   if (marks) {
-    response.body = marks;
     response.status = 200;
-  } else {
-    response.status = 404;
+    response.body = {
+      marks,
+      offset,
+      total,
+    };
   }
+
+  response.status = 404;
 };
 
 const deleteMark = async (

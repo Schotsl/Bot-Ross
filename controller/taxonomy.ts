@@ -61,14 +61,19 @@ const getTaxonomies = async (
 
   // Get every taxonomy
   const taxonomies = await taxonomyDatabase.find().limit(limit).skip(offset);
+  const total = await taxonomyDatabase.count();
 
   // Return results to the user
   if (taxonomies) {
-    response.body = taxonomies;
     response.status = 200;
-  } else {
-    response.status = 404;
+    response.body = {
+      taxonomies,
+      offset,
+      total,
+    };
   }
+
+  response.status = 404;
 };
 
 const deleteTaxonomy = async (
