@@ -1,8 +1,7 @@
 # Ignore credentials
 settings.json
 
-# Ignore .vscode config and DS_Store
-.vscode
+# Ignore MacOS files
 .DS_Store
 
 # Ignore storage folder
