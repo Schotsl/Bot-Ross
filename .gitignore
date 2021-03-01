@@ -1,5 +1,5 @@
 # Ignore credentials
-settings.json
+/settings.json
 
 # Ignore MacOS files
 .DS_Store
