@@ -21,21 +21,26 @@ const addLabel = async (
   const offset = value.offset;
   const divider = value.divider;
 
-  if (emoji.length === 0 || title.length === 0) {
-    // Get the name of the invalid property
-    const property = emoji.length === 0 ? `emoji` : `title`;
-
-    response.body = `Invalid '${property}' property`;
+  if (emoji.length === 0) {
+    response.body = `Invalid 'emoji' property`;
     response.status = 400;
     return;
   }
 
-  // Validate the divider value
-  if (isNaN(+divider!) || isNaN(+offset!)) {
-    // Get the name of the invalid property
-    const property = isNaN(+divider!) ? `offset` : `divider`;
+  if (title.length === 0) {
+    response.body = `Invalid 'title' property`;
+    response.status = 400;
+    return;
+  }
 
-    response.body = `Invalid '${property}' property`;
+  if (isNaN(+divider!)) {
+    response.body = `Invalid 'divider' property`;
+    response.status = 400;
+    return;
+  }
+
+  if (isNaN(+offset!)) {
+    response.body = `Invalid 'offset' property`;
     response.status = 400;
     return;
   }
@@ -132,22 +137,26 @@ const updateLabel = async (
   const offset = value.offset;
   const divider = value.divider;
 
-  if (emoji.length === 0 || title.length === 0) {
-    // Get the name of the invalid property
-    const property = emoji.length === 0 ? `emoji` : `title`;
-
-    // Inform the user
-    response.body = `Invalid '${property}' property`;
+  if (emoji.length === 0) {
+    response.body = `Invalid 'emoji' property`;
     response.status = 400;
     return;
   }
 
-  // Validate the divider value
-  if (isNaN(+divider!) || isNaN(+offset!)) {
-    // Get the name of the invalid property
-    const property = isNaN(+divider!) ? `offset` : `divider`;
+  if (title.length === 0) {
+    response.body = `Invalid 'title' property`;
+    response.status = 400;
+    return;
+  }
 
-    response.body = `Invalid '${property}' property`;
+  if (isNaN(+divider!)) {
+    response.body = `Invalid 'divider' property`;
+    response.status = 400;
+    return;
+  }
+
+  if (isNaN(+offset!)) {
+    response.body = `Invalid 'offset' property`;
     response.status = 400;
     return;
   }
