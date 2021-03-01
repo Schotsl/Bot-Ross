@@ -6,6 +6,7 @@ import { globalDatabase } from "../database.ts";
 import { ObjectId } from "https://deno.land/x/mongo@v0.13.0/ts/types.ts";
 import { Request, Response } from "https://deno.land/x/oak/mod.ts";
 
+// Create the databases
 const contactDatabase = globalDatabase.collection<Contact>("contacts");
 
 const addContact = async (
@@ -15,37 +16,33 @@ const addContact = async (
   const body = await request.body();
   const value = await body.value;
 
-  const image = value.image;
-  const lastname = value.lastname;
-  const firstname = value.firstname;
-
-  if (image.length === 0) {
-    response.body = `Invalid 'image' property`;
-    response.status = 400;
-    return;
-  }
-
-  if (lastname.length === 0) {
+  // Validate the lastname property
+  if (value.lastname.length === 0) {
     response.body = `Invalid 'lastname' property`;
     response.status = 400;
     return;
   }
 
-  if (firstname.length === 0) {
+  // Validate the firstname property
+  if (value.firstname.length === 0) {
     response.body = `Invalid 'firstname' property`;
     response.status = 400;
     return;
   }
 
-  // Insert the contact and return to the user
-  const _id = await contactDatabase.insertOne({ image, lastname, firstname });
-  response.body = { _id, image, lastname, firstname };
+  // Create new label and insert
+  const contact = new Contact(value.firstname, value.lastname, value.image);
+  contact._id = await contactDatabase.insertOne(contact);
+
+  // Return to the user
+  response.body = contact;
   response.status = 200;
 };
 
 const getContacts = async (
   { request, response }: { request: Request; response: Response },
 ) => {
+  // Fetch variables from URL GET parameters
   let limit = request.url.searchParams.get(`limit`)
     ? request.url.searchParams.get(`limit`)
     : 5;
@@ -55,7 +52,7 @@ const getContacts = async (
     : 0;
 
   // Validate limit is a number
-  if (isNaN(+offset!)) {
+  if (isNaN(+limit!)) {
     response.body = `Invalid 'limit' property`;
     response.status = 400;
     return;
@@ -106,9 +103,8 @@ const updateContact = async (
     response: Response;
   },
 ) => {
-  const _id = ObjectId(params._id);
-
   // Get the stored contact
+  const _id = ObjectId(params._id);
   const contact: Contact | null = await contactDatabase.findOne({ _id });
 
   // If no contact has been found
@@ -121,37 +117,16 @@ const updateContact = async (
   const body = await request.body();
   const value = await body.value;
 
-  const image = value.image;
-  const lastname = value.lastname;
-  const firstname = value.firstname;
-
-  if (image.length === 0) {
-    response.body = `Invalid 'image' property`;
-    response.status = 400;
-    return;
-  }
-
-  if (lastname.length === 0) {
-    response.body = `Invalid 'lastname' property`;
-    response.status = 400;
-    return;
-  }
-
-  if (firstname.length === 0) {
-    response.body = `Invalid 'firstname' property`;
-    response.status = 400;
-    return;
-  }
+  // Validate simple string properties
+  if (value.image) contact.image = value.image;
+  if (value.lastname) contact.lastname = value.lastname;
+  if (value.firstname) contact.firstname = value.firstname;
 
   // Update contact value
-  await contactDatabase.updateOne({ _id }, {
-    image,
-    lastname,
-    firstname,
-  });
+  await contactDatabase.updateOne({ _id }, contact);
 
   // Return results to the user
-  response.body = { _id, image, lastname, firstname };
+  response.body = contact;
   response.status = 200;
 };
 

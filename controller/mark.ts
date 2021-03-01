@@ -7,6 +7,7 @@ import { format, parse } from "https://deno.land/std@0.87.0/datetime/mod.ts";
 import { ObjectId } from "https://deno.land/x/mongo@v0.13.0/ts/types.ts";
 import { Request, Response } from "https://deno.land/x/oak/mod.ts";
 
+// Create the databases
 const labelDatabase = globalDatabase.collection<Label>("labels");
 const markDatabase = globalDatabase.collection<Mark>("marks");
 
@@ -16,16 +17,15 @@ const addMark = async (
   // Fetch the body parameters
   const body = await request.body();
   const value = await body.value;
-  const label = ObjectId(value.label);
 
-  // Validate the label ID
-  if (!await labelDatabase.count({ _id: label })) {
+  // Validate the label property
+  if (!await labelDatabase.count({ _id: ObjectId(value.label) })) {
     response.body = `Invalid 'label' property`;
     response.status = 400;
     return;
   }
 
-  // Make sure the date is a valid
+  // Validate the date property
   try {
     parse(value.date, "d-M-yyyy");
   } catch (e) {
@@ -38,18 +38,25 @@ const addMark = async (
   const parsed = parse(value.date, "d-M-yyyy");
   const date = format(parsed, "d-M-yyyy");
 
-  // Prevent double entries on the same label and date
-  const result = await markDatabase.findOne({ label, date });
+  // Check if there is already an entry with this label and date
+  const result = await markDatabase.findOne({
+    label: ObjectId(value.label),
+    date,
+  });
 
+  // "Pretend" that we inserted into the database
   if (result) {
     response.body = result;
     response.status = 200;
     return;
   }
 
+  // Create new mark and insert
+  const mark = new Mark(ObjectId(value.label), date);
+  mark._id = await markDatabase.insertOne(mark);
+
   // Return to the user
-  const _id = await markDatabase.insertOne({ label, date });
-  response.body = { _id, label, date };
+  response.body = mark;
   response.status = 200;
 };
 
@@ -65,12 +72,12 @@ const getMarks = async (
     ? request.url.searchParams.get(`offset`)
     : 0;
 
-  let date = request.url.searchParams.get(`date`)
+  const date = request.url.searchParams.get(`date`)
     ? request.url.searchParams.get(`date`)
     : format(new Date(), "d-M-yyyy");
 
   // Validate limit is a number
-  if (isNaN(+offset!)) {
+  if (isNaN(+limit!)) {
     response.body = `Invalid 'limit' property`;
     response.status = 400;
     return;
@@ -96,8 +103,10 @@ const getMarks = async (
   limit = Number(limit);
   offset = Number(offset);
 
-  const marks = await markDatabase.find({ date: date! }).limit(limit).skip(offset);
-  const total = await markDatabase.count({ date: date! })
+  const marks = await markDatabase.find({ date: date! }).limit(limit).skip(
+    offset,
+  );
+  const total = await markDatabase.count({ date: date! });
 
   // Return results to the user
   if (marks) {

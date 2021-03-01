@@ -6,6 +6,7 @@ import { globalDatabase } from "../database.ts";
 import { ObjectId } from "https://deno.land/x/mongo@v0.13.0/ts/types.ts";
 import { Request, Response } from "https://deno.land/x/oak/mod.ts";
 
+// Create the databases
 const taxonomyDatabase = globalDatabase.collection<Taxonomy>("taxonomy");
 
 const addTaxonomy = async (
@@ -14,18 +15,20 @@ const addTaxonomy = async (
   // Fetch the body parameters
   const body = await request.body();
   const value = await body.value;
-  const title = value.title;
 
   // Validate string property
-  if (title.length === 0) {
+  if (value.title.length === 0) {
     response.body = `Invalid 'title' property`;
     response.status = 400;
     return;
   }
 
-  // Insert the taxononmy and return to the user
-  const _id = await taxonomyDatabase.insertOne({ title });
-  response.body = { _id, title };
+  // Create new taxonomy and insert
+  const taxonomy = new Taxonomy(value.title);
+  taxonomy._id = await taxonomyDatabase.insertOne(taxonomy);
+
+  // Return to the user
+  response.body = taxonomy;
   response.status = 200;
 };
 
@@ -42,7 +45,7 @@ const getTaxonomies = async (
     : 0;
 
   // Validate limit is a number
-  if (isNaN(+offset!)) {
+  if (isNaN(+limit!)) {
     response.body = `Invalid 'limit' property`;
     response.status = 400;
     return;
@@ -95,9 +98,8 @@ const updateTaxonomy = async (
     response: Response;
   },
 ) => {
-  const _id = ObjectId(params._id);
-
   // Get the stored taxonomy
+  const _id = ObjectId(params._id);
   const taxonomy: Taxonomy | null = await taxonomyDatabase.findOne({ _id });
 
   // If no taxononmy has been found
@@ -109,22 +111,15 @@ const updateTaxonomy = async (
   // Fetch the body parameters
   const body = await request.body();
   const value = await body.value;
-  const title = value.title;
 
-  // Validate string property
-  if (title.length === 0) {
-    response.body = `Invalid 'title' property`;
-    response.status = 400;
-    return;
-  }
+  // Validate simple string properties
+  if (value.title) taxonomy.title = value.title;
 
   // Update taxonomy value
-  await taxonomyDatabase.updateOne({ _id: ObjectId(params._id) }, {
-    title,
-  });
+  await taxonomyDatabase.updateOne({ _id: ObjectId(params._id) }, taxonomy);
 
   // Return results to the user
-  response.body = { _id, title };
+  response.body = taxonomy;
   response.status = 200;
 };
 

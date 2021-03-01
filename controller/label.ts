@@ -6,6 +6,7 @@ import { globalDatabase } from "../database.ts";
 import { ObjectId } from "https://deno.land/x/mongo@v0.13.0/ts/types.ts";
 import { Request, Response } from "https://deno.land/x/oak/mod.ts";
 
+// Create the databases
 const labelDatabase = globalDatabase.collection<Label>("labels");
 const markDatabase = globalDatabase.collection<Mark>("marks");
 
@@ -16,44 +17,52 @@ const addLabel = async (
   const body = await request.body();
   const value = await body.value;
 
-  const emoji = value.emoji;
-  const title = value.title;
-  const offset = value.offset;
-  const divider = value.divider;
-
-  if (emoji.length === 0) {
+  // Validate the emoji property
+  if (value.emoji.length === 0) {
     response.body = `Invalid 'emoji' property`;
     response.status = 400;
     return;
   }
 
-  if (title.length === 0) {
+  // Validate the title property
+  if (value.title.length === 0) {
     response.body = `Invalid 'title' property`;
     response.status = 400;
     return;
   }
 
-  if (isNaN(+divider!)) {
+  // Validate the divider property
+  if (isNaN(+value.divider!)) {
     response.body = `Invalid 'divider' property`;
     response.status = 400;
     return;
   }
 
-  if (isNaN(+offset!)) {
+  // Validate the offset property
+  if (isNaN(+value.offset!)) {
     response.body = `Invalid 'offset' property`;
     response.status = 400;
     return;
   }
 
-  // Insert the label and return to the user
-  const _id = await labelDatabase.insertOne({ emoji, title, divider, offset });
-  response.body = { _id, emoji, title, divider, offset };
+  // Create new label and insert
+  const label = new Label(
+    value.emoji,
+    value.title,
+    value.offset,
+    value.divider,
+  );
+  label._id = await labelDatabase.insertOne(label);
+
+  // Return to the user
+  response.body = label;
   response.status = 200;
 };
 
 const getLabels = async (
   { request, response }: { request: Request; response: Response },
 ) => {
+  // Fetch variables from URL GET parameters
   let limit = request.url.searchParams.get(`limit`)
     ? request.url.searchParams.get(`limit`)
     : 5;
@@ -63,7 +72,7 @@ const getLabels = async (
     : 0;
 
   // Validate limit is a number
-  if (isNaN(+offset!)) {
+  if (isNaN(+limit!)) {
     response.body = `Invalid 'limit' property`;
     response.status = 400;
     return;
@@ -117,9 +126,8 @@ const updateLabel = async (
     response: Response;
   },
 ) => {
-  const _id = ObjectId(params._id);
-
   // Get the stored label
+  const _id = ObjectId(params._id);
   const label: Label | null = await labelDatabase.findOne({ _id });
 
   // If no label has been found
@@ -132,45 +140,37 @@ const updateLabel = async (
   const body = await request.body();
   const value = await body.value;
 
-  const emoji = value.emoji;
-  const title = value.title;
-  const offset = value.offset;
-  const divider = value.divider;
+  // Validate simple string properties
+  if (value.emoji) label.emoji = value.emoji;
+  if (value.title) label.title = value.title;
 
-  if (emoji.length === 0) {
-    response.body = `Invalid 'emoji' property`;
-    response.status = 400;
-    return;
+  // Validate and add the divider property
+  if (value.divider) {
+    if (isNaN(+value.divider!)) {
+      response.body = `Invalid 'divider' property`;
+      response.status = 400;
+      return;
+    }
+
+    label.divider = value.divider;
   }
 
-  if (title.length === 0) {
-    response.body = `Invalid 'title' property`;
-    response.status = 400;
-    return;
-  }
+  // Validate and add the offset property
+  if (value.offset) {
+    if (isNaN(+value.offset!)) {
+      response.body = `Invalid 'offset' property`;
+      response.status = 400;
+      return;
+    }
 
-  if (isNaN(+divider!)) {
-    response.body = `Invalid 'divider' property`;
-    response.status = 400;
-    return;
-  }
-
-  if (isNaN(+offset!)) {
-    response.body = `Invalid 'offset' property`;
-    response.status = 400;
-    return;
+    label.offset = value.offset;
   }
 
   // Update label value
-  await labelDatabase.updateOne({ _id }, {
-    emoji,
-    title,
-    divider,
-    offset,
-  });
+  await labelDatabase.updateOne({ _id }, label);
 
   // Return results to the user
-  response.body = { _id, emoji, title, divider, offset };
+  response.body = label;
   response.status = 200;
 };
 

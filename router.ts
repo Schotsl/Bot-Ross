@@ -18,7 +18,7 @@ import {
   deleteContact,
   getContacts,
   updateContact,
-} from "./controller/label.ts";
+} from "./controller/contact.ts";
 
 const router = new Router();
 

@@ -13,24 +13,41 @@ export interface Schema {
   enabled: boolean;
 }
 
-export interface Label {
-  emoji: string;
-  title: string;
-  offset: number;
-  divider: number;
+export class Label {
+  public _id?: ObjectId;
+  public emoji?: string;
+  public title?: string;
+  public offset?: number;
+  public divider?: number;
+
+  constructor(
+    emoji: string,
+    title: string,
+    offset?: number,
+    divider?: number,
+  ) {}
 }
 
-export interface Mark {
-  date: string;
-  label: ObjectId;
+export class Contact {
+  public _id?: ObjectId;
+  public image?: string;
+  public lastname?: string;
+  public firstname?: string;
+
+  constructor(firstname: string, lastname: string, image?: string) {}
 }
 
-export interface Taxonomy {
-  title: string;
+export class Mark {
+  public _id?: ObjectId;
+  public date?: string;
+  public label?: ObjectId;
+
+  constructor(label: ObjectId, date: string) {}
 }
 
-export interface Contact {
-  image: string;
-  lastname: string;
-  firstname: string;
+export class Taxonomy {
+  public _id?: ObjectId;
+  public title?: string;
+
+  constructor(title: string) {}
 }
