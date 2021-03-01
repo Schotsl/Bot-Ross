@@ -28,3 +28,9 @@ export interface Mark {
 export interface Taxonomy {
   title: string;
 }
+
+export interface Contact {
+  image: string;
+  lastname: string;
+  firstname: string;
+}

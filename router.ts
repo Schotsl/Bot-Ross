@@ -13,6 +13,12 @@ import {
   getTaxonomies,
   updateTaxonomy,
 } from "./controller/taxonomy.ts";
+import {
+  addContact,
+  deleteContact,
+  getContacts,
+  updateContact,
+} from "./controller/label.ts";
 
 const router = new Router();
 
@@ -21,6 +27,12 @@ router.get("/label", getLabels);
 router.put("/label/:_id", updateLabel);
 router.post("/label", addLabel);
 router.delete("/label/:_id", deleteLabel);
+
+// Add the contact endpoints
+router.get("/contact", getContacts);
+router.put("/contact/:_id", updateContact);
+router.post("/contact", addContact);
+router.delete("/contact/:_id", deleteContact);
 
 // Add the taxonomy endpoints
 router.get("/taxonomy", getTaxonomies);
