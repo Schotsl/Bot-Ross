@@ -20,7 +20,12 @@ export class Label {
     title: string,
     offset?: number,
     divider?: number,
-  ) {}
+  ) {
+    this.emoji = emoji;
+    this.title = title;
+    this.offset = offset;
+    this.divider = divider;
+  }
 }
 
 export class Contact {
@@ -29,7 +34,11 @@ export class Contact {
   public lastname?: string;
   public firstname?: string;
 
-  constructor(firstname: string, lastname: string, image?: string) {}
+  constructor(firstname: string, lastname: string, image?: string) {
+    this.image = image;
+    this.lastname = lastname;
+    this.firstname = firstname;
+  }
 }
 
 export class Mark {
@@ -37,12 +46,28 @@ export class Mark {
   public date?: string;
   public label?: ObjectId;
 
-  constructor(label: ObjectId, date: string) {}
+  constructor(label: ObjectId, date: string) {
+    this.date = date;
+    this.label = label;
+  }
 }
 
 export class Taxonomy {
   public _id?: ObjectId;
   public title?: string;
 
-  constructor(title: string) {}
+  constructor(title: string) {
+    this.title = title;
+  }
+}
+
+export class Expense {
+  public _id?: ObjectId;
+  public title?: string;
+  public amount?: number;
+  public crucial?: boolean;
+  public taxonomy?: Taxonomy;
+  public description?: string;
+  public compensated?: boolean;
+  public stakeholders?: Array<Contact>;
 }

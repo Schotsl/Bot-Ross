@@ -34,14 +34,10 @@ const addMark = async (
     return;
   }
 
-  // This will transform 36-2-2021 into 8-3-2021
-  const parsed = parse(value.date, "d-M-yyyy");
-  const date = format(parsed, "d-M-yyyy");
-
   // Check if there is already an entry with this label and date
   const result = await markDatabase.findOne({
     label: ObjectId(value.label),
-    date,
+    date: value.date,
   });
 
   // "Pretend" that we inserted into the database
@@ -52,7 +48,8 @@ const addMark = async (
   }
 
   // Create new mark and insert
-  const mark = new Mark(ObjectId(value.label), date);
+  const mark = new Mark(ObjectId(value.label), value.date);
+
   mark._id = await markDatabase.insertOne(mark);
 
   // Return to the user
@@ -72,10 +69,6 @@ const getMarks = async (
     ? request.url.searchParams.get(`offset`)
     : 0;
 
-  const date = request.url.searchParams.get(`date`)
-    ? request.url.searchParams.get(`date`)
-    : format(new Date(), "d-M-yyyy");
-
   // Validate limit is a number
   if (isNaN(+limit!)) {
     response.body = `Invalid 'limit' property`;
@@ -90,35 +83,35 @@ const getMarks = async (
     return;
   }
 
-  // Make sure the date is a valid
-  try {
-    parse(date!, "d-M-yyyy");
-  } catch (e) {
-    response.body = `Invalid 'date' property`;
-    response.status = 400;
-    return;
-  }
-
   // Transform the strings into numbers
   limit = Number(limit);
   offset = Number(offset);
 
-  const marks = await markDatabase.find({ date: date! }).limit(limit).skip(
-    offset,
-  );
-  const total = await markDatabase.count({ date: date! });
+  // If a date has been provided validate it
+  const date = request.url.searchParams.get(`date`);
 
-  // Return results to the user
-  if (marks) {
-    response.status = 200;
-    response.body = {
-      marks,
-      offset,
-      total,
-    };
+  if (date) {
+    try {
+      parse(date!, "d-M-yyyy");
+    } catch (e) {
+      response.body = `Invalid 'date' property`;
+      response.status = 400;
+      return;
+    }
   }
 
-  response.status = 404;
+  // Generate the query and search
+  const query = date ? { date } : { };
+  const marks = await markDatabase.find(query).limit(limit).skip(offset);
+  const total = await markDatabase.count(query);
+
+  // Return results to the user
+  response.status = 200;
+  response.body = {
+    marks,
+    offset,
+    total,
+  };
 };
 
 const deleteMark = async (

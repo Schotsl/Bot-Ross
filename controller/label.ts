@@ -52,6 +52,7 @@ const addLabel = async (
     value.offset,
     value.divider,
   );
+
   label._id = await labelDatabase.insertOne(label);
 
   // Return to the user
@@ -94,16 +95,12 @@ const getLabels = async (
   const total = await labelDatabase.count();
 
   // Return results to the user
-  if (labels) {
-    response.status = 200;
-    response.body = {
-      labels,
-      offset,
-      total,
-    };
-  }
-
-  response.status = 404;
+  response.status = 200;
+  response.body = {
+    labels,
+    offset,
+    total,
+  };
 };
 
 const deleteLabel = async (

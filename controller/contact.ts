@@ -32,6 +32,7 @@ const addContact = async (
 
   // Create new label and insert
   const contact = new Contact(value.firstname, value.lastname, value.image);
+
   contact._id = await contactDatabase.insertOne(contact);
 
   // Return to the user
@@ -74,16 +75,12 @@ const getContacts = async (
   const total = await contactDatabase.count();
 
   // Return results to the user
-  if (contacts) {
-    response.status = 200;
-    response.body = {
-      contacts,
-      offset,
-      total,
-    };
-  }
-
-  response.status = 404;
+  response.status = 200;
+  response.body = {
+    contacts,
+    offset,
+    total,
+  };
 };
 
 const deleteContact = async (

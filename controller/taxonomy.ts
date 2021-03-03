@@ -25,6 +25,7 @@ const addTaxonomy = async (
 
   // Create new taxonomy and insert
   const taxonomy = new Taxonomy(value.title);
+
   taxonomy._id = await taxonomyDatabase.insertOne(taxonomy);
 
   // Return to the user
@@ -67,16 +68,12 @@ const getTaxonomies = async (
   const total = await taxonomyDatabase.count();
 
   // Return results to the user
-  if (taxonomies) {
-    response.status = 200;
-    response.body = {
-      taxonomies,
-      offset,
-      total,
-    };
-  }
-
-  response.status = 404;
+  response.status = 200;
+  response.body = {
+    taxonomies,
+    offset,
+    total,
+  };
 };
 
 const deleteTaxonomy = async (
