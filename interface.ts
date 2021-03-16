@@ -1,15 +1,9 @@
 import { ObjectId } from "https://deno.land/x/mongo@v0.13.0/mod.ts";
 
-export interface Settings {
-  youtubeAPI?: string;
-  todoistAPI?: string;
-  discordAPI?: string;
-  playlistId?: string;
-  discordId?: string;
-}
-
 export class Label {
+  public id?: string;
   public _id?: ObjectId;
+
   public emoji?: string;
   public title?: string;
   public offset?: number;
@@ -29,20 +23,23 @@ export class Label {
 }
 
 export class Contact {
+  public id?: string;
   public _id?: ObjectId;
-  public image?: string;
+
+  public image?: ObjectId | string;
   public lastname?: string;
   public firstname?: string;
 
   constructor(firstname: string, lastname: string, image?: string) {
-    this.image = image;
     this.lastname = lastname;
     this.firstname = firstname;
   }
 }
 
 export class Mark {
+  public id?: string;
   public _id?: ObjectId;
+
   public date?: string;
   public label?: ObjectId;
 
@@ -53,7 +50,9 @@ export class Mark {
 }
 
 export class Taxonomy {
+  public id?: string;
   public _id?: ObjectId;
+
   public title?: string;
 
   constructor(title: string) {
@@ -61,13 +60,60 @@ export class Taxonomy {
   }
 }
 
-export class Expense {
+export class Image { 
+  public id?: string;
   public _id?: ObjectId;
+  
+  public base64?: string;
+
+  constructor(base64: string) {
+    this.base64 = base64;
+  }
+}
+
+export class Expense {
+  public id?: string;
+  public _id?: ObjectId;
+
+  public date?: Date;
   public title?: string;
   public amount?: number;
-  public crucial?: boolean;
-  public taxonomy?: Taxonomy;
+  public optional?: boolean;
+  public taxonomy?: ObjectId;
   public description?: string;
   public compensated?: boolean;
-  public stakeholders?: Array<Contact>;
+  public stakeholders?: Array<ObjectId>;
+
+  constructor(
+    date: Date,
+    title: string,
+    amount: number,
+    taxonomy: ObjectId,
+    description: string,
+    stakeholders: Array<ObjectId>,
+    optional: boolean = false,
+    compensated: boolean = false,
+  ) {
+    this.date = date;
+    this.title = title;
+    this.amount = amount;
+    this.optional = optional;
+    this.taxonomy = taxonomy;
+    this.compensated = compensated;
+    this.description = description;
+    this.stakeholders = stakeholders;
+  }
+}
+
+export interface Settings {
+  youtubeAPI?: string;
+  todoistAPI?: string;
+  discordAPI?: string;
+  playlistId?: string;
+  discordId?: string;
+}
+
+export interface Breakdown {
+  taxonomy: Taxonomy,
+  amount: number,
 }
