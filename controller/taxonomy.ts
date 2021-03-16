@@ -103,40 +103,4 @@ const deleteTaxonomy = async (
   response.status = result ? 204 : 404;
 };
 
-const updateTaxonomy = async (
-  { params, request, response }: {
-    params: { _id: string };
-    request: Request;
-    response: Response;
-  },
-) => {
-  // Get the stored taxonomy
-  const _id = ObjectId(params._id);
-  const taxonomy: Taxonomy | null = await taxonomyDatabase.findOne({ _id });
-
-  // If no taxononmy has been found
-  if (!taxonomy) {
-    response.status = 404;
-    return;
-  }
-
-  // Fetch the body parameters
-  const body = await request.body();
-  const value = await body.value;
-
-  // Validate simple string properties
-  if (value.title) taxonomy.title = value.title;
-
-  // Update taxonomy value
-  await taxonomyDatabase.updateOne({ _id: ObjectId(params._id) }, taxonomy);
-
-  // Simplify the ID for the rest API
-  taxonomy.id = taxonomy._id!.$oid.toString();
-  taxonomy._id = undefined;
-
-  // Return results to the user
-  response.body = taxonomy;
-  response.status = 200;
-};
-
-export { addTaxonomy, deleteTaxonomy, getTaxonomies, updateTaxonomy };
+export { addTaxonomy, deleteTaxonomy, getTaxonomies };
