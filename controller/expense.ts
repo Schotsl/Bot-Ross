@@ -1,5 +1,5 @@
 // Import packages local
-import { Expense, Contact, Taxonomy, Breakdown } from "../interface.ts";
+import { Breakdown, Contact, Expense, Taxonomy } from "../interface.ts";
 import { globalDatabase } from "../database.ts";
 
 // Import packages from URL
@@ -58,7 +58,9 @@ const addExpense = async (
 
   // Transform string properties into ObjectIDs
   value.taxonomy = ObjectId(value.taxonomy);
-  value.stakeholders = value.stakeholders.map((stakeholder: string) => ObjectId(stakeholder));
+  value.stakeholders = value.stakeholders.map((stakeholder: string) =>
+    ObjectId(stakeholder)
+  );
 
   // Validate the properties values
   if (value.title.length < 3 || value.title.length > 255) {
@@ -73,23 +75,23 @@ const addExpense = async (
     return;
   }
 
-  if (typeof(value.amount) !== "number") {
+  if (typeof (value.amount) !== "number") {
     response.body = `Invalid 'amount' property`;
     response.status = 400;
     return;
   }
 
   // Only validate the boolean properties if they have been provided
-  if (value.optional && typeof(value.optional) !== "boolean") {
+  if (value.optional && typeof (value.optional) !== "boolean") {
     response.body = `Invalid 'optional' property`;
     response.status = 400;
-    return; 
+    return;
   }
 
-  if (value.compensated && typeof(value.compensated) !== "boolean") {
+  if (value.compensated && typeof (value.compensated) !== "boolean") {
     response.body = `Invalid 'compensated' property`;
     response.status = 400;
-    return; 
+    return;
   }
 
   // Check if there is a Taxonomy with this ID
@@ -175,7 +177,7 @@ const getExpenses = async (
   expenses.map((expenses) => {
     expenses.id = expenses._id!.$oid.toString();
     expenses._id = undefined;
-  })
+  });
 
   // Return results to the user
   response.status = 200;
@@ -187,10 +189,10 @@ const getExpenses = async (
 };
 
 const deleteExpense = async (
-  { params, response }: { params: { _id: string }; response: Response },
+  { params, response }: { params: { id: string }; response: Response },
 ) => {
   // Delete the Expense
-  const result = await expenseDatabase.deleteOne({ _id: ObjectId(params._id) });
+  const result = await expenseDatabase.deleteOne({ _id: ObjectId(params.id) });
 
   // Return results to the user
   response.status = result ? 204 : 404;

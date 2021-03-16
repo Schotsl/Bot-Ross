@@ -80,7 +80,7 @@ const getTaxonomies = async (
   taxonomies.map((taxonomy) => {
     taxonomy.id = taxonomy._id!.$oid.toString();
     taxonomy._id = undefined;
-  })
+  });
 
   // Return results to the user
   response.status = 200;
@@ -92,11 +92,11 @@ const getTaxonomies = async (
 };
 
 const deleteTaxonomy = async (
-  { params, response }: { params: { _id: string }; response: Response },
+  { params, response }: { params: { id: string }; response: Response },
 ) => {
   // Delete the taxonomy
   const result = await taxonomyDatabase.deleteOne({
-    _id: ObjectId(params._id),
+    _id: ObjectId(params.id),
   });
 
   // Return results to the user

@@ -1,5 +1,55 @@
 import { ObjectId } from "https://deno.land/x/mongo@v0.13.0/mod.ts";
 
+export class Taxonomy {
+  public id?: string;
+  public _id?: ObjectId;
+
+  public title?: string;
+
+  constructor(title: string) {
+    this.title = title;
+  }
+}
+
+export class Image {
+  public id?: string;
+  public _id?: ObjectId;
+
+  public image?: string;
+
+  constructor(image: string) {
+    this.image = image;
+  }
+}
+
+export class Mark {
+  public id?: string;
+  public _id?: ObjectId;
+
+  public date?: string;
+  public label?: ObjectId;
+
+  constructor(label: ObjectId, date: string) {
+    this.date = date;
+    this.label = label;
+  }
+}
+
+export class Contact {
+  public id?: string;
+  public _id?: ObjectId;
+
+  public image?: ObjectId;
+  public lastname?: string;
+  public firstname?: string;
+
+  constructor(firstname: string, lastname: string, image?: ObjectId) {
+    this.image = image;
+    this.lastname = lastname;
+    this.firstname = firstname;
+  }
+}
+
 export class Label {
   public id?: string;
   public _id?: ObjectId;
@@ -19,55 +69,6 @@ export class Label {
     this.title = title;
     this.offset = offset;
     this.divider = divider;
-  }
-}
-
-export class Contact {
-  public id?: string;
-  public _id?: ObjectId;
-
-  public image?: ObjectId | string;
-  public lastname?: string;
-  public firstname?: string;
-
-  constructor(firstname: string, lastname: string, image?: string) {
-    this.lastname = lastname;
-    this.firstname = firstname;
-  }
-}
-
-export class Mark {
-  public id?: string;
-  public _id?: ObjectId;
-
-  public date?: string;
-  public label?: ObjectId;
-
-  constructor(label: ObjectId, date: string) {
-    this.date = date;
-    this.label = label;
-  }
-}
-
-export class Taxonomy {
-  public id?: string;
-  public _id?: ObjectId;
-
-  public title?: string;
-
-  constructor(title: string) {
-    this.title = title;
-  }
-}
-
-export class Image { 
-  public id?: string;
-  public _id?: ObjectId;
-  
-  public base64?: string;
-
-  constructor(base64: string) {
-    this.base64 = base64;
   }
 }
 
@@ -106,14 +107,14 @@ export class Expense {
 }
 
 export interface Settings {
+  discordId?: string;
   youtubeAPI?: string;
   todoistAPI?: string;
   discordAPI?: string;
   playlistId?: string;
-  discordId?: string;
 }
 
 export interface Breakdown {
-  taxonomy: Taxonomy,
-  amount: number,
+  amount: number;
+  taxonomy: Taxonomy;
 }

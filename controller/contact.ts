@@ -1,5 +1,5 @@
 // Import packages local
-import { Contact } from "../interface.ts";
+import { Contact, Image } from "../interface.ts";
 import { globalDatabase } from "../database.ts";
 
 // Import packages from URL
@@ -7,6 +7,7 @@ import { ObjectId } from "https://deno.land/x/mongo@v0.13.0/ts/types.ts";
 import { Request, Response } from "https://deno.land/x/oak/mod.ts";
 
 // Create the databases
+const imageDatabase = globalDatabase.collection<Image>("images");
 const contactDatabase = globalDatabase.collection<Contact>("contacts");
 
 const addContact = async (
@@ -16,27 +17,49 @@ const addContact = async (
   const body = await request.body();
   const value = await body.value;
 
-  // Validate the lastname property
-  if (value.lastname.length === 0) {
+  // Check if required properties have been provided
+  if (!value.lastname) {
+    response.body = `Missing 'lastname' property`;
+    response.status = 400;
+    return;
+  }
+
+  if (!value.firstname) {
+    response.body = `Missing 'firstname' property`;
+    response.status = 400;
+    return;
+  }
+
+  // Validate the properties values
+  if (value.lastname.length < 3 || value.lastname.length > 255) {
     response.body = `Invalid 'lastname' property`;
     response.status = 400;
     return;
   }
 
-  // Validate the firstname property
-  if (value.firstname.length === 0) {
+  if (value.firstname.length < 3 || value.firstname.length > 255) {
     response.body = `Invalid 'firstname' property`;
     response.status = 400;
     return;
   }
 
-  // Create new label and insert
-  const contact = new Contact(value.firstname, value.lastname, value.image);
+  // Create the image and insert it
+  const imageObject = new Image(value.image);
+  const imageWrapper = await imageDatabase.insertOne(imageObject);
 
-  contact._id = await contactDatabase.insertOne(contact);
+  // Create the contact with an image reference and insert it
+  const contactObject = new Contact(
+    value.firstname,
+    value.lastname,
+    imageWrapper,
+  );
+  const contactWrapper = await contactDatabase.insertOne(contactObject);
+
+  // Simplify the ID for the rest API
+  contactObject.id = contactWrapper.$oid.toString();
 
   // Return to the user
-  response.body = contact;
+  response.body = contactObject;
   response.status = 200;
 };
 
@@ -84,47 +107,23 @@ const getContacts = async (
 };
 
 const deleteContact = async (
-  { params, response }: { params: { _id: string }; response: Response },
+  { params, response }: { params: { id: string }; response: Response },
 ) => {
-  // Delete the contact
-  const result = await contactDatabase.deleteOne({ _id: ObjectId(params._id) });
+  // Get the contact using the ID from the URL
+  const contact = await contactDatabase.findOne({ _id: ObjectId(params.id) });
 
-  // Return results to the user
-  response.status = result ? 204 : 404;
-};
-
-const updateContact = async (
-  { params, request, response }: {
-    params: { _id: string };
-    request: Request;
-    response: Response;
-  },
-) => {
-  // Get the stored contact
-  const _id = ObjectId(params._id);
-  const contact: Contact | null = await contactDatabase.findOne({ _id });
-
-  // If no contact has been found
+  // If there is no contact found
   if (!contact) {
     response.status = 404;
     return;
   }
 
-  // Fetch the body parameters
-  const body = await request.body();
-  const value = await body.value;
+  // Delete the image if a contact contains one
+  if (contact.image) await imageDatabase.deleteOne({ _id: contact.image });
 
-  // Validate simple string properties
-  if (value.image) contact.image = value.image;
-  if (value.lastname) contact.lastname = value.lastname;
-  if (value.firstname) contact.firstname = value.firstname;
-
-  // Update contact value
-  await contactDatabase.updateOne({ _id }, contact);
-
-  // Return results to the user
-  response.body = contact;
-  response.status = 200;
+  // Delete the contact and return results to the user
+  await contactDatabase.deleteOne({ _id: ObjectId(params.id) });
+  response.status = 204;
 };
 
-export { addContact, deleteContact, getContacts, updateContact };
+export { addContact, deleteContact, getContacts };
