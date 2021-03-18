@@ -15,10 +15,10 @@ export class Image {
   public id?: string;
   public _id?: ObjectId;
 
-  public image?: string;
+  public base64?: string;
 
-  constructor(image: string) {
-    this.image = image;
+  constructor(base64: string) {
+    this.base64 = base64;
   }
 }
 

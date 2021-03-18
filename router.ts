@@ -1,6 +1,9 @@
 import { Router } from "https://deno.land/x/oak/mod.ts";
 
 import {
+  getImage
+} from "./controller/image.ts";
+import {
   addExpense,
   deleteExpense,
   getExpenses,
@@ -17,6 +20,9 @@ import {
 } from "./controller/taxonomy.ts";
 
 const router = new Router();
+
+// Add the image endpoints
+router.get("/image/:id", getImage);
 
 // Add the contact endpoints
 router.get("/contact", getContacts);
