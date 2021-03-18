@@ -58,6 +58,10 @@ const addContact = async (
   // Simplify the ID for the rest API
   contactObject.id = contactWrapper.$oid.toString();
 
+  if (typeof contactObject.image === "object") {
+    contactObject.image = contactObject.image.$oid.toString();
+  }
+
   // Return to the user
   response.body = contactObject;
   response.status = 200;
@@ -97,6 +101,16 @@ const getContacts = async (
   const contacts = await contactDatabase.find().limit(limit).skip(offset);
   const total = await contactDatabase.count();
 
+  // Simplify the ID for the rest API
+  contacts.map((contact) => {
+    contact.id = contact._id!.$oid.toString();
+    contact._id = undefined;
+
+    if (typeof contact.image === "object") {
+      contact.image = contact.image.$oid.toString();
+    }
+  });
+
   // Return results to the user
   response.status = 200;
   response.body = {
@@ -118,8 +132,10 @@ const deleteContact = async (
     return;
   }
 
-  // Delete the image if a contact contains one
-  if (contact.image) await imageDatabase.deleteOne({ _id: contact.image });
+  // Delete the image if the contact contains one
+  if (contact.image && typeof contact.image === "object") {
+    await imageDatabase.deleteOne({ _id: contact.image });
+  }
 
   // Delete the contact and return results to the user
   await contactDatabase.deleteOne({ _id: ObjectId(params.id) });

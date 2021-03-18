@@ -22,53 +22,18 @@ export class Image {
   }
 }
 
-export class Mark {
-  public id?: string;
-  public _id?: ObjectId;
-
-  public date?: string;
-  public label?: ObjectId;
-
-  constructor(label: ObjectId, date: string) {
-    this.date = date;
-    this.label = label;
-  }
-}
-
 export class Contact {
   public id?: string;
   public _id?: ObjectId;
 
-  public image?: ObjectId;
-  public lastname?: string;
-  public firstname?: string;
+  public image?: ObjectId | string;
+  public lastname: string;
+  public firstname: string;
 
   constructor(firstname: string, lastname: string, image?: ObjectId) {
     this.image = image;
     this.lastname = lastname;
     this.firstname = firstname;
-  }
-}
-
-export class Label {
-  public id?: string;
-  public _id?: ObjectId;
-
-  public emoji?: string;
-  public title?: string;
-  public offset?: number;
-  public divider?: number;
-
-  constructor(
-    emoji: string,
-    title: string,
-    offset?: number,
-    divider?: number,
-  ) {
-    this.emoji = emoji;
-    this.title = title;
-    this.offset = offset;
-    this.divider = divider;
   }
 }
 
@@ -80,10 +45,10 @@ export class Expense {
   public title?: string;
   public amount?: number;
   public optional?: boolean;
-  public taxonomy?: ObjectId;
+  public taxonomy?: ObjectId | string;
   public description?: string;
   public compensated?: boolean;
-  public stakeholders?: Array<ObjectId>;
+  public stakeholders?: Array<ObjectId> | Array<string>;
 
   constructor(
     date: Date,

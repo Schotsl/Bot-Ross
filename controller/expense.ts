@@ -134,6 +134,18 @@ const addExpense = async (
   // Simplify the ID for the rest API
   expense.id = wrapper.$oid.toString();
 
+  if (typeof expense.taxonomy === "object") {
+    expense.taxonomy = expense.taxonomy.$oid.toString();
+  }
+
+  for (let i = 0; i < expense.stakeholders!.length; i++) {
+    const stakeholder = expense.stakeholders![i];
+
+    if (typeof stakeholder === "object") {
+      expense.stakeholders![i] = stakeholder.$oid.toString();
+    }
+  }
+
   // Return to the user
   response.body = expense;
   response.status = 200;
@@ -174,9 +186,21 @@ const getExpenses = async (
   const total = await expenseDatabase.count();
 
   // Simplify the ID for the rest API
-  expenses.map((expenses) => {
-    expenses.id = expenses._id!.$oid.toString();
-    expenses._id = undefined;
+  expenses.map((expense: Expense) => {
+    expense.id = expense._id!.$oid.toString();
+    expense._id = undefined;
+
+    if (typeof expense.taxonomy === "object") {
+      expense.taxonomy = expense.taxonomy.$oid.toString();
+    }
+
+    for (let i = 0; i < expense.stakeholders!.length; i++) {
+      const stakeholder = expense.stakeholders![i];
+
+      if (typeof stakeholder === "object") {
+        expense.stakeholders![i] = stakeholder.$oid.toString();
+      }
+    }
   });
 
   // Return results to the user
