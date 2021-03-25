@@ -1,4 +1,4 @@
-// Import packages local
+// Import local packages
 import { Contact } from "./class.ts";
 
 // Import packages from URL

@@ -1,14 +1,12 @@
-// Import packages local
-import { Contact, Image } from "../interface.ts";
-import { globalDatabase } from "../database.ts";
+// Import local packages
+import {
+  fetchContacts,
+  insertContact,
+  removeContact,
+} from "../repositories/contactRepository.ts";
 
 // Import packages from URL
-import { ObjectId } from "https://deno.land/x/mongo@v0.13.0/ts/types.ts";
 import { Request, Response } from "https://deno.land/x/oak/mod.ts";
-
-// Create the databases
-const imageDatabase = globalDatabase.collection<Image>("images");
-const contactDatabase = globalDatabase.collection<Contact>("contacts");
 
 const addContact = async (
   { request, response }: { request: Request; response: Response },
@@ -43,27 +41,12 @@ const addContact = async (
     return;
   }
 
-  // Create the image and insert it
-  const imageObject = new Image(value.image);
-  const imageWrapper = await imageDatabase.insertOne(imageObject);
-
-  // Create the contact with an image reference and insert it
-  const contactObject = new Contact(
+  // Return to the user
+  response.body = await insertContact(
     value.firstname,
     value.lastname,
-    imageWrapper,
+    value.image,
   );
-  const contactWrapper = await contactDatabase.insertOne(contactObject);
-
-  // Simplify the ID for the rest API
-  contactObject.id = contactWrapper.$oid.toString();
-
-  if (typeof contactObject.image === "object") {
-    contactObject.image = contactObject.image.$oid.toString();
-  }
-
-  // Return to the user
-  response.body = contactObject;
   response.status = 200;
 };
 
@@ -97,49 +80,17 @@ const getContacts = async (
   limit = Number(limit);
   offset = Number(offset);
 
-  // Get every contact
-  const contacts = await contactDatabase.find().limit(limit).skip(offset);
-  const total = await contactDatabase.count();
-
-  // Simplify the ID for the rest API
-  contacts.map((contact) => {
-    contact.id = contact._id!.$oid.toString();
-    contact._id = undefined;
-
-    if (typeof contact.image === "object") {
-      contact.image = contact.image.$oid.toString();
-    }
-  });
-
   // Return results to the user
   response.status = 200;
-  response.body = {
-    contacts,
-    offset,
-    total,
-  };
+  response.body = await fetchContacts(limit, offset);
 };
 
 const deleteContact = async (
   { params, response }: { params: { id: string }; response: Response },
 ) => {
-  // Get the contact using the ID from the URL
-  const contact = await contactDatabase.findOne({ _id: ObjectId(params.id) });
-
-  // If there is no contact found
-  if (!contact) {
-    response.status = 404;
-    return;
-  }
-
-  // Delete the image if the contact contains one
-  if (contact.image && typeof contact.image === "object") {
-    await imageDatabase.deleteOne({ _id: contact.image });
-  }
-
-  // Delete the contact and return results to the user
-  await contactDatabase.deleteOne({ _id: ObjectId(params.id) });
-  response.status = 204;
+  // Remove the contact using the ID from the URL
+  const result = await removeContact(params.id);
+  response.status = result ? 204 : 404;
 };
 
 export { addContact, deleteContact, getContacts };

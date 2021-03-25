@@ -1,4 +1,4 @@
-// Import packages local
+// Import local packages
 import { Schema } from "./interface.ts";
 import { Required } from "../../../enum.ts";
 import { Settings } from "../../../interface.ts";

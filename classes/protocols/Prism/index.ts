@@ -1,4 +1,4 @@
-// Import packages local
+// Import local packages
 import { Entry } from "./interface.ts";
 import { Settings } from "../../../interface.ts";
 import { Abstraction } from "../../Protocol.ts";

@@ -1,74 +1,67 @@
 import { ObjectId } from "https://deno.land/x/mongo@v0.13.0/mod.ts";
 
-export class Taxonomy {
-  public id?: string;
-  public _id?: ObjectId;
+export interface Taxonomy {
+  id?: string;
+  _id?: ObjectId;
 
-  public title?: string;
-
-  constructor(title: string) {
-    this.title = title;
-  }
+  title?: string;
 }
 
-export class Image {
-  public id?: string;
-  public _id?: ObjectId;
+export interface Image {
+  id?: string;
+  _id?: ObjectId;
 
-  public base64?: string;
-
-  constructor(base64: string) {
-    this.base64 = base64;
-  }
+  base64: string;
 }
 
-export class Contact {
-  public id?: string;
-  public _id?: ObjectId;
+export interface Contact {
+  id?: string;
+  _id?: ObjectId;
 
-  public image?: ObjectId | string;
-  public lastname: string;
-  public firstname: string;
+  image?: string;
+  _image?: ObjectId;
 
-  constructor(firstname: string, lastname: string, image?: ObjectId) {
-    this.image = image;
-    this.lastname = lastname;
-    this.firstname = firstname;
-  }
+  lastname: string;
+  firstname: string;
 }
 
-export class Expense {
-  public id?: string;
-  public _id?: ObjectId;
+export interface Expense {
+  id?: string;
+  _id?: ObjectId;
 
-  public date?: Date;
-  public title?: string;
-  public amount?: number;
-  public optional?: boolean;
-  public taxonomy?: ObjectId | string;
-  public description?: string;
-  public compensated?: boolean;
-  public stakeholders?: Array<ObjectId> | Array<string>;
+  contacts?: Array<Contact>;
+  _contacts?: Array<ObjectId>;
 
-  constructor(
-    date: Date,
-    title: string,
-    amount: number,
-    taxonomy: ObjectId,
-    description: string,
-    stakeholders: Array<ObjectId>,
-    optional: boolean = false,
-    compensated: boolean = false,
-  ) {
-    this.date = date;
-    this.title = title;
-    this.amount = amount;
-    this.optional = optional;
-    this.taxonomy = taxonomy;
-    this.compensated = compensated;
-    this.description = description;
-    this.stakeholders = stakeholders;
-  }
+  taxonomy?: Taxonomy;
+  _taxonomy?: ObjectId;
+
+  date: Date;
+  title: string;
+  amount: number;
+  optional: boolean;
+  description: string;
+  compensated: boolean;
+}
+
+export interface ContactCollection {
+  total: number;
+  limit: number;
+  offset: number;
+  contacts: Array<Contact>;
+}
+
+export interface TaxonomyCollection {
+  total: number;
+  limit: number;
+  offset: number;
+  taxonomies: Array<Taxonomy>;
+}
+
+export interface ExpenseCollection {
+  total: number;
+  limit: number;
+  offset: number;
+  expenses: Array<Expense>;
 }
 
 export interface Settings {
@@ -77,9 +70,4 @@ export interface Settings {
   todoistAPI?: string;
   discordAPI?: string;
   playlistId?: string;
-}
-
-export interface Breakdown {
-  amount: number;
-  taxonomy: Taxonomy;
 }

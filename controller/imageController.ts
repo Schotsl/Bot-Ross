@@ -1,15 +1,14 @@
-// Import packages local
+// Import local packages
 import { Image } from "../interface.ts";
 import { globalDatabase } from "../database.ts";
 
 // Import packages from URL
-import { decode } from "https://deno.land/std@0.63.0/encoding/base64.ts";
 import { ObjectId } from "https://deno.land/x/mongo@v0.13.0/ts/types.ts";
 import { Response } from "https://deno.land/x/oak/mod.ts";
 import * as base64 from "https://denopkg.com/chiefbiiko/base64/mod.ts";
 
 // Create the databases
-const imageDatabase = globalDatabase.collection<Image>("images");
+const imageDatabase = globalDatabase.collection<Image>("image_1");
 
 const getImage = async (
   { params, response }: { params: { id: string }; response: Response },
@@ -23,16 +22,15 @@ const getImage = async (
     return;
   }
 
-  // Return the image to the user
-  const semicolonIndex = image.base64!.indexOf(';')
-  const colonIndex = image.base64!.indexOf(':')
-  const commaIndex = image.base64!.indexOf(',')
+  // Transform to Unit8Array and fetch the length
+  const data = base64.toUint8Array(image.base64);
+  const length = data.byteLength.toString();
 
-  const imageSize = image.base64!.slice(colonIndex + 1, semicolonIndex);
-  const imageData = image.base64!.slice(commaIndex + 1);
+  // Return data to user
+  response.headers.set("Content-Length", length);
+  response.headers.set("Content-Type", "image/png");
 
-  response.headers.set('Content-Type', imageSize)
-  response.body = base64.toUint8Array(imageData)
+  response.body = base64.toUint8Array(image.base64);
 };
 
 export { getImage };

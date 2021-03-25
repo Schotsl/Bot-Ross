@@ -1,4 +1,4 @@
-// Import packages local
+// Import local packages
 import { Contact } from "../../../api/contact/class.ts";
 import { Required } from "../../../enum.ts";
 import { Settings } from "../../../interface.ts";

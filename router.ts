@@ -1,23 +1,21 @@
 import { Router } from "https://deno.land/x/oak/mod.ts";
 
-import {
-  getImage
-} from "./controller/image.ts";
+import { getImage } from "./controller/imageController.ts";
 import {
   addExpense,
   deleteExpense,
   getExpenses,
-} from "./controller/expense.ts";
+} from "./controller/expenseController.ts";
 import {
   addContact,
   deleteContact,
   getContacts,
-} from "./controller/contact.ts";
+} from "./controller/contactController.ts";
 import {
   addTaxonomy,
   deleteTaxonomy,
   getTaxonomies,
-} from "./controller/taxonomy.ts";
+} from "./controller/taxonomyController.ts";
 
 const router = new Router();
 

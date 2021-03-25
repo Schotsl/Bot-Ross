@@ -1,13 +1,12 @@
-// Import packages local
-import { Taxonomy } from "../interface.ts";
-import { globalDatabase } from "../database.ts";
+// Import local packages
+import {
+  fetchTaxonomies,
+  insertTaxonomy,
+  removeTaxonomy,
+} from "../repositories/taxonomyRepository.ts";
 
 // Import packages from URL
-import { ObjectId } from "https://deno.land/x/mongo@v0.13.0/ts/types.ts";
 import { Request, Response } from "https://deno.land/x/oak/mod.ts";
-
-// Create the databases
-const taxonomyDatabase = globalDatabase.collection<Taxonomy>("taxonomy");
 
 const addTaxonomy = async (
   { request, response }: { request: Request; response: Response },
@@ -30,15 +29,8 @@ const addTaxonomy = async (
     return;
   }
 
-  // Create new taxonomy and insert
-  const taxonomy = new Taxonomy(value.title);
-  const wrapper = await taxonomyDatabase.insertOne(taxonomy);
-
-  // Simplify the ID for the rest API
-  taxonomy.id = wrapper.$oid.toString();
-
   // Return to the user
-  response.body = taxonomy;
+  response.body = await insertTaxonomy(value.title);
   response.status = 200;
 };
 
@@ -72,34 +64,16 @@ const getTaxonomies = async (
   limit = Number(limit);
   offset = Number(offset);
 
-  // Get every taxonomy
-  const taxonomies = await taxonomyDatabase.find().limit(limit).skip(offset);
-  const total = await taxonomyDatabase.count();
-
-  // Simplify the ID for the rest API
-  taxonomies.map((taxonomy) => {
-    taxonomy.id = taxonomy._id!.$oid.toString();
-    taxonomy._id = undefined;
-  });
-
   // Return results to the user
   response.status = 200;
-  response.body = {
-    taxonomies,
-    offset,
-    total,
-  };
+  response.body = await fetchTaxonomies(limit, offset);
 };
 
 const deleteTaxonomy = async (
   { params, response }: { params: { id: string }; response: Response },
 ) => {
-  // Delete the taxonomy
-  const result = await taxonomyDatabase.deleteOne({
-    _id: ObjectId(params.id),
-  });
-
-  // Return results to the user
+  // Remove the contact using the ID from the URL
+  const result = await removeTaxonomy(params.id);
   response.status = result ? 204 : 404;
 };
 

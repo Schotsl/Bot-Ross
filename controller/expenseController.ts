@@ -1,16 +1,14 @@
-// Import packages local
-import { Breakdown, Contact, Expense, Taxonomy } from "../interface.ts";
-import { globalDatabase } from "../database.ts";
+// Import local packages
+import {
+  fetchExpenses,
+  insertExpense,
+  removeExpense,
+} from "../repositories/expenseRepository.ts";
 
 // Import packages from URL
 import { ObjectId } from "https://deno.land/x/mongo@v0.13.0/ts/types.ts";
 import { Request, Response } from "https://deno.land/x/oak/mod.ts";
 import { parse } from "https://deno.land/std@0.87.0/datetime/mod.ts";
-
-// Create the databases
-const taxonomyDatabase = globalDatabase.collection<Taxonomy>("taxonomy");
-const expenseDatabase = globalDatabase.collection<Expense>("expense");
-const contactDatabase = globalDatabase.collection<Contact>("contact");
 
 const addExpense = async (
   { request, response }: { request: Request; response: Response },
@@ -56,12 +54,6 @@ const addExpense = async (
     return;
   }
 
-  // Transform string properties into ObjectIDs
-  value.taxonomy = ObjectId(value.taxonomy);
-  value.stakeholders = value.stakeholders.map((stakeholder: string) =>
-    ObjectId(stakeholder)
-  );
-
   // Validate the properties values
   if (value.title.length < 3 || value.title.length > 255) {
     response.body = `Invalid 'title' property`;
@@ -94,22 +86,6 @@ const addExpense = async (
     return;
   }
 
-  // Check if there is a Taxonomy with this ID
-  if (!await taxonomyDatabase.count({ _id: value.taxonomy })) {
-    response.body = `Invalid 'taxonomy' property`;
-    response.status = 400;
-    return;
-  }
-
-  // Make sure there is a Contact for every ObjectID
-  value.stakeholders.forEach(async (stakeholder: ObjectId) => {
-    if (!await contactDatabase.count({ _id: stakeholder })) {
-      response.body = `Invalid 'stakeholders' property`;
-      response.status = 400;
-      return;
-    }
-  });
-
   try {
     value.date = parse(value.date, "d-M-yyyy");
   } catch (e) {
@@ -118,36 +94,17 @@ const addExpense = async (
     return;
   }
 
-  // Create new Expense and insert
-  const expense = new Expense(
-    value.date,
+  // Return to the user
+  response.body = await insertExpense(
     value.title,
-    value.amount,
-    value.taxonomy,
     value.description,
+    value.amount,
+    value.date,
+    value.taxonomy,
     value.stakeholders,
     value.optional,
     value.compensated,
   );
-  const wrapper = await expenseDatabase.insertOne(expense);
-
-  // Simplify the ID for the rest API
-  expense.id = wrapper.$oid.toString();
-
-  if (typeof expense.taxonomy === "object") {
-    expense.taxonomy = expense.taxonomy.$oid.toString();
-  }
-
-  for (let i = 0; i < expense.stakeholders!.length; i++) {
-    const stakeholder = expense.stakeholders![i];
-
-    if (typeof stakeholder === "object") {
-      expense.stakeholders![i] = stakeholder.$oid.toString();
-    }
-  }
-
-  // Return to the user
-  response.body = expense;
   response.status = 200;
 };
 
@@ -181,44 +138,16 @@ const getExpenses = async (
   limit = Number(limit);
   offset = Number(offset);
 
-  // Get every Expense
-  const expenses = await expenseDatabase.find().limit(limit).skip(offset);
-  const total = await expenseDatabase.count();
-
-  // Simplify the ID for the rest API
-  expenses.map((expense: Expense) => {
-    expense.id = expense._id!.$oid.toString();
-    expense._id = undefined;
-
-    if (typeof expense.taxonomy === "object") {
-      expense.taxonomy = expense.taxonomy.$oid.toString();
-    }
-
-    for (let i = 0; i < expense.stakeholders!.length; i++) {
-      const stakeholder = expense.stakeholders![i];
-
-      if (typeof stakeholder === "object") {
-        expense.stakeholders![i] = stakeholder.$oid.toString();
-      }
-    }
-  });
-
   // Return results to the user
   response.status = 200;
-  response.body = {
-    expenses,
-    offset,
-    total,
-  };
+  response.body = await fetchExpenses(limit, offset);
 };
 
 const deleteExpense = async (
   { params, response }: { params: { id: string }; response: Response },
 ) => {
-  // Delete the Expense
-  const result = await expenseDatabase.deleteOne({ _id: ObjectId(params.id) });
-
-  // Return results to the user
+  // Remove the expense using the ID from the URL
+  const result = await removeExpense(params.id);
   response.status = result ? 204 : 404;
 };
 
