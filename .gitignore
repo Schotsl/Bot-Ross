@@ -10,3 +10,4 @@
 
 # Ignore Deno files
 .deno_plugins
+.env

@@ -1,13 +1,23 @@
 import { Application } from "https://deno.land/x/oak/mod.ts";
 import { oakCors } from "https://deno.land/x/cors/mod.ts";
-import { Manager } from "./classes/Manager.ts";
+
+import { initializeEnv } from "./helper.ts";
+// import { Manager } from "./classes/Manager.ts";
 
 import router from "./router.ts";
 
 const application = new Application();
-const manager = new Manager();
+// const manager = new Manager();
 
-manager.initializeManager();
+initializeEnv([
+  'hostname',
+  'username',
+  'password',
+  'port',
+  'db',
+]);
+
+// manager.initializeManager();
 
 application.use(oakCors({ origin: "*" }));
 application.use(router.allowedMethods());

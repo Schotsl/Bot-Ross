@@ -1,4 +1,6 @@
 import { existsSync } from "https://deno.land/std/fs/mod.ts";
+import { Response } from "https://deno.land/x/oak/mod.ts";
+import { config } from "https://deno.land/x/dotenv/mod.ts";
 
 import { Settings } from "./interface.ts";
 
@@ -56,5 +58,59 @@ export function wildcardMatch(
   return false;
 }
 
-export function validateDate(date: string) {
+export function cleanHex(hex: string): string {
+  // Re-add the dashes and turn the string into lowercase
+  const dashed = `${hex.substr(0, 8)}-${hex.substr(8, 4)}-${
+    hex.substr(12, 4)
+  }-${hex.substr(16, 4)}-${hex.substr(20)}`;
+  const lower = dashed.toLowerCase();
+
+  return lower;
+}
+
+export async function getImage(
+  { params, response }: {
+    params: { directory: string; filename: string };
+    response: Response;
+  },
+) {
+  // Construct the image path with a fixed image directory
+  const path = `./image/${params.directory}/${params.filename}`;
+
+  if (!existsSync(path)) {
+    response.status = 404;
+    return;
+  }
+
+  // Read the file and return it to the user
+  const image = await Deno.readFile(
+    `./image/${params.directory}/${params.filename}`,
+  );
+
+  response.body = image;
+  response.headers.set("Content-Type", "image/png");
+  response.headers.set("Content-Length", String(image.byteLength));
+
+  return;
+}
+
+export async function deleteImage(directory: string, filename: string) {
+  // Construct the image path with a fixed image directory
+  const path = `./image/${directory}/${filename}`;
+
+  if (!existsSync(path)) {
+    await Deno.remove(path);
+  }
+}
+
+export function initializeEnv(variables: Array<string>) {
+  // Load .env file
+  config({ export: true });
+
+  // Loop over every key and make sure it has been set
+  variables.forEach((variable: string) => {
+    if (!Deno.env.get(variable)) {
+      throw new Error(`${variable} .env variable must be set.`);
+    }
+  });
 }

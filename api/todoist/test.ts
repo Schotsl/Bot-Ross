@@ -1,4 +1,7 @@
 import { TodoistAPI } from "./index.ts";
+import { initializeEnv } from "../../helper.ts";
+
+initializeEnv(['TODOIST']);
 
 const todoistKey = Deno.env.get("TODOIST");
 const todoistAPI = new TodoistAPI(todoistKey!);
