@@ -1,5 +1,5 @@
-import { Client } from "https://deno.land/x/mysql/mod.ts";
-import { Request, Response } from "https://deno.land/x/oak/mod.ts";
+import { Client } from "https://deno.land/x/mysql@v2.9.0/mod.ts";
+import { Request, Response } from "https://deno.land/x/oak@v7.7.0/mod.ts";
 
 import TaxonomyEntity from "../entity/TaxonomyEntity.ts";
 import TaxonomyRepository from "../repository/TaxonomyRepository.ts";

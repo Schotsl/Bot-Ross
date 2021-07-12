@@ -1,4 +1,4 @@
-import { Client } from "https://deno.land/x/mysql/mod.ts";
+import { Client } from "https://deno.land/x/mysql@v2.9.0/mod.ts";
 import { cleanHex } from "../../helper.ts";
 
 import StakeEntity from "../entity/StakeEntity.ts";

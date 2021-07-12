@@ -1,6 +1,6 @@
 import { Project, Section, Task } from "./interface.ts";
 
-import { uuid } from "https://deno.land/x/uuid/mod.ts";
+import { uuid } from "https://deno.land/x/uuid@v0.1.2/mod.ts";
 
 export class TodoistAPI {
   private key: string;

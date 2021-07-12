@@ -1,12 +1,12 @@
-import { Client } from "https://deno.land/x/mysql/mod.ts";
-import { existsSync } from "https://deno.land/std/fs/mod.ts";
-import { Request, Response } from "https://deno.land/x/oak/mod.ts";
+import { Client } from "https://deno.land/x/mysql@v2.9.0/mod.ts";
+import { existsSync } from "https://deno.land/std@0.100.0/fs/mod.ts";
+import { Request, Response } from "https://deno.land/x/oak@v7.7.0/mod.ts";
 
 import ContactEntity from "../entity/ContactEntity.ts";
 import ContactRepository from "../repository/ContactRepository.ts";
 import InterfaceController from "./InterfaceController.ts";
 
-import { Image } from "https://deno.land/x/imagescript/mod.ts";
+import { Image } from "https://deno.land/x/imagescript@1.2.7/mod.ts";
 import * as base64 from "https://denopkg.com/chiefbiiko/base64/mod.ts";
 
 export default class ContactController implements InterfaceController {

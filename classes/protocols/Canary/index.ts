@@ -8,7 +8,7 @@ import { repositoryPull, repositoryStatus } from "./helper.ts";
 
 // Import packages from URL
 import { walkSync } from "https://deno.land/std@0.78.0/fs/mod.ts";
-import { isGitSync } from "https://deno.land/x/is_git/mod.ts";
+import { isGitSync } from "https://deno.land/x/is_git@v0.1.1/mod.ts";
 import { sendDirectMessage } from "https://deno.land/x/discordeno@10.0.1/mod.ts";
 
 export class Canary implements Abstraction {

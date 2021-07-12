@@ -1,6 +1,6 @@
-import { existsSync } from "https://deno.land/std/fs/mod.ts";
-import { Response } from "https://deno.land/x/oak/mod.ts";
-import { config } from "https://deno.land/x/dotenv/mod.ts";
+import { existsSync } from "https://deno.land/std@0.100.0/fs/mod.ts";
+import { Response } from "https://deno.land/x/oak@v7.7.0/mod.ts";
+import { config } from "https://deno.land/x/dotenv@v2.0.0/mod.ts";
 
 import { Settings } from "./interface.ts";
 

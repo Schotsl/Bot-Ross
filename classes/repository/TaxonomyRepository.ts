@@ -1,4 +1,4 @@
-import { Client } from "https://deno.land/x/mysql/mod.ts";
+import { Client } from "https://deno.land/x/mysql@v2.9.0/mod.ts";
 
 import TaxonomyEntity from "../entity/TaxonomyEntity.ts";
 import TaxonomyMapper from "../mapper/TaxonomyMapper.ts";

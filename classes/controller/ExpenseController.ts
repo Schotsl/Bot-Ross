@@ -1,7 +1,7 @@
 import { v4 } from "https://deno.land/std@0.91.0/uuid/mod.ts";
 import { parse } from "https://deno.land/std@0.87.0/datetime/mod.ts";
-import { Client } from "https://deno.land/x/mysql/mod.ts";
-import { Request, Response } from "https://deno.land/x/oak/mod.ts";
+import { Client } from "https://deno.land/x/mysql@v2.9.0/mod.ts";
+import { Request, Response } from "https://deno.land/x/oak@v7.7.0/mod.ts";
 
 import Expense from "../entity/ExpenseEntity.ts";
 import ExpenseRepository from "../repository/ExpenseRepository.ts";
