@@ -3,7 +3,7 @@ import { Client } from "https://deno.land/x/mysql@v2.9.0/mod.ts";
 import ContactEntity from "../entity/ContactEntity.ts";
 import ContactMapper from "../mapper/ContactMapper.ts";
 import ContactCollection from "../collection/ContactCollection.ts";
-import InterfaceRepository from "./RepositoryInterface.ts";
+import InterfaceRepository from "./InterfaceRepository.ts";
 
 export default class ContactRepository implements InterfaceRepository {
   private contactMapper: ContactMapper;

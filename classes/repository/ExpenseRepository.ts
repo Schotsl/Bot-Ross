@@ -3,7 +3,7 @@ import { Client } from "https://deno.land/x/mysql@v2.9.0/mod.ts";
 import ExpenseEntity from "../entity/ExpenseEntity.ts";
 import ExpenseMapper from "../mapper/ExpenseMapper.ts";
 import ExpenseCollection from "../collection/ExpenseCollection.ts";
-import InterfaceRepository from "./RepositoryInterface.ts";
+import InterfaceRepository from "./InterfaceRepository.ts";
 
 export default class ExpenseRepository implements InterfaceRepository {
   private expenseMapper: ExpenseMapper;

@@ -3,7 +3,7 @@ import { Client } from "https://deno.land/x/mysql@v2.9.0/mod.ts";
 import TaxonomyEntity from "../entity/TaxonomyEntity.ts";
 import TaxonomyMapper from "../mapper/TaxonomyMapper.ts";
 import TaxonomyCollection from "../collection/TaxonomyCollection.ts";
-import InterfaceRepository from "./RepositoryInterface.ts";
+import InterfaceRepository from "./InterfaceRepository.ts";
 
 export default class TaxonomyRepository implements InterfaceRepository {
   private taxonomyMapper: TaxonomyMapper;
