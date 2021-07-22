@@ -43,7 +43,7 @@ await startBot({
 
 const everest = new Everest(client);
 const freya = new Freya(client);
-const eagle = new Eagle(client);
+const eagle = new Eagle();
 
 cron("* * * * *", () => freya.execute());
 cron("* * * * *", () => eagle.execute());

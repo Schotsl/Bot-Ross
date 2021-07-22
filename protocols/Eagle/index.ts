@@ -1,5 +1,4 @@
-import { Client } from "https://deno.land/x/mysql@v2.9.0/mod.ts";
-import { YouTube } from 'https://deno.land/x/youtube@v0.3.0/mod.ts';
+import { YouTube } from "https://deno.land/x/youtube@v0.3.0/mod.ts";
 import { TodoistAPI } from "../../api/todoist/index.ts";
 import { initializeEnv } from "../../helper.ts";
 
@@ -18,8 +17,6 @@ export class Eagle {
   private todoist = new TodoistAPI(todoistToken);
   private playlist = Deno.env.get("BOT_ROSS_SERVER_PLAYLIST_ID");
 
-  constructor(client: Client) { }
-
   public async execute() {
     const tasks = await this.todoist!.getTask();
 
@@ -31,7 +28,7 @@ export class Eagle {
     const playlist = await this.youtube!.playlistItems_list({
       part: "id",
       playlistId: this.playlist,
-      maxResults: 0
+      maxResults: 0,
     });
 
     // If there are more or ten items
