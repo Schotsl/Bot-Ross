@@ -1,7 +1,5 @@
 import { Project, Section, Task } from "./interface.ts";
 
-import { uuid } from "https://deno.land/x/uuid@v0.1.2/mod.ts";
-
 export class TodoistAPI {
   private key: string;
 
@@ -14,7 +12,7 @@ export class TodoistAPI {
       // TODO: Use build in crypto uuid function
       "Authorization": `Bearer ${this.key}`,
       "Content-Type": `application/json`,
-      "X-Request-Id": uuid(),
+      "X-Request-Id": globalThis.crypto.randomUUID();,
     };
   }
 
