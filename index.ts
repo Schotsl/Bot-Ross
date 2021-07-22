@@ -1,116 +1,50 @@
-import { PlausibleAPI } from "../Plausible/index.ts";
+import { initializeEnv } from "./helper.ts";
 
-const api = "nBJZCb0WGNmJ49tI3aEfEUsdu_vci3ZRsN1l4V7VkF2mkBW-p_KM-4W1kHPqAJBi";
+// Initialize .env variables and make sure they are set
+initializeEnv([
+  "BOT_ROSS_SERVER_MYSQL_HOST",
+  "BOT_ROSS_SERVER_MYSQL_USER",
+  "BOT_ROSS_SERVER_MYSQL_PASS",
+  "BOT_ROSS_SERVER_MYSQL_PORT",
+  "BOT_ROSS_SERVER_MYSQL_BASE",
+  "BOT_ROSS_SERVER_DISCORD_TOKEN",
+]);
 
-const months = [
-  'january', 
-  'february',
-  'march',
-  'april',
-  'may',
-  'june',
-  'july',
-  'august',
-  'september',
-  'october',
-  'november',
-  'december'
-  ];
+import { startBot } from "https://deno.land/x/discordeno/mod.ts";
+import { Client } from "https://deno.land/x/mysql@v2.9.0/mod.ts";
+import { cron } from "https://deno.land/x/deno_cron/cron.ts";
 
-const sites = [
-  {
-    change: 0,
-    views: 0,
-    title: 'Bot-Ross',
-    url: 'bot-ross.dev',
-  },
-  {
-    change: 0,
-    views: 0,
-    title: 'Lxframes',
-    url: 'lxframes.com',
-  },
-  {
-    change: 0,
-    views: 0,
-    title: 'Presently',
-    url: 'presently.dev',
-  },
-  {
-    change: 0,
-    views: 0,
-    title: 'Sjors van Holst',
-    url: 'sjorsvanholst.nl',
-  },
-  {
-    change: 0,
-    views: 0,
-    title: 'Uwuifier',
-    url: 'uwuifier.com',
-  },
-  {
-    change: 0,
-    views: 0,
-    title: 'Wanneer naar Terschelling',
-    url: 'wanneer-naar-terschelling.nl',
-  }
-];
+import { Everest } from "./protocols/Everest/index.ts";
+import { Freya } from "./protocols/Freya/index.ts";
+import { Eagle } from "./protocols/Eagle/index.ts";
 
-await Promise.all(sites.map(async site => {
-  const plausible = new PlausibleAPI(api, site.url);
-  const results = await plausible.getAggregate("30d", "pageviews", true);
+const client = new Client();
 
-  site.change = results.change!;
-  site.views = results.value;
-}));
+// Fetch the variables and convert them to right datatype
+const hostname = Deno.env.get("BOT_ROSS_SERVER_MYSQL_HOST")!;
+const username = Deno.env.get("BOT_ROSS_SERVER_MYSQL_USER")!;
+const password = Deno.env.get("BOT_ROSS_SERVER_MYSQL_PASS")!;
+const port = +Deno.env.get("BOT_ROSS_SERVER_MYSQL_PORT")!;
+const db = Deno.env.get("BOT_ROSS_SERVER_MYSQL_BASE")!;
 
-let views = 0;
-let change = 0;
+// Connect to MySQL server
+await client.connect({
+  hostname,
+  username,
+  password,
+  port,
+  db,
+});
 
-sites.forEach(site => {
-  views += site.views;
-  change += site.change;
-})
-
-console.log(views);
-console.log(change);
-
-// console.log(await plausibleAPI.getBreakdown("6mo", "visit:source"));
-
-import { startBot, sendDirectMessage, CreateMessage, Embed, EmbedField } from "https://deno.land/x/discordeno/mod.ts";
-
-startBot({
+await startBot({
   token: "NTQ3ODA4MzIxNjg4Njk4ODk3.XG14QQ.fILB1RHa5zotn7sHzFhl68_ghDw",
   intents: ["Guilds", "GuildMessages"],
-  eventHandlers: {
-    ready() {
-      console.log("Successfully connected to gateway");
-    },
-  },
 });
 
+const everest = new Everest(client);
+const freya = new Freya(client);
+const eagle = new Eagle(client);
 
-const fields = sites.map(site => {
-  return {
-    name: site.title,
-    value: `**${site.views}** (${site.change}%)`,
-  };
-});
-
-const date = new Date();
-const color = 21;
-const title = `Plausible report for ${months[date.getMonth()]}`;
-const content = `It's that time of the month again`;
-const description = `This month we\'ve generated ${views} views!`;
-
-const message: CreateMessage = {
-  content,
-  embeds: [{
-    color,
-    title,
-    fields,
-    description,
-  }],
-}
-
-sendDirectMessage(BigInt(219765969571151872), message);
+cron("* * * * *", () => freya.execute());
+cron("* * * * *", () => eagle.execute());
+cron("0 0 1 * *", () => everest.execute());

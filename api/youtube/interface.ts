@@ -58,7 +58,7 @@ export interface Video {
 export interface Playlist {
   kind: string;
   etag: string;
-  items: Array<Video>;
+  items: Video[];
   pageInfo: Info;
   nextPageToken?: string;
   prevPageToken?: string;

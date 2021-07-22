@@ -35,7 +35,7 @@ export interface Task extends Abstract {
   "priority"?: number;
   "assignee"?: number;
   "completed"?: boolean;
-  "label_ids"?: Array<number>;
+  "label_ids"?: number[];
   "parent_id"?: number;
   "due_string"?: string;
   "project_id"?: number;

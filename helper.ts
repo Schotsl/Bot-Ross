@@ -10,7 +10,7 @@ export function cleanHex(hex: string): string {
   return lower;
 }
 
-export function initializeEnv(variables: Array<string>) {
+export function initializeEnv(variables: string[]) {
   // Load .env file
   config({ export: true });
 

@@ -11,13 +11,14 @@ export class TodoistAPI {
 
   private generateHeaders(): HeadersInit {
     return {
+      // TODO: Use build in crypto uuid function
       "Authorization": `Bearer ${this.key}`,
       "Content-Type": `application/json`,
       "X-Request-Id": uuid(),
     };
   }
 
-  private async getAbstract<T>(url: string): Promise<Array<T>> {
+  private async getAbstract<T>(url: string): Promise<T[]> {
     const response = await fetch(url, {
       method: `GET`,
       headers: this.generateHeaders(),
@@ -47,11 +48,11 @@ export class TodoistAPI {
 
   // GET
 
-  public getProject(): Promise<Array<Project>> {
+  public getProject(): Promise<Project[]> {
     return this.getAbstract(`https://api.todoist.com/rest/v1/projects`);
   }
 
-  public getSection(project?: number): Promise<Array<Section>> {
+  public getSection(project?: number): Promise<Section[]> {
     const parameters = new URLSearchParams();
 
     if (project) parameters.append(`project_id`, project.toString());
@@ -67,7 +68,7 @@ export class TodoistAPI {
     filter?: string,
     language?: string,
     ids?: string,
-  ): Promise<Array<Task>> {
+  ): Promise<Task[]> {
     const parameters = new URLSearchParams();
 
     if (ids) parameters.append(`ids`, ids);

@@ -1,25 +1,25 @@
 export interface AccountsResponse {
-  data: Array<Account>,
-  pagination: Pagination,
+  data: Account[];
+  pagination: Pagination;
 }
 
 export interface CurrenciesResponse {
   data: {
     rates: Rates;
     currency: string;
-  }
+  };
 }
 
 interface Pagination {
   limit: number;
   order: string;
 
-  next_uri: string | null;
-  previous_uri: string | null;
-  ending_before: string | null;
-  starting_after: string | null;
-  next_starting_after: string | null;
-  previous_ending_before: string | null;
+  "next_uri": string | null;
+  "previous_uri": string | null;
+  "ending_before": string | null;
+  "starting_after": string | null;
+  "next_starting_after": string | null;
+  "previous_ending_before": string | null;
 }
 
 interface Account {
@@ -29,12 +29,13 @@ interface Account {
   primary: boolean;
   balance: Balance;
   currency: Currency;
-  resource: "account",
-  create_at: null | string;
-  updated_at: null | string;
-  resource_path: string;
-  allow_deposits: boolean;
-  allow_withdrawals: boolean;
+  resource: "account";
+
+  "create_at": null | string;
+  "updated_at": null | string;
+  "resource_path": string;
+  "allow_deposits": boolean;
+  "allow_withdrawals": boolean;
 }
 
 interface Currency {
@@ -45,9 +46,9 @@ interface Currency {
   color: string;
   exponent: number;
 
-  asset_id: string;
-  sort_index: number;
-  address_regex: string;
+  "asset_id": string;
+  "sort_index": number;
+  "address_regex": string;
 }
 
 interface Balance {

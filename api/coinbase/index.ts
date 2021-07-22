@@ -1,12 +1,9 @@
 import { hmac } from "https://deno.land/x/god_crypto/hmac.ts";
 
-import {
-  AccountsResponse,
-  CurrenciesResponse
-} from './interface.ts';
+import { AccountsResponse, CurrenciesResponse } from "./interface.ts";
 
 export class CoinbaseAPI {
-  private url = 'https://api.coinbase.com';
+  private url = "https://api.coinbase.com";
   private key: string;
   private secret: string;
 
@@ -29,7 +26,7 @@ export class CoinbaseAPI {
   }
 
   private async getAbstract<T>(path: string): Promise<T> {
-    const url = `${this.url}/${path}`
+    const url = `${this.url}/${path}`;
     const response = await fetch(url, {
       method: `GET`,
       headers: this.generateHeaders("GET", path),
