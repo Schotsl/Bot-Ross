@@ -3,9 +3,11 @@ CREATE TABLE `bot-ross`.users (
 
 	discord bigint NOT NULL,
 
-	lastname VARCHAR(255) NOT NULL,
-	firstname VARCHAR(255) NOT NULL,
-	
+	hash BINARY(60) NOT NULL,
+	email varchar(320) NOT NULL,
+	lastname varchar(255) NOT NULL,
+	firstname varchar(255) NOT NULL,
+
 	created timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	updated timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	PRIMARY KEY (uuid)
