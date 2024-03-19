@@ -1,0 +1,14 @@
+{
+  "name": "Bot-Ross",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "imapflow": "^1.0.158"
+  }
+}

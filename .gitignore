@@ -1,13 +1,8 @@
-# Ignore credentials
-/settings.json
-
 # Ignore MacOS files
 .DS_Store
 
-# Ignore storage folder
-/storage
-/database
+# Ignore Node.js files
+node_modules
 
-# Ignore Deno files
-.deno_plugins
+# Ignore environment files
 .env
