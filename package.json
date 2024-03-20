@@ -9,7 +9,8 @@
   "license": "ISC",
   "dependencies": {
     "dotenv": "^16.4.5",
-    "imapflow": "^1.0.158"
+    "imapflow": "^1.0.158",
+    "openai": "^4.29.2"
   },
   "devDependencies": {
     "@types/bun": "latest"

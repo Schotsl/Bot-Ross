@@ -1,5 +1,7 @@
 import "dotenv/config";
 
+import OpenAI from "openai";
+
 import { ImapFlow } from "imapflow";
 
 // Make sure to have a .env file with the following variables otherwise throw an error
@@ -23,6 +25,46 @@ const host = process.env.IMAP_HOST!;
 const user = process.env.IMAP_USER!;
 const pass = process.env.IMAP_PASSWORD;
 const port = Number(process.env.IMAP_PORT!);
+
+async function verifyEmail(subject: string, body: string) {
+  const openai = new OpenAI();
+
+  const response = await openai.chat.completions.create({
+    model: "gpt-4",
+    messages: [
+      {
+        role: "system",
+        content: "Determine if this email is a scam or not",
+      },
+      {
+        role: "user",
+        content: `Subject: ${subject}\n\n${body}`,
+      },
+    ],
+    functions: [
+      {
+        name: "verifyEmail",
+        parameters: {
+          type: "object",
+          properties: {
+            spam: {
+              type: "boolean",
+              description: "Whether the email is spam or not",
+            },
+          },
+        },
+      },
+    ],
+    function_call: { name: "verifyEmail" },
+  });
+
+  const responseRaw = response.choices[0].message.function_call?.arguments!;
+  const responseParsed = JSON.parse(responseRaw);
+
+  console.log(responseParsed.spam);
+}
+
+verifyEmail("Test", "test");
 
 async function startIdle() {
   console.log("Starting idle");
