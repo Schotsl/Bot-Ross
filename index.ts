@@ -64,7 +64,7 @@ async function verifyEmail(subject: string, body: string) {
   console.log(responseParsed.spam);
 }
 
-async function markEmail(client: any, uid: number) {
+async function markEmail(client: ImapFlow, uid: string) {
   const config = { useLabels: true };
 
   await Promise.all([
@@ -112,7 +112,7 @@ async function startIdle() {
     });
 
     for await (const message of messages) {
-      markEmail(client, message.uid);
+      markEmail(client, message.uid.toString());
       // console.log(`${message.uid}: ${message.envelope.subject}`);
       // console.log(`\n${message.source.toString()}`);
     }
