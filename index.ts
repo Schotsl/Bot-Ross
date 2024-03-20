@@ -1,4 +1,4 @@
-import 'dotenv/config';
+import "dotenv/config";
 import { ImapFlow } from "imapflow";
 
 async function fetchEmails() {
