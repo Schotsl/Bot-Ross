@@ -1,21 +1,16 @@
-ARG BUILD_FROM
-FROM $BUILD_FROM
-
-RUN apk update && apk add --no-cache \
-    curl \
-    bash \
-    build-base \
-    libstdc++
-
-RUN curl -fsSL https://bun.sh/install | bash
-
-ENV PATH="/root/.bun/bin:${PATH}"
+FROM oven/bun:latest AS builder
 
 WORKDIR /app
 
 COPY . .
 
 RUN bun install
+
+FROM oven/bun:latest
+
+WORKDIR /app
+
+COPY --from=builder /app .
 
 EXPOSE 3000
 

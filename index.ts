@@ -49,7 +49,7 @@ async function fetchEmails() {
 
     for await (const message of messages) {
       console.log(`${message.uid}: ${message.envelope.subject}`);
-      console.log(`\n${message.source.toString()}`);
+      // console.log(`\n${message.source.toString()}`);
     }
   } finally {
     lock.release();
