@@ -24,8 +24,8 @@ const user = process.env.IMAP_USER!;
 const pass = process.env.IMAP_PASSWORD;
 const port = Number(process.env.IMAP_PORT!);
 
-async function fetchEmails() {
-  console.log("Fetching emails");
+async function startIdle() {
+  console.log("Starting idle");
 
   const client = new ImapFlow({
     host,
@@ -38,11 +38,19 @@ async function fetchEmails() {
   });
 
   await client.connect();
+  await client.mailboxOpen("INBOX");
 
-  const lock = await client.getMailboxLock("INBOX");
+  client.on("exists", async (exists) => {
+    const countCurrent = exists.count;
+    const countPrevious = exists.prevCount;
 
-  try {
-    const messages = await client.fetch("1:*", {
+    const countDiff = countCurrent - countPrevious;
+    const countStart = countCurrent - countDiff + 1;
+
+    console.log(countDiff > 1 ? `New emails: ${countDiff}` : "New email");
+
+    // Only fetch the new emails
+    const messages = await client.fetch(`${countStart}:${countCurrent}`, {
       envelope: true,
       source: true,
     });
@@ -51,11 +59,7 @@ async function fetchEmails() {
       console.log(`${message.uid}: ${message.envelope.subject}`);
       // console.log(`\n${message.source.toString()}`);
     }
-  } finally {
-    lock.release();
-  }
-
-  await client.logout();
+  });
 }
 
-setInterval(fetchEmails, 10000);
+startIdle();
