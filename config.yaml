@@ -13,8 +13,8 @@ startup: services
 ports:
   8000/tcp: 8000
 options:
-  rules:
+  email_disallow:
     - test
 schema:
-  rules:
+  email_disallow:
     - str
