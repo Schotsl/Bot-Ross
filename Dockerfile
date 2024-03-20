@@ -2,16 +2,21 @@ ARG BUILD_FROM
 FROM $BUILD_FROM
 
 RUN apk update && apk add --no-cache \
-    nodejs \
-    npm
-RUN npm install -g pnpm
+    curl \
+    bash \
+    build-base \
+    libstdc++
+
+RUN curl -fsSL https://bun.sh/install | bash
+
+ENV PATH="/root/.bun/bin:${PATH}"
 
 WORKDIR /app
 
 COPY . .
 
-RUN pnpm install
+RUN bun install
 
 EXPOSE 3000
 
-CMD ["node", "index.js"]
+CMD ["bun", "run", "index.ts"]

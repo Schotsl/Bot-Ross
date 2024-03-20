@@ -1,5 +1,5 @@
+import 'dotenv/config';
 import { ImapFlow } from "imapflow";
-import 'dotenv/config'
 
 async function fetchEmails() {
   console.log("Fetching emails");
