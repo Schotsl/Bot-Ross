@@ -64,6 +64,16 @@ async function verifyEmail(subject: string, body: string) {
   console.log(responseParsed.spam);
 }
 
+async function markEmail(client: any, uid: number) {
+  const config = { useLabels: true };
+
+  await Promise.all([
+    client.messageFlagsAdd({ uid }, ["\\Seen"]),
+    client.messageFlagsRemove({ uid }, ["\\Inbox"], config),
+    client.messageMove({ uid }, "Ignore", { uid: true }),
+  ]);
+}
+
 verifyEmail("Test", "test");
 
 async function startIdle() {
@@ -82,6 +92,10 @@ async function startIdle() {
   await client.connect();
   await client.mailboxOpen("INBOX");
 
+  // List inbox
+  // const list = await client.list();
+  // console.log(list);
+
   client.on("exists", async (exists) => {
     const countCurrent = exists.count;
     const countPrevious = exists.prevCount;
@@ -98,7 +112,8 @@ async function startIdle() {
     });
 
     for await (const message of messages) {
-      console.log(`${message.uid}: ${message.envelope.subject}`);
+      markEmail(client, message.uid);
+      // console.log(`${message.uid}: ${message.envelope.subject}`);
       // console.log(`\n${message.source.toString()}`);
     }
   });
