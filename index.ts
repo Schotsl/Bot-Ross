@@ -25,18 +25,16 @@ if (!process.env.OPENAI_API_KEY) {
 }
 
 const onEmail = async (uid: string, subject: string, content: string) => {
+  console.log(`📧 Received email with subject: ${subject}`);
+
   const cleaned = await cleanEmail(content);
   const ignore = await verifyEmail(subject, cleaned);
 
   if (ignore) {
-    console.log(`Ignoring email with subject: ${subject}`);
-
     await ignoreEmail(uid);
-  } else {
-    console.log(`Allowing email with subject: ${subject}`);
   }
 };
 
-console.log("Listening for new emails...");
+console.log("🎉 Starting Bot-Ross");
 
 listenEmail(onEmail);

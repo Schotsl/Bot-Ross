@@ -4,6 +4,8 @@ import options from "../options.json";
 import { stripHtml } from "string-strip-html";
 
 export async function cleanEmail(html: string) {
+  console.log("🤖 Cleaning email using gpt-3.5-turbo");
+
   const openai = new OpenAI();
 
   const strippedResponse = stripHtml(html);
@@ -29,6 +31,8 @@ export async function cleanEmail(html: string) {
 }
 
 export async function verifyEmail(subject: string, body: string) {
+  console.log("🤖 Verifying email using gpt-4");
+
   const openai = new OpenAI();
 
   const rulesArray = options.rules;
