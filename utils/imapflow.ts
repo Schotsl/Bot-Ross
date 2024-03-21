@@ -30,7 +30,7 @@ export async function ignoreEmail(uid: string) {
 }
 
 export async function listenEmail(
-  callback: (uid: string, subject: string, body: string) => void
+  callback: (uid: string, subject: string, body: string) => void,
 ) {
   const client = new ImapFlow({ ...imapConfig, logger: false });
 

@@ -14,7 +14,8 @@ export async function cleanEmail(html: string) {
     messages: [
       {
         role: "system",
-        content: `You are tasked with cleaning up an email from unnecessary content and random junk.`,
+        content:
+          `You are tasked with cleaning up an email from unnecessary content and random junk.`,
       },
       {
         role: "user",
@@ -38,7 +39,8 @@ export async function verifyEmail(subject: string, body: string) {
     messages: [
       {
         role: "system",
-        content: `You are tasked with filtering emails based on their subject and content. You have to return a JSON object with a property called "ignore", this property indicates whether or not the email should be ignored. Consider the following rules when determining if a email should be ignored:\n${rulesFormatted}`,
+        content:
+          `You are tasked with filtering emails based on their subject and content. You have to return a JSON object with a property called "ignore", this property indicates whether or not the email should be ignored. Consider the following rules when determining if a email should be ignored:\n${rulesFormatted}`,
       },
       {
         role: "user",

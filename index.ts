@@ -1,7 +1,7 @@
 import "dotenv/config";
 
 import { cleanEmail, verifyEmail } from "./utils/openai";
-import { listenEmail, ignoreEmail } from "./utils/imapflow";
+import { ignoreEmail, listenEmail } from "./utils/imapflow";
 
 // Make sure to have a .env file with the following variables otherwise throw an error
 if (!process.env.IMAP_HOST) {
