@@ -34,7 +34,7 @@ export async function ignoreEmail(uid: string) {
 }
 
 export async function listenEmail(
-  callback: (uid: string, subject: string, body: string) => void,
+  callback: (uid: string, subject: string, body: string) => void
 ) {
   const client = new ImapFlow({ ...imapConfig, logger: false });
 
@@ -68,6 +68,8 @@ export async function listenEmail(
   });
 
   client.on("close", async () => {
+    depth += 1;
+
     client.removeAllListeners();
     client.logout();
     client.close();
@@ -77,7 +79,5 @@ export async function listenEmail(
     await new Promise((resolve) => setTimeout(resolve, 5000));
 
     listenEmail(callback);
-
-    depth += 1;
   });
 }
