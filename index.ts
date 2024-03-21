@@ -29,10 +29,14 @@ if (!process.env.OPENAI_API_KEY) {
   throw new Error("OPENAI_API_KEY is not defined");
 }
 
-const host = process.env.IMAP_HOST!;
-const user = process.env.IMAP_USER!;
-const pass = process.env.IMAP_PASSWORD;
-const port = Number(process.env.IMAP_PORT!);
+const imapConfig = {
+  host: process.env.IMAP_HOST!,
+  port: Number(process.env.IMAP_PORT!),
+  auth: {
+    user: process.env.IMAP_USER!,
+    pass: process.env.IMAP_PASSWORD,
+  },
+};
 
 async function verifyEmail(subject: string, body: string) {
   const openai = new OpenAI();
@@ -76,28 +80,30 @@ async function verifyEmail(subject: string, body: string) {
   return responseParsed.ignore;
 }
 
-async function markEmail(client: ImapFlow, uid: string) {
-  const config = { useLabels: true };
+async function markEmail(uid: string) {
+  const client = new ImapFlow({ ...imapConfig, logger: false });
 
-  await Promise.all([
-    client.messageFlagsAdd({ uid }, ["\\Seen"]),
-    client.messageFlagsRemove({ uid }, ["\\Inbox"], config),
-    client.messageMove({ uid }, "Ignore", { uid: true }),
-  ]);
+  // Connect to the IMAP server
+  await client.connect();
+  await client.mailboxOpen("INBOX");
+
+  // Mark the email as read
+  await client.messageFlagsAdd({ uid }, ["\\Seen"]);
+  await client.messageFlagsRemove({ uid }, ["\\Inbox"], {
+    useLabels: true,
+    uid: true,
+  });
+
+  // Move the email to the "Ignore" mailbox
+  await client.messageMove({ uid }, "Ignore", { uid: true });
+
+  await client.logout();
 }
 
 async function listenEmail() {
   console.log("Listening for new emails...");
 
-  const client = new ImapFlow({
-    host,
-    port,
-    logger: false,
-    auth: {
-      user,
-      pass,
-    },
-  });
+  const client = new ImapFlow({ ...imapConfig, logger: false });
 
   await client.connect();
   await client.mailboxOpen("INBOX");
@@ -127,7 +133,7 @@ async function listenEmail() {
       if (ignore) {
         console.log(`Ignoring email with subject: ${subject}`);
 
-        await markEmail(client, uid);
+        await markEmail(uid);
       } else {
         console.log(`Allowing email with subject: ${subject}`);
       }
