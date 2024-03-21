@@ -1,0 +1,20 @@
+{
+  "rules": [
+    "Ignore emails updating privacy policies if no action is needed.",
+    "Ignore emails updating terms of service if no action is needed.",
+    "Ignore emails updating cookie policies if no action is needed.",
+    "Ignore emails updating payment policies if no action is needed.",
+    "Ignore emails concerning GDPR compliance if no action is needed.",
+    "Ignore emails concerning data protection if no action is needed.",
+    "Ignore emails informing about package delivery times that get delivered to my home and don't need pickup.",
+    "Ignore emails studentenmail from CMD or HvA if no action is needed.",
+    "Ignore emails requesting product or service reviews.",
+    "Ignore emails offering app development services.",
+    "Ignore welcome emails from new services or platforms.",
+    "Ignore emails about orders that have been shipped.",
+    "Ignore emails about orders that have been delivered.",
+    "Ignore emails about invoices that have already been paid.",
+    "Ignore emails about successful deployments.",
+    "Ignore thank-you emails if no action is needed and they offer no benefit."
+  ]
+}

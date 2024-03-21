@@ -10,11 +10,3 @@ arch:
   - armv7
   - i386
 startup: services
-ports:
-  8000/tcp: 8000
-options:
-  email_disallow:
-    - test
-schema:
-  email_disallow:
-    - str
