@@ -8,7 +8,7 @@
     "Ignore emails concerning data protection if no action is needed.",
     "Ignore emails informing about package delivery times that get delivered to my home and don't need pickup.",
     "Ignore emails studentenmail from CMD or HvA if no action is needed.",
-    "Ignore emails requesting product or service reviews.",
+    "Ignore emails requesting product or service reviews but allow emails stating I received a review.",
     "Ignore emails offering app development services.",
     "Ignore welcome emails from new services or platforms.",
     "Ignore emails about orders that have been shipped.",
