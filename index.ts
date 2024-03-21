@@ -25,6 +25,10 @@ if (!process.env.IMAP_PASSWORD) {
   throw new Error("IMAP_PASSWORD is not defined");
 }
 
+if (!process.env.OPENAI_API_KEY) {
+  throw new Error("OPENAI_API_KEY is not defined");
+}
+
 const host = process.env.IMAP_HOST!;
 const user = process.env.IMAP_USER!;
 const pass = process.env.IMAP_PASSWORD;
@@ -82,8 +86,8 @@ async function markEmail(client: ImapFlow, uid: string) {
   ]);
 }
 
-async function startIdle() {
-  console.log("Starting idle");
+async function listenEmail() {
+  console.log("Listening for new emails...");
 
   const client = new ImapFlow({
     host,
@@ -131,4 +135,4 @@ async function startIdle() {
   });
 }
 
-startIdle();
+listenEmail();
