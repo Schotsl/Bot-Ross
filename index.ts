@@ -38,6 +38,30 @@ const imapConfig = {
   },
 };
 
+async function cleanEmail(html: string) {
+  const openai = new OpenAI();
+
+  const strippedResponse = stripHtml(html);
+  const strippedResults = strippedResponse.result.trim();
+
+  const responseRaw = await openai.chat.completions.create({
+    model: "gpt-3.5-turbo",
+    messages: [
+      {
+        role: "system",
+        content: `You are tasked with cleaning up an email from unnecessary content and random junk.`,
+      },
+      {
+        role: "user",
+        content: strippedResults,
+      },
+    ],
+  });
+
+  const responseContent = responseRaw.choices[0].message.content!;
+  return responseContent;
+}
+
 async function verifyEmail(subject: string, body: string) {
   const openai = new OpenAI();
 
@@ -49,7 +73,7 @@ async function verifyEmail(subject: string, body: string) {
     messages: [
       {
         role: "system",
-        content: `You are tasked with filtering emails based on their subject and content. Consider the following rules:\n${rulesFormatted}`,
+        content: `You are tasked with filtering emails based on their subject and content. You have to return a JSON object with a property called "ignore", this property indicates whether or not the email should be ignored. Consider the following rules when determining if a email should be ignored:\n${rulesFormatted}`,
       },
       {
         role: "user",
@@ -126,9 +150,9 @@ async function listenEmail() {
       const subject = message.envelope.subject;
 
       const content = message.source.toString();
-      const contentStripped = stripHtml(content).result;
+      const contentCleaned = await cleanEmail(content);
 
-      const ignore = await verifyEmail(subject, contentStripped);
+      const ignore = await verifyEmail(subject, contentCleaned);
 
       if (ignore) {
         console.log(`Ignoring email with subject: ${subject}`);
