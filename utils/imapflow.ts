@@ -36,48 +36,45 @@ export async function ignoreEmail(uid: string) {
 export async function listenEmail(
   callback: (uid: string, subject: string, body: string) => void
 ) {
-  const client = new ImapFlow({ ...imapConfig, logger: false });
+  let connected = false;
 
-  console.log(`📧 Attempting to connect for the ${depth} time...`);
+  while (!connected) {
+    const client = new ImapFlow({ ...imapConfig, logger: false });
 
-  await client.connect();
-  await client.mailboxOpen("INBOX");
+    console.log(`📧 Attempting to connect for the ${depth} time...`);
 
-  console.log("📧 Successfully connected to the IMAP server");
+    await client.connect();
+    await client.mailboxOpen("INBOX");
 
-  client.on("exists", async (exists) => {
-    const countCurrent = exists.count;
-    const countPrevious = exists.prevCount;
+    connected = true;
 
-    const countDiff = countCurrent - countPrevious;
-    const countStart = countCurrent - countDiff + 1;
+    console.log("📧 Successfully connected to the IMAP server");
 
-    // Only fetch the new emails
-    const messages = client.fetch(`${countStart}:${countCurrent}`, {
-      envelope: true,
-      source: true,
+    client.on("exists", async (exists) => {
+      const { count: countCurrent, prevCount: countPrevious } = exists;
+      const countDiff = countCurrent - countPrevious;
+      const countStart = countCurrent - countDiff + 1;
+
+      const messages = client.fetch(`${countStart}:${countCurrent}`, {
+        envelope: true,
+        source: true,
+      });
+
+      for await (const message of messages) {
+        const uid = message.uid.toString();
+        const subject = message.envelope.subject;
+        const content = message.source.toString();
+
+        callback(uid, subject, content);
+      }
     });
 
-    for await (const message of messages) {
-      const uid = message.uid.toString();
-      const subject = message.envelope.subject;
-      const content = message.source.toString();
+    client.on("close", () => {
+      console.log("📧 Connection closed, will attempt to reconnect...");
 
-      callback(uid, subject, content);
-    }
-  });
+      connected = false;
 
-  client.on("close", async () => {
-    depth += 1;
-
-    client.removeAllListeners();
-    client.logout();
-    client.close();
-
-    console.log(`🛜 Retrying to connect for the ${depth} time in 5 seconds...`);
-
-    await new Promise((resolve) => setTimeout(resolve, 5000));
-
-    listenEmail(callback);
-  });
+      depth += 1;
+    });
+  }
 }
