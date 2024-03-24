@@ -23,11 +23,8 @@ class EmailService {
     if (this.client) {
       this.depth += 1;
 
-      // If the client is already connected we'll cleanup
-      await this.client.logout();
-
-      this.client.close();
       this.client.removeAllListeners();
+      this.client.close();
 
       console.log(`🛜 Retrying to connect for the ${this.depth} time...`);
     } else {
