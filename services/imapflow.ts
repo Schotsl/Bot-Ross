@@ -29,9 +29,9 @@ class EmailService {
       this.client.close();
       this.client.removeAllListeners();
 
-      console.log(`🛜  Retrying to connect for the ${this.depth} time...`);
+      console.log(`🛜 Retrying to connect for the ${this.depth} time...`);
     } else {
-      console.log("🛜  Connecting to the IMAP server...");
+      console.log("🛜 Connecting to the IMAP server...");
     }
 
     // Overwrite the client with a new instance
