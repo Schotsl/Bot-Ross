@@ -1,7 +1,7 @@
 import "dotenv/config";
 
-import { cleanEmail, verifyEmail } from "./utils/openai";
-import { ignoreEmail, listenEmail } from "./utils/imapflow";
+import OpenAIService from "./services/openai";
+import EmailService from "./services/imapflow";
 
 // Make sure to have a .env file with the following variables otherwise throw an error
 if (!process.env.IMAP_HOST) {
@@ -24,17 +24,20 @@ if (!process.env.OPENAI_API_KEY) {
   throw new Error("OPENAI_API_KEY is not defined");
 }
 
-const onEmail = async (uid: string, subject: string, content: string) => {
-  console.log(`📧 Received email with subject: ${subject}`);
-
-  const cleaned = await cleanEmail(content);
-  const ignore = await verifyEmail(subject, cleaned);
-
-  if (ignore) {
-    await ignoreEmail(uid);
-  }
-};
-
 console.log("🎉 Starting Bot-Ross");
 
-listenEmail(onEmail);
+const emailService = new EmailService();
+const openAIService = new OpenAIService();
+
+emailService.callback = async (
+  uid: string,
+  subject: string,
+  content: string
+) => {
+  const cleaned = await openAIService.cleanEmail(content);
+  const ignore = await openAIService.verifyEmail(subject, cleaned);
+
+  if (ignore) {
+    await emailService.ignoreEmail(uid);
+  }
+};
