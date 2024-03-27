@@ -1,4 +1,4 @@
-import options from "../options.json";
+import rules from "../rules.json";
 
 import { stripHtml } from "string-strip-html";
 import { GenerativeModel, GoogleGenerativeAI } from "@google/generative-ai";
@@ -31,12 +31,11 @@ class GeminiService {
   async verifyEmail(subject: string, body: string) {
     console.log(`🤖 Verifying email using ${this.name}`);
 
-    const rulesArray = options.rules;
-    const rulesFormatted = rulesArray.join(",\n");
+    const requestRules = rules.join(",\n");
+    const requestPrompt =
+      `You are tasked with filtering emails based on their subject and content. You have to return a JSON object with a property called "ignore", this property indicates whether or not the email should be ignored. Don't return anything else except the JSON object! Consider the following rules when determining if a email should be ignored:\n${requestRules}\n\nSubject: ${subject}\n\nBody: ${body}`;
 
-    const responsePrompt =
-      `You are tasked with filtering emails based on their subject and content. You have to return a JSON object with a property called "ignore", this property indicates whether or not the email should be ignored. Don't return anything else except the JSON object! Consider the following rules when determining if a email should be ignored:\n${rulesFormatted}\n\nSubject: ${subject}\n\nBody: ${body}`;
-    const responseObject = await this.model.generateContent([responsePrompt]);
+    const responseObject = await this.model.generateContent([requestPrompt]);
     const responseText = responseObject.response.text();
 
     // Turn the response with markdown into a JSON object
