@@ -47,7 +47,7 @@ class GeminiService {
       const jsonIgnore = jsonParsed.ignore;
 
       return jsonIgnore;
-    } catch (error) {
+    } catch {
       console.error("🚨 Error parsing JSON response from Gemini");
       console.error(jsonTrimmed);
 
