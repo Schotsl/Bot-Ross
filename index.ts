@@ -20,8 +20,8 @@ if (!process.env.IMAP_PASSWORD) {
   throw new Error("IMAP_PASSWORD is not defined");
 }
 
-if (!process.env.GOOGLE_API_KEY) {
-  throw new Error("GOOGLE_API_KEY is not defined");
+if (!process.env.GEMINI_API_KEY) {
+  throw new Error("GEMINI_API_KEY is not defined");
 }
 
 console.log("🎉 Starting Bot-Ross");
