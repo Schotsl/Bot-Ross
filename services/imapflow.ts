@@ -48,8 +48,7 @@ class EmailService {
   async ignoreEmail(uid: string) {
     console.log("📧 Marking and moving email to be ignored");
 
-    // Mark the email as read
-    await this.client!.messageFlagsAdd({ uid }, ["\\Seen"]);
+    // Remove the email from the "Inbox" mailbox
     await this.client!.messageFlagsRemove({ uid }, ["\\Inbox"], {
       useLabels: true,
       uid: true,

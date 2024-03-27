@@ -17,10 +17,7 @@ class GeminiService {
   async cleanEmail(html: string) {
     console.log(`🤖 Cleaning email using ${this.name}`);
 
-    const strippedResponse = stripHtml(html);
-    const strippedResults = strippedResponse.result.trim();
-
-    const responsePrompt = `You are tasked with cleaning up an email from unnecessary content and random junk, only leave the important parts of the email. The email is as follows:\n\n${strippedResults}`;
+    const responsePrompt = `You are tasked with cleaning up an email from unnecessary content and random junk, only leave the important parts of the email. The email is as follows:\n\n${html}`;
     const responseObject = await this.model.generateContent([responsePrompt]);
     const responseText = responseObject.response.text();
 
@@ -31,27 +28,42 @@ class GeminiService {
     console.log(`🤖 Verifying email using ${this.name}`);
 
     const requestRules = rules.join(",\n");
-    const requestPrompt = `You are tasked with filtering emails based on their subject and content. You have to return a JSON object with a property called "ignore", this property indicates whether or not the email should be ignored. Don't return anything else except the JSON object! Consider the following rules when determining if a email should be ignored:\n${requestRules}\n\nSubject: ${subject}\n\nBody: ${body}`;
+    const requestPrompt = `You are tasked with filtering emails based on their subject and content. You must return a JSON object with two properties. The first, 'ignore,' indicates whether the email should be ignored. The second, 'rule,' specifies the rule that led to ignoring the email, or null if the email should not be ignored. Do not return anything other than this JSON object! Consider the following rules when determining if an email should be ignored:\n${requestRules}\n\nSubject: ${subject}\n\nBody: ${body}`;
 
     const responseObject = await this.model.generateContent([requestPrompt]);
-    const responseText = responseObject.response.text();
 
     // Turn the response with markdown into a JSON object
-    const jsonPlain = responseText.includes("```json")
-      ? responseText.slice(7, -3)
-      : responseText;
+    let jsonPlain = responseObject.response.text();
 
-    const jsonCleaned = jsonPlain.replace(/(\r\n|\n|\r)/gm, "");
-    const jsonTrimmed = jsonCleaned.trim();
+    jsonPlain = jsonPlain.replace(/(\r\n|\n|\r)/gm, "");
+    jsonPlain = jsonPlain.trim();
+    jsonPlain = jsonPlain.toLowerCase();
+
+    if (jsonPlain.startsWith("json")) {
+      jsonPlain = jsonPlain.slice(4);
+    }
+
+    if (jsonPlain.startsWith("```json")) {
+      jsonPlain = jsonPlain.slice(7, -3);
+    }
+
+    if (jsonPlain.startsWith("```")) {
+      jsonPlain = jsonPlain.slice(3, -3);
+    }
 
     try {
-      const jsonParsed = JSON.parse(jsonTrimmed);
+      const jsonParsed = JSON.parse(jsonPlain);
       const jsonIgnore = jsonParsed.ignore;
+      const jsonRule = jsonParsed.rule;
+
+      if (jsonRule) {
+        console.log(`🗑️ Ignoring email because of rule: ${jsonRule}`);
+      }
 
       return jsonIgnore;
     } catch {
       console.error("🚨 Error parsing JSON response from Gemini");
-      console.error(jsonTrimmed);
+      console.error(jsonPlain);
 
       return false;
     }

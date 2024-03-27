@@ -1,5 +1,5 @@
 [
-  "Ignore emails informing me about changes in legal documents like privacy policies, terms of service, cookie policies, payment policies, GDPR compliance etc... if no action is needed.",
+  "Ignore generic emails informing me about changes in legal documents like privacy policies, terms of service, cookie policies, payment policies, GDPR compliance etc... if no action is needed.",
   "Ignore emails informing about package delivery times that get delivered to my home and don't need pickup.",
   "Ignore emails studentenmail from CMD or HvA if no action is needed.",
   "Ignore emails requesting product or service reviews but allow emails stating I received a review.",
