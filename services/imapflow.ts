@@ -90,7 +90,7 @@ class EmailService {
     console.log("📧 Marking email to be allowed");
 
     // Add the "Scanned" flag to the email
-    await this.client!.messageFlagsAdd({ uid }, ["\\Scanned"], {
+    await this.client!.messageFlagsAdd({ uid }, ["Scanned"], {
       useLabels: true,
       uid: true,
     });
@@ -100,7 +100,7 @@ class EmailService {
     console.log("📧 Marking and moving email to be ignored");
 
     // Add the "Scanned" flag to the email
-    await this.client!.messageFlagsAdd({ uid }, ["\\Scanned"], {
+    await this.client!.messageFlagsAdd({ uid }, ["Scanned"], {
       useLabels: true,
       uid: true,
     });
@@ -115,18 +115,20 @@ class EmailService {
     await this.client!.messageMove({ uid }, "Ignore", { uid: true });
   }
 
-  async fetchEmails(filter = ["\\Scanned"]) {
+  async fetchEmails(filter = ["Scanned"]) {
     console.log("📧 Fetching un-scanned emails");
 
     const parsed = [];
     const messages = this.client!.fetch("1:*", {
       envelope: true,
       source: true,
+      flags: true,
+      labels: true,
     });
 
     for await (const message of messages) {
       const uid = message.uid.toString();
-      const flags = message.flags ? [...message.flags] : [];
+      const flags = [...message.labels, ...message.flags];
       const subject = message.envelope.subject;
       const content = message.source.toString();
 
