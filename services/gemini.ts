@@ -14,7 +14,7 @@ class GeminiService {
   }
 
   async cleanEmail(html: string) {
-    console.log(`🤖 Cleaning email using ${this.name}`);
+    console.log(`🤖 Normalizing email using ${this.name}`);
 
     // Extra the body tag from the HTML if it exists
     const bodyRegex = /<body[^>]*>([\s\S]*?)<\/body>/;
@@ -39,7 +39,8 @@ class GeminiService {
     // Remove extra whitespace
     html = html.replace(/\s+/g, " ");
 
-    const responsePrompt = `Your task is to clean up an email by removing unnecessary content and random junk, retaining only the important parts. If the email is not in English, please translate it to English. This is the email:\n\n${html}`;
+    const responsePrompt =
+      `Your task is to clean up an email by removing unnecessary content and random junk, retaining only the important parts. If the email is not in English, please translate it to English. This is the email:\n\n${html}`;
     const responseObject = await this.model.generateContent([responsePrompt]);
     const responseText = responseObject.response.text();
 
@@ -50,7 +51,8 @@ class GeminiService {
     console.log(`🤖 Verifying email using ${this.name}`);
 
     const requestRules = rules.join(",\n");
-    const requestPrompt = `You are tasked with filtering emails based on their subject and content. You must return a JSON object with two properties. The first, 'ignore,' indicates whether the email should be ignored. The second, 'rule,' specifies the rule that led to ignoring the email, or null if the email should not be ignored. Do not return anything other than this JSON object! Consider the following rules when determining if an email should be ignored:\n${requestRules}\n\nSubject: ${subject}\n\nBody: ${body}`;
+    const requestPrompt =
+      `You are tasked with filtering emails based on their subject and content. You must return a JSON object with two properties. The first, 'ignore,' indicates whether the email should be ignored. The second, 'rule,' specifies the rule that led to ignoring the email, or null if the email should not be ignored. Do not return anything other than this JSON object! Don't ignore emails that require a action or a warning about something important or reporting errors. Consider the following rules when determining if an email should be ignored:\n${requestRules}\n\nSubject: ${subject}\n\nBody: ${body}`;
 
     const responseObject = await this.model.generateContent([requestPrompt]);
 
