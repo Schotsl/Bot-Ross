@@ -19,6 +19,47 @@ class EmailService {
     this.connect();
   }
 
+  private async onExists(exists: {
+    path: string;
+    count: number;
+    prevCount: number;
+  }) {
+    if (!this.callback) {
+      return;
+    }
+
+    const { count: countCurrent, prevCount: countPrevious } = exists;
+    const countDiff = countCurrent - countPrevious;
+    const countStart = countCurrent - countDiff + 1;
+
+    const messages = this.client!.fetch(`${countStart}:${countCurrent}`, {
+      envelope: true,
+      source: true,
+    });
+
+    for await (const message of messages) {
+      const uid = message.uid.toString();
+      const subject = message.envelope.subject;
+      const content = message.source.toString();
+
+      console.log(`📧 Received email with subject: ${subject}`);
+
+      this.callback(uid, subject, content);
+    }
+  }
+
+  private async onClose() {
+    console.log("📧 Connection closed attempting to reconnect in 5 seconds...");
+
+    await new Promise((resolve) => setTimeout(resolve, 5000));
+
+    this.connect();
+  }
+
+  private onOpen() {
+    console.log("📧 Connection opened");
+  }
+
   async connect() {
     if (this.client) {
       this.depth += 1;
@@ -45,8 +86,24 @@ class EmailService {
     return this.client;
   }
 
+  async allowEmail(uid: string) {
+    console.log("📧 Marking email to be allowed");
+
+    // Add the "Scanned" flag to the email
+    await this.client!.messageFlagsAdd({ uid }, ["\\Scanned"], {
+      useLabels: true,
+      uid: true,
+    });
+  }
+
   async ignoreEmail(uid: string) {
     console.log("📧 Marking and moving email to be ignored");
+
+    // Add the "Scanned" flag to the email
+    await this.client!.messageFlagsAdd({ uid }, ["\\Scanned"], {
+      useLabels: true,
+      uid: true,
+    });
 
     // Remove the email from the "Inbox" mailbox
     await this.client!.messageFlagsRemove({ uid }, ["\\Inbox"], {
@@ -58,41 +115,32 @@ class EmailService {
     await this.client!.messageMove({ uid }, "Ignore", { uid: true });
   }
 
-  async onExists(exists: { path: string; count: number; prevCount: number }) {
-    if (!this.callback) {
-      return;
-    }
+  async fetchEmails(filter = ["\\Scanned"]) {
+    console.log("📧 Fetching un-scanned emails");
 
-    const { count: countCurrent, prevCount: countPrevious } = exists;
-    const countDiff = countCurrent - countPrevious;
-    const countStart = countCurrent - countDiff + 1;
-
-    const messages = this.client!.fetch(`${countStart}:${countCurrent}`, {
+    const parsed = [];
+    const messages = this.client!.fetch("1:*", {
       envelope: true,
       source: true,
     });
 
     for await (const message of messages) {
       const uid = message.uid.toString();
+      const flags = message.flags ? [...message.flags] : [];
       const subject = message.envelope.subject;
       const content = message.source.toString();
 
-      console.log(`📧 Received email with subject: ${subject}`);
+      // Don't add the entry if the email has any of the filter flags
+      if (flags.some((flag) => filter.includes(flag))) {
+        continue;
+      }
 
-      this.callback(uid, subject, content);
+      parsed.push({ uid, subject, content });
     }
-  }
 
-  async onClose() {
-    console.log("📧 Connection closed attempting to reconnect in 5 seconds...");
+    console.log(`📧 Fetched ${parsed.length} un-scanned emails`);
 
-    await new Promise((resolve) => setTimeout(resolve, 5000));
-
-    this.connect();
-  }
-
-  onOpen() {
-    console.log("📧 Connection opened");
+    return parsed;
   }
 }
 
