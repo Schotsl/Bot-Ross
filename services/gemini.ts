@@ -16,6 +16,29 @@ class GeminiService {
   async cleanEmail(html: string) {
     console.log(`🤖 Cleaning email using ${this.name}`);
 
+    // Extra the body tag from the HTML if it exists
+    const bodyRegex = /<body[^>]*>([\s\S]*?)<\/body>/;
+    const bodyMatch = html.match(bodyRegex);
+
+    if (bodyMatch) {
+      html = bodyMatch[1];
+    }
+
+    // Remove encoding and newlines
+    html = html.replace(/=\r\n/g, "");
+    html = html.replace(/=[0-9A-F]{2}/g, "");
+
+    // Remove styles, scripts and comments tags and their content
+    html = html.replace(/<style[^>]*>[\s\S]*?<\/style>/g, "");
+    html = html.replace(/<script[^>]*>[\s\S]*?<\/script>/g, "");
+    html = html.replace(/<!--[\s\S]*?-->/g, "");
+
+    // Remove other tags but not the content between them
+    html = html.replace(/<[^>]*>/g, "");
+
+    // Remove extra whitespace
+    html = html.replace(/\s+/g, " ");
+
     const responsePrompt = `Your task is to clean up an email by removing unnecessary content and random junk, retaining only the important parts. If the email is not in English, please translate it to English. This is the email:\n\n${html}`;
     const responseObject = await this.model.generateContent([responsePrompt]);
     const responseText = responseObject.response.text();
