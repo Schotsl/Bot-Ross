@@ -32,7 +32,7 @@ const geminiService = new GeminiService();
 emailService.callback = async (
   uid: string,
   subject: string,
-  content: string,
+  content: string
 ) => {
   const cleaned = await geminiService.cleanEmail(content);
   const ignore = await geminiService.verifyEmail(subject, cleaned);
@@ -48,12 +48,18 @@ await emailService.connect();
 const emails = await emailService.fetchEmails();
 
 for (const email of emails) {
-  const cleaned = await geminiService.cleanEmail(email.content);
-  const ignore = await geminiService.verifyEmail(email.subject, cleaned);
+  try {
+    const cleaned = await geminiService.cleanEmail(email.content);
+    const ignore = await geminiService.verifyEmail(email.subject, cleaned);
 
-  if (ignore) {
-    await emailService.ignoreEmail(email.uid);
-  } else {
-    await emailService.allowEmail(email.uid);
+    if (ignore) {
+      await emailService.ignoreEmail(email.uid);
+    } else {
+      await emailService.allowEmail(email.uid);
+    }
+  } catch (error) {
+    console.error(error);
+
+    await emailService.errorEmail(email.uid);
   }
 }
