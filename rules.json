@@ -10,5 +10,6 @@
   "Ignore emails about successful order placements.",
   "Ignore emails about invoices that have already been paid.",
   "Ignore emails about successful deployments.",
-  "Ignore thank-you emails if no action is needed and they offer no benefit."
+  "Ignore thank-you emails if no action is needed and they offer no benefit.",
+  "Ignore emails about questionnaires unless the email thats that it's required."
 ]
