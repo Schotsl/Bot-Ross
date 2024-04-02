@@ -1,7 +1,7 @@
 import "dotenv/config";
 
-import GeminiService from "./services/gemini";
-import EmailService from "./services/imapflow";
+import OpenAIService from "./services/OpenAIService";
+import EmailService from "./services/EmailService";
 
 // Make sure to have a .env file with the following variables otherwise throw an error
 if (!process.env.IMAP_HOST) {
@@ -27,15 +27,15 @@ if (!process.env.GEMINI_API_KEY) {
 console.log("🎉 Starting Bot-Ross");
 
 const emailService = new EmailService();
-const geminiService = new GeminiService();
+const openaiService = new OpenAIService();
 
 emailService.callback = async (
   uid: string,
   subject: string,
-  content: string,
+  content: string
 ) => {
-  const cleaned = await geminiService.cleanEmail(content);
-  const ignore = await geminiService.verifyEmail(subject, cleaned);
+  const cleaned = await openaiService.cleanEmail(content);
+  const ignore = await openaiService.verifyEmail(subject, cleaned);
 
   if (ignore) {
     await emailService.ignoreEmail(uid);
@@ -48,18 +48,12 @@ await emailService.connect();
 const emails = await emailService.fetchEmails();
 
 for (const email of emails) {
-  try {
-    const cleaned = await geminiService.cleanEmail(email.content);
-    const ignore = await geminiService.verifyEmail(email.subject, cleaned);
+  const cleaned = await openaiService.cleanEmail(email.content);
+  const ignore = await openaiService.verifyEmail(email.subject, cleaned);
 
-    if (ignore) {
-      await emailService.ignoreEmail(email.uid);
-    } else {
-      await emailService.allowEmail(email.uid);
-    }
-  } catch (error) {
-    console.error(error);
-
-    await emailService.errorEmail(email.uid);
+  if (ignore) {
+    await emailService.ignoreEmail(email.uid);
+  } else {
+    await emailService.allowEmail(email.uid);
   }
 }
