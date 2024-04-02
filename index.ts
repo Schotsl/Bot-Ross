@@ -32,7 +32,7 @@ const geminiService = new GeminiService();
 emailService.callback = async (
   uid: string,
   subject: string,
-  content: string
+  content: string,
 ) => {
   const cleaned = await geminiService.cleanEmail(content);
   const ignore = await geminiService.verifyEmail(subject, cleaned);
