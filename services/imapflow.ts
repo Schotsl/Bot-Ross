@@ -63,9 +63,7 @@ class EmailService {
   async connect() {
     if (this.client) {
       this.depth += 1;
-
       this.client.removeAllListeners();
-      this.client.close();
 
       console.log(`🛜 Retrying to connect for the ${this.depth} time...`);
     } else {
@@ -87,10 +85,21 @@ class EmailService {
   }
 
   async allowEmail(uid: string) {
-    console.log("📧 Marking email to be allowed");
-
     // Add the "Scanned" flag to the email
     await this.client!.messageFlagsAdd({ uid }, ["Scanned"], {
+      useLabels: true,
+      uid: true,
+    });
+  }
+
+  async errorEmail(uid: string) {
+    console.log("📧 Marking email to be errored");
+
+    // Add the "Scanned" flag to the email
+    this.allowEmail(uid);
+
+    // Add the "Error" flag to the email
+    await this.client!.messageFlagsAdd({ uid }, ["\\Error"], {
       useLabels: true,
       uid: true,
     });
@@ -100,10 +109,7 @@ class EmailService {
     console.log("📧 Marking and moving email to be ignored");
 
     // Add the "Scanned" flag to the email
-    await this.client!.messageFlagsAdd({ uid }, ["Scanned"], {
-      useLabels: true,
-      uid: true,
-    });
+    this.allowEmail(uid);
 
     // Remove the email from the "Inbox" mailbox
     await this.client!.messageFlagsRemove({ uid }, ["\\Inbox"], {
