@@ -4,6 +4,7 @@ import fs from "fs";
 import path from "path";
 import csvParser from "csv-parser";
 
+import { Review } from "../types";
 import { createClient } from "@supabase/supabase-js";
 
 // Make sure to have a .env file with the following variables otherwise throw an error
@@ -14,14 +15,6 @@ if (!process.env.SUPABASE_URL) {
 if (!process.env.SUPABASE_KEY) {
   throw new Error("IMAP_PORT is not defined");
 }
-
-type Review = {
-  id: string;
-  package: string;
-  rating: number;
-  review: string;
-  response: string;
-};
 
 // Directory containing the CSV files
 const directory = "/Users/Schotsl/Downloads";
@@ -50,6 +43,7 @@ function processFile(path: string) {
             rating: data["Star Rating"] as number,
             review: data["Review Text"] as string,
             response: data["Developer Reply Text"] as string,
+            generative: true,
           };
 
           results.push(review);
@@ -71,7 +65,7 @@ fs.readdir(directory, async (error, filenames) => {
   // Create a new supabase client
   const supabase = createClient(
     process.env.SUPABASE_URL!,
-    process.env.SUPABASE_KEY!,
+    process.env.SUPABASE_KEY!
   );
 
   for (const filename of filenames) {
@@ -81,6 +75,8 @@ fs.readdir(directory, async (error, filenames) => {
 
       // Upsert the data into the database
       await supabase.from("reviews").upsert(fileData);
+
+      console.log(`✅ Processed ${filename}`);
     }
   }
 });
