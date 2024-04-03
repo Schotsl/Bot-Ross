@@ -20,7 +20,7 @@ if (!process.env.IMAP_PASSWORD) {
   throw new Error("IMAP_PASSWORD is not defined");
 }
 
-if (!process.env.GEMINI_API_KEY) {
+if (!process.env.OPENAI_API_KEY) {
   throw new Error("GEMINI_API_KEY is not defined");
 }
 
@@ -32,7 +32,7 @@ const openaiService = new OpenAIService();
 emailService.callback = async (
   uid: string,
   subject: string,
-  content: string
+  content: string,
 ) => {
   const cleaned = await openaiService.cleanEmail(content);
   const ignore = await openaiService.verifyEmail(subject, cleaned);
