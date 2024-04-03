@@ -22,13 +22,13 @@ class ReviewService {
       publisherJson.client_id,
       undefined,
       publisherJson.private_key,
-      ["https://www.googleapis.com/auth/androidpublisher"],
+      ["https://www.googleapis.com/auth/androidpublisher"]
     );
 
     // Create a new supabase client
     this.supabaseClient = createClient(
       process.env.SUPABASE_URL!,
-      process.env.SUPABASE_KEY!,
+      process.env.SUPABASE_KEY!
     );
   }
 
@@ -42,10 +42,10 @@ class ReviewService {
     });
 
     // Fetch reviews every hour
-    setInterval(fetch.bind(this), 3600000);
+    setInterval(this.fetchReviews.bind(this), 3600000);
   }
 
-  private async fetch(app = "com.sjorsvanholst.uwuifier") {
+  private async fetchReviews(app = "com.sjorsvanholst.uwuifier") {
     // Fetch the latest reviews from the PlayStore
     const latestReviews = await this.googleClient!.reviews.list({
       packageName: app,
@@ -53,7 +53,7 @@ class ReviewService {
 
     // Filter out reviews without comments
     const latestFiltered = latestReviews.data.reviews!.filter(
-      (review) => review.comments![0].userComment,
+      (review) => review.comments![0].userComment
     );
 
     const latestIds = latestFiltered.map((review) => review.reviewId);
@@ -68,7 +68,7 @@ class ReviewService {
 
     // Filter out the reviews that already exist
     const newReviews = latestReviews.data.reviews!.filter(
-      (review) => !existingIds.includes(review.reviewId),
+      (review) => !existingIds.includes(review.reviewId)
     );
 
     console.log(`📝 Found ${newReviews.length} new reviews`);
@@ -84,6 +84,19 @@ class ReviewService {
         response: review.comments![1]?.developerComment?.text || "",
         generative: false,
       };
+    });
+  }
+
+  private async replyReview(review: Review) {
+    console.log(`📝 Replying to review ${review.id}`);
+
+    // Reply to the review through the PlayStore API
+    await this.googleClient!.reviews.reply({
+      packageName: review.package,
+      reviewId: review.id,
+      requestBody: {
+        replyText: review.response,
+      },
     });
   }
 }
