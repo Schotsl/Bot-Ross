@@ -25,6 +25,18 @@ if (!process.env.OPENAI_API_KEY) {
   throw new Error("GEMINI_API_KEY is not defined");
 }
 
+if (!process.env.SUPABASE_URL) {
+  throw new Error("SUPABASE_URL is not defined");
+}
+
+if (!process.env.SUPABASE_KEY) {
+  throw new Error("SUPABASE_KEY is not defined");
+}
+
+if (!process.env.DISCORD_TOKEN) {
+  throw new Error("DISCORD_TOKEN is not defined");
+}
+
 console.log("🎉 Starting Bot-Ross");
 
 const emailService = new EmailService();
