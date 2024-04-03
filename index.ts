@@ -2,6 +2,7 @@ import "dotenv/config";
 
 import OpenAIService from "./services/OpenAIService";
 import EmailService from "./services/EmailService";
+import ReviewService from "./services/ReviewService";
 
 // Make sure to have a .env file with the following variables otherwise throw an error
 if (!process.env.IMAP_HOST) {
@@ -28,11 +29,12 @@ console.log("🎉 Starting Bot-Ross");
 
 const emailService = new EmailService();
 const openaiService = new OpenAIService();
+const reviewService = new ReviewService();
 
 emailService.callback = async (
   uid: string,
   subject: string,
-  content: string,
+  content: string
 ) => {
   const cleaned = await openaiService.cleanEmail(content);
   const ignore = await openaiService.verifyEmail(subject, cleaned);
@@ -57,3 +59,8 @@ for (const email of emails) {
     await emailService.allowEmail(email.uid);
   }
 }
+
+reviewService.callback
+
+await reviewService.connect();
+const reviews = await reviewService.fetch();
