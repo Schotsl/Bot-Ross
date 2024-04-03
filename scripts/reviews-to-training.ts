@@ -16,7 +16,7 @@ if (!process.env.SUPABASE_KEY) {
 // Create a new supabase client
 const supabase = createClient(
   process.env.SUPABASE_URL!,
-  process.env.SUPABASE_KEY!,
+  process.env.SUPABASE_KEY!
 );
 
 const reviews = await supabase
@@ -25,14 +25,10 @@ const reviews = await supabase
   .eq("generative", false);
 
 const reviewsData = reviews.data || [];
-
-const prompt =
-  "You're assigned the task of crafting replies to app reviews, bearing in mind that the style of response is influenced by the app's package name.";
-
-const training = reviewsData.map((review) => {
+const trainingData = reviewsData.map((review) => {
   return {
     messages: [
-      { role: "system", content: prompt },
+      { role: "system", content: process.env.PROMPT_REVIEW_RESPONSE! },
       {
         role: "user",
         content: JSON.stringify({
@@ -47,7 +43,7 @@ const training = reviewsData.map((review) => {
 });
 
 // Write to a jsonl file
-const fileData = training.map((data) => JSON.stringify(data)).join("\n");
+const fileData = trainingData.map((data) => JSON.stringify(data)).join("\n");
 const filePath = "./training.jsonl";
 
 fs.writeFileSync(filePath, fileData);

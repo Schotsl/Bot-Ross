@@ -15,10 +15,6 @@ class EmailService {
     },
   };
 
-  constructor() {
-    this.connect();
-  }
-
   private async onExists(exists: {
     path: string;
     count: number;

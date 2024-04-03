@@ -3,6 +3,6 @@ export type Review = {
   package: string;
   rating: number;
   review: string;
-  response: string;
+  response?: string;
   generative: boolean;
 };
