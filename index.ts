@@ -3,6 +3,10 @@ import "dotenv/config";
 import OpenAIService from "./services/OpenAIService";
 import EmailService from "./services/EmailService";
 import ReviewService from "./services/ReviewService";
+import DiscordService from "./services/DiscordService";
+
+import { Review } from "./types";
+import { createClient } from "@supabase/supabase-js";
 
 // Make sure to have a .env file with the following variables otherwise throw an error
 if (!process.env.IMAP_HOST) {
@@ -37,11 +41,17 @@ if (!process.env.DISCORD_TOKEN) {
   throw new Error("DISCORD_TOKEN is not defined");
 }
 
+const supabase = createClient(
+  process.env.SUPABASE_URL!,
+  process.env.SUPABASE_KEY!
+);
+
 console.log("🎉 Starting Bot-Ross");
 
 const emailService = new EmailService();
 const openaiService = new OpenAIService();
 const reviewService = new ReviewService();
+const discordService = new DiscordService();
 
 emailService.callback = async (
   uid: string,
@@ -58,7 +68,6 @@ emailService.callback = async (
   }
 };
 
-await emailService.connect();
 const emails = await emailService.fetchEmails();
 
 for (const email of emails) {
@@ -72,8 +81,21 @@ for (const email of emails) {
   }
 }
 
-reviewService.callback = (reviews) => {
-  console.log(reviews);
+reviewService.callback = async (reviews: Review[]) => {
+  for (const review of reviews) {
+    await discordService.requestApproval(review);
+  }
+};
+
+discordService.callbackReplied = async (review: Review) => {
+  await reviewService.replyReview(review);
+  await supabase.from("reviews").upsert(review);
+};
+
+discordService.callbackApproved = async (review: Review) => {
+  await reviewService.replyReview(review);
+  await supabase.from("reviews").upsert(review);
 };
 
 await reviewService.connect();
+await emailService.connect();

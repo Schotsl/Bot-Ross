@@ -14,7 +14,7 @@ class DiscordService {
     // Create a new supabase client
     this.supabaseClient = createClient(
       process.env.SUPABASE_URL!,
-      process.env.SUPABASE_KEY!,
+      process.env.SUPABASE_KEY!
     );
 
     this.discordClient = new Client({
@@ -27,40 +27,21 @@ class DiscordService {
       partials: [Partials.Message, Partials.Channel, Partials.Reaction],
     });
 
-    this.discordClient.once(Events.ClientReady, (readyClient) => {
-      console.log(`Ready! Logged in as ${readyClient.user.tag}`);
-    });
-
+    this.discordClient.once(Events.ClientReady, this.onReady.bind(this));
+    this.discordClient.on(Events.MessageCreate, this.onReply.bind(this));
     this.discordClient.on(
       Events.MessageReactionAdd,
-      this.onReaction.bind(this),
+      this.onReaction.bind(this)
     );
-
-    this.discordClient.on(Events.MessageCreate, this.onReply.bind(this));
-
-    // Log in to Discord with your client's token
-    this.discordClient.login(process.env.DISCORD_TOKEN);
   }
 
-  private async onReaction(reaction: MessageReaction | PartialMessageReaction) {
-    const { data } = await this.supabaseClient
-      .from("reviews")
-      .select("*")
-      .eq("discord", reaction.message.id)
-      .eq("state", ReviewState.AI_PENDING)
-      .single();
+  async connect() {
+    // Log in to Discord with your client's token
+    await this.discordClient.login(process.env.DISCORD_TOKEN);
+  }
 
-    if (!data) {
-      return;
-    }
-
-    // Return callback if the reaction is a check-mark
-    if (reaction.emoji.name === "✅") {
-      this.callbackApproved?.({
-        ...data,
-        state: ReviewState.AI_REPLIED,
-      });
-    }
+  private async onReady() {
+    console.log(`Logged in as ${this.discordClient.user?.tag}`);
   }
 
   private async onReply(message: Message<boolean>) {
@@ -86,9 +67,31 @@ class DiscordService {
     });
   }
 
+  private async onReaction(reaction: MessageReaction | PartialMessageReaction) {
+    const { data } = await this.supabaseClient
+      .from("reviews")
+      .select("*")
+      .eq("discord", reaction.message.id)
+      .eq("state", ReviewState.AI_PENDING)
+      .single();
+
+    if (!data) {
+      return;
+    }
+
+    // Return callback if the reaction is a check-mark
+    if (reaction.emoji.name === "✅") {
+      this.callbackApproved?.({
+        ...data,
+        state: ReviewState.AI_REPLIED,
+      });
+    }
+  }
+
   async requestApproval(review: Review) {
     const channel = "219765969571151872";
-    const content = `## Received a new review\n` +
+    const content =
+      `## Received a new review\n` +
       `> ${review.review}\n\n` +
       `### I've generated a response\n` +
       `> ${review.response}\n\n` +
