@@ -60,7 +60,8 @@ for (const email of emails) {
   }
 }
 
-reviewService.callback
+reviewService.callback = (reviews) => {
+  console.log(reviews);
+};
 
 await reviewService.connect();
-const reviews = await reviewService.fetch();

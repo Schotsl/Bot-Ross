@@ -65,7 +65,7 @@ fs.readdir(directory, async (error, filenames) => {
   // Create a new supabase client
   const supabase = createClient(
     process.env.SUPABASE_URL!,
-    process.env.SUPABASE_KEY!
+    process.env.SUPABASE_KEY!,
   );
 
   for (const filename of filenames) {

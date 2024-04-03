@@ -22,13 +22,13 @@ class ReviewService {
       publisherJson.client_id,
       undefined,
       publisherJson.private_key,
-      ["https://www.googleapis.com/auth/androidpublisher"]
+      ["https://www.googleapis.com/auth/androidpublisher"],
     );
 
     // Create a new supabase client
     this.supabaseClient = createClient(
       process.env.SUPABASE_URL!,
-      process.env.SUPABASE_KEY!
+      process.env.SUPABASE_KEY!,
     );
   }
 
@@ -53,7 +53,7 @@ class ReviewService {
 
     // Filter out reviews without comments
     const latestFiltered = latestReviews.data.reviews!.filter(
-      (review) => review.comments![0].userComment
+      (review) => review.comments![0].userComment,
     );
 
     const latestIds = latestFiltered.map((review) => review.reviewId);
@@ -68,7 +68,7 @@ class ReviewService {
 
     // Filter out the reviews that already exist
     const newReviews = latestReviews.data.reviews!.filter(
-      (review) => !existingIds.includes(review.reviewId)
+      (review) => !existingIds.includes(review.reviewId),
     );
 
     console.log(`📝 Found ${newReviews.length} new reviews`);

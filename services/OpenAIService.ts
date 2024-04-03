@@ -42,7 +42,8 @@ class OpenAIService {
       messages: [
         {
           role: "system",
-          content: `Your task is to clean up an email by removing unnecessary content and random junk, retaining only the important parts. If the email is not in English, please translate it to English.`,
+          content:
+            `Your task is to clean up an email by removing unnecessary content and random junk, retaining only the important parts. If the email is not in English, please translate it to English.`,
         },
         {
           role: "user",
@@ -64,7 +65,8 @@ class OpenAIService {
       messages: [
         {
           role: "system",
-          content: `You are tasked with filtering emails based on their subject and content. You must return a JSON object with two properties. The first, 'ignore,' indicates whether the email should be ignored. The second, 'rule,' specifies the rule that led to ignoring the email, or null if the email should not be ignored. If in doubt don't ignore the email, consider the following rules when determining if an email should be ignored: ${requestRules}`,
+          content:
+            `You are tasked with filtering emails based on their subject and content. You must return a JSON object with two properties. The first, 'ignore,' indicates whether the email should be ignored. The second, 'rule,' specifies the rule that led to ignoring the email, or null if the email should not be ignored. If in doubt don't ignore the email, consider the following rules when determining if an email should be ignored: ${requestRules}`,
         },
         {
           role: "user",
@@ -94,8 +96,8 @@ class OpenAIService {
       function_call: { name: "verifyEmail" },
     });
 
-    const responseRaw =
-      requestResponse.choices[0].message.function_call?.arguments!;
+    const responseRaw = requestResponse.choices[0].message.function_call
+      ?.arguments!;
 
     const responseParsed = JSON.parse(responseRaw);
 
