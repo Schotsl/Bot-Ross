@@ -21,7 +21,7 @@ class DiscordService {
     // Create a new supabase client
     this.supabaseClient = createClient(
       process.env.SUPABASE_URL!,
-      process.env.SUPABASE_KEY!
+      process.env.SUPABASE_KEY!,
     );
 
     this.discordClient = new Client({
@@ -38,7 +38,7 @@ class DiscordService {
     this.discordClient.on(Events.MessageCreate, this.onReply.bind(this));
     this.discordClient.on(
       Events.MessageReactionAdd,
-      this.onReaction.bind(this)
+      this.onReaction.bind(this),
     );
   }
 
@@ -77,7 +77,7 @@ class DiscordService {
 
   private async onReaction(
     reaction: MessageReaction | PartialMessageReaction,
-    user: User | PartialUser
+    user: User | PartialUser,
   ) {
     const { data } = await this.supabaseClient
       .from("reviews")
@@ -102,8 +102,7 @@ class DiscordService {
 
   async requestApproval(review: Review) {
     const channel = "219765969571151872";
-    const content =
-      `## Received a new review\n` +
+    const content = `## Received a new review\n` +
       `> ${review.review}\n\n` +
       `### I've generated a response\n` +
       `> ${review.response}\n\n` +

@@ -5,7 +5,7 @@ import EmailService from "./services/EmailService";
 import ReviewService from "./services/ReviewService";
 import DiscordService from "./services/DiscordService";
 
-import { Review, ReviewState } from "./types";
+import { Review } from "./types";
 import { createClient } from "@supabase/supabase-js";
 
 // Make sure to have a .env file with the following variables otherwise throw an error
