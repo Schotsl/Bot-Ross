@@ -5,7 +5,7 @@ import EmailService from "./services/EmailService";
 import ReviewService from "./services/ReviewService";
 import DiscordService from "./services/DiscordService";
 
-import { Review } from "./types";
+import { Review, ReviewState } from "./types";
 import { createClient } from "@supabase/supabase-js";
 
 // Make sure to have a .env file with the following variables otherwise throw an error
@@ -53,6 +53,10 @@ const openaiService = new OpenAIService();
 const reviewService = new ReviewService();
 const discordService = new DiscordService();
 
+await emailService.connect();
+await reviewService.connect();
+await discordService.connect();
+
 emailService.callback = async (
   uid: string,
   subject: string,
@@ -68,6 +72,27 @@ emailService.callback = async (
   }
 };
 
+reviewService.callback = async (reviews: Review[]) => {
+  for (const review of reviews) {
+    review.response = await openaiService.respondReview(review);
+    review.discord = await discordService.requestApproval(review);
+
+    await supabase.from("reviews").upsert(review);
+  }
+};
+
+discordService.callbackReplied = async (review: Review) => {
+  console.log(`📝 Replied to review ${review.id}`);
+  await reviewService.replyReview(review);
+  await supabase.from("reviews").upsert(review);
+};
+
+discordService.callbackApproved = async (review: Review) => {
+  console.log(`✅ Approved review ${review.id}`);
+  await reviewService.replyReview(review);
+  await supabase.from("reviews").upsert(review);
+};
+
 const emails = await emailService.fetchEmails();
 
 for (const email of emails) {
@@ -80,22 +105,3 @@ for (const email of emails) {
     await emailService.allowEmail(email.uid);
   }
 }
-
-reviewService.callback = async (reviews: Review[]) => {
-  for (const review of reviews) {
-    await discordService.requestApproval(review);
-  }
-};
-
-discordService.callbackReplied = async (review: Review) => {
-  await reviewService.replyReview(review);
-  await supabase.from("reviews").upsert(review);
-};
-
-discordService.callbackApproved = async (review: Review) => {
-  await reviewService.replyReview(review);
-  await supabase.from("reviews").upsert(review);
-};
-
-await reviewService.connect();
-await emailService.connect();

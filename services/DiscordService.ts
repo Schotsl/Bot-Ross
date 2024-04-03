@@ -1,4 +1,11 @@
-import { Client, Events, GatewayIntentBits, Partials } from "discord.js";
+import {
+  Client,
+  Events,
+  GatewayIntentBits,
+  Partials,
+  PartialUser,
+  User,
+} from "discord.js";
 import { createClient, SupabaseClient } from "@supabase/supabase-js";
 import { Message, MessageReaction, PartialMessageReaction } from "discord.js";
 import { Review, ReviewState } from "../types";
@@ -40,7 +47,7 @@ class DiscordService {
     await this.discordClient.login(process.env.DISCORD_TOKEN);
   }
 
-  private async onReady() {
+  private onReady() {
     console.log(`Logged in as ${this.discordClient.user?.tag}`);
   }
 
@@ -55,7 +62,8 @@ class DiscordService {
       .eq("state", ReviewState.AI_PENDING)
       .single();
 
-    if (!data) {
+    // Make sure I'm the one replying
+    if (!data || message.author.id !== "219765969571151872") {
       return;
     }
 
@@ -67,7 +75,10 @@ class DiscordService {
     });
   }
 
-  private async onReaction(reaction: MessageReaction | PartialMessageReaction) {
+  private async onReaction(
+    reaction: MessageReaction | PartialMessageReaction,
+    user: User | PartialUser
+  ) {
     const { data } = await this.supabaseClient
       .from("reviews")
       .select("*")
@@ -75,7 +86,8 @@ class DiscordService {
       .eq("state", ReviewState.AI_PENDING)
       .single();
 
-    if (!data) {
+    // Make sure I'm the one replying
+    if (!data || user.id !== "219765969571151872") {
       return;
     }
 
@@ -105,7 +117,7 @@ class DiscordService {
     // Update the review with the message ID
     review.discord = message.id;
 
-    await this.supabaseClient.from("reviews").insert(review);
+    return message.id;
   }
 }
 

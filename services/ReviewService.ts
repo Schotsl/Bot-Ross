@@ -2,7 +2,7 @@ import fs from "fs";
 
 import { JWT } from "google-auth-library";
 import { google } from "googleapis";
-import { Review } from "../types";
+import { Review, ReviewState } from "../types";
 import { createClient, SupabaseClient } from "@supabase/supabase-js";
 
 import androidpublisher_v3 from "googleapis/build/src/apis/androidpublisher/v3";
@@ -22,13 +22,13 @@ class ReviewService {
       publisherJson.client_id,
       undefined,
       publisherJson.private_key,
-      ["https://www.googleapis.com/auth/androidpublisher"]
+      ["https://www.googleapis.com/auth/androidpublisher"],
     );
 
     // Create a new supabase client
     this.supabaseClient = createClient(
       process.env.SUPABASE_URL!,
-      process.env.SUPABASE_KEY!
+      process.env.SUPABASE_KEY!,
     );
   }
 
@@ -40,7 +40,7 @@ class ReviewService {
 
     // Filter out reviews without comments
     const latestFiltered = latestReviews.data.reviews!.filter(
-      (review) => review.comments![0].userComment
+      (review) => review.comments![0].userComment && review.reviewId,
     );
 
     const latestIds = latestFiltered.map((review) => review.reviewId);
@@ -55,23 +55,25 @@ class ReviewService {
 
     // Filter out the reviews that already exist
     const newReviews = latestReviews.data.reviews!.filter(
-      (review) => !existingIds.includes(review.reviewId)
+      (review) => !existingIds.includes(review.reviewId),
     );
 
     console.log(`📝 Found ${newReviews.length} new reviews`);
 
-    return newReviews.map((review) => {
+    const mappedReviews = newReviews.map((review) => {
       const comment = review.comments![0].userComment!;
 
       return {
-        id: review.reviewId,
+        id: review.reviewId!,
+        state: ReviewState.AI_PENDING,
         package: app,
-        rating: comment.starRating,
-        review: comment.text,
+        review: comment.text!,
+        rating: comment.starRating!,
         response: review.comments![1]?.developerComment?.text || "",
-        generative: false,
       };
     });
+
+    this.callback?.(mappedReviews);
   }
 
   async connect() {

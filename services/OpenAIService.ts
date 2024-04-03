@@ -12,7 +12,7 @@ class OpenAIService {
 
   async respondReview(review: Review) {
     console.log(
-      `🤖 Responding to review using ft:gpt-3.5-turbo-0125:personal:bot-ross:99s1R3P5`,
+      `🤖 Responding to review using ft:gpt-3.5-turbo-0125:personal:bot-ross:99s1R3P5`
     );
 
     const responseRaw = await this.client.chat.completions.create({
@@ -68,8 +68,7 @@ class OpenAIService {
       messages: [
         {
           role: "system",
-          content:
-            `Your task is to clean up an email by removing unnecessary content and random junk, retaining only the important parts. If the email is not in English, please translate it to English.`,
+          content: `Your task is to clean up an email by removing unnecessary content and random junk, retaining only the important parts. If the email is not in English, please translate it to English.`,
         },
         {
           role: "user",
@@ -91,8 +90,7 @@ class OpenAIService {
       messages: [
         {
           role: "system",
-          content:
-            `You are tasked with filtering emails based on their subject and content. You must return a JSON object with two properties. The first, 'ignore,' indicates whether the email should be ignored. The second, 'rule,' specifies the rule that led to ignoring the email, or null if the email should not be ignored. If in doubt don't ignore the email, consider the following rules when determining if an email should be ignored: ${requestRules}`,
+          content: `You are tasked with filtering emails based on their subject and content. You must return a JSON object with two properties. The first, 'ignore,' indicates whether the email should be ignored. The second, 'rule,' specifies the rule that led to ignoring the email, or null if the email should not be ignored. If in doubt don't ignore the email, consider the following rules when determining if an email should be ignored: ${requestRules}`,
         },
         {
           role: "user",
