@@ -6,3 +6,9 @@ node_modules
 
 # Ignore environment files
 .env
+
+# Ignore Google service account files
+playstore.json
+
+# Ignore script files
+training.jsonl
