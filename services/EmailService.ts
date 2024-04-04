@@ -38,14 +38,12 @@ class EmailService {
       const subject = message.envelope.subject;
       const content = message.source.toString();
 
-      console.log(`📧 Received email with subject: ${subject}`);
-
       this.callback(uid, subject, content);
     }
   }
 
   private async onClose() {
-    console.log("📧 Connection closed attempting to reconnect in 5 seconds...");
+    console.log("🛜 Connection closed attempting to reconnect in 5 seconds...");
 
     await new Promise((resolve) => setTimeout(resolve, 5000));
 
@@ -53,7 +51,7 @@ class EmailService {
   }
 
   private onOpen() {
-    console.log("📧 Connection opened");
+    console.log("🛜 Connection opened");
   }
 
   async connect() {
@@ -89,8 +87,6 @@ class EmailService {
   }
 
   async errorEmail(uid: string) {
-    console.log("📧 Marking email to be errored");
-
     // Add the "Scanned" flag to the email
     this.allowEmail(uid);
 
@@ -102,8 +98,6 @@ class EmailService {
   }
 
   async ignoreEmail(uid: string) {
-    console.log("📧 Marking and moving email to be ignored");
-
     // Add the "Scanned" flag to the email
     this.allowEmail(uid);
 
@@ -118,8 +112,6 @@ class EmailService {
   }
 
   async fetchEmails(filter = ["Scanned"]) {
-    console.log("📧 Fetching un-scanned emails");
-
     const parsed = [];
     const messages = this.client!.fetch("1:*", {
       envelope: true,
@@ -141,8 +133,6 @@ class EmailService {
 
       parsed.push({ uid, subject, content });
     }
-
-    console.log(`📧 Fetched ${parsed.length} un-scanned emails`);
 
     return parsed;
   }

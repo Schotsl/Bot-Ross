@@ -22,13 +22,13 @@ class ReviewService {
       publisherJson.client_id,
       undefined,
       publisherJson.private_key,
-      ["https://www.googleapis.com/auth/androidpublisher"],
+      ["https://www.googleapis.com/auth/androidpublisher"]
     );
 
     // Create a new supabase client
     this.supabaseClient = createClient(
       process.env.SUPABASE_URL!,
-      process.env.SUPABASE_KEY!,
+      process.env.SUPABASE_KEY!
     );
   }
 
@@ -40,7 +40,7 @@ class ReviewService {
 
     // Filter out reviews without comments
     const latestFiltered = latestReviews.data.reviews!.filter(
-      (review) => review.comments![0].userComment && review.reviewId,
+      (review) => review.comments![0].userComment && review.reviewId
     );
 
     const latestIds = latestFiltered.map((review) => review.reviewId);
@@ -55,10 +55,8 @@ class ReviewService {
 
     // Filter out the reviews that already exist
     const newReviews = latestReviews.data.reviews!.filter(
-      (review) => !existingIds.includes(review.reviewId),
+      (review) => !existingIds.includes(review.reviewId)
     );
-
-    console.log(`📝 Found ${newReviews.length} new reviews`);
 
     const mappedReviews = newReviews.map((review) => {
       const comment = review.comments![0].userComment!;
@@ -90,8 +88,6 @@ class ReviewService {
   }
 
   async replyReview(review: Review) {
-    console.log(`📝 Replying to review ${review.id}`);
-
     // Reply to the review through the PlayStore API
     await this.googleClient!.reviews.reply({
       packageName: review.package,

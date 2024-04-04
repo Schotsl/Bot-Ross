@@ -43,12 +43,14 @@ class DiscordService {
   }
 
   async connect() {
+    console.log("🛜 Connecting to Discord...");
+
     // Log in to Discord with your client's token
     await this.discordClient.login(process.env.DISCORD_TOKEN);
   }
 
   private onReady() {
-    console.log(`Logged in as ${this.discordClient.user?.tag}`);
+    console.log(`🛜 Connected to Discord as ${this.discordClient.user?.tag}`);
   }
 
   private async onReply(message: Message<boolean>) {

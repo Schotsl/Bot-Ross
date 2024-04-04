@@ -62,17 +62,25 @@ emailService.callback = async (
   subject: string,
   content: string
 ) => {
+  console.log(`📧 Received email with subject: ${subject}`);
+
   const cleaned = await openaiService.cleanEmail(content);
   const ignore = await openaiService.verifyEmail(subject, cleaned);
 
   if (ignore) {
+    console.log(`🚫 Ignoring email with UID: ${uid}`);
+
     await emailService.ignoreEmail(uid);
   } else {
+    console.log(`✅ Allowing email with UID: ${uid}`);
+
     await emailService.allowEmail(uid);
   }
 };
 
 reviewService.callback = async (reviews: Review[]) => {
+  console.log(`📝 Received ${reviews.length} reviews`);
+
   for (const review of reviews) {
     review.response = await openaiService.respondReview(review);
     review.discord = await discordService.sendApproval(review);
@@ -82,7 +90,7 @@ reviewService.callback = async (reviews: Review[]) => {
 };
 
 discordService.callbackReplied = async (review: Review) => {
-  console.log(`📝 Replied to review ${review.id}`);
+  console.log(`✅ Replied to review ${review.id}`);
 
   await reviewService.replyReview(review);
   await discordService.deleteApproval(review);
@@ -101,13 +109,19 @@ discordService.callbackApproved = async (review: Review) => {
 
 const emails = await emailService.fetchEmails();
 
+console.log(`📧 Found ${emails.length} emails`);
+
 for (const email of emails) {
-  const cleaned = await openaiService.cleanEmail(email.content);
-  const ignore = await openaiService.verifyEmail(email.subject, cleaned);
+  const { uid, subject, content } = email;
+
+  console.log(`📧 Processing email with subject: ${subject}`);
+  
+  const cleaned = await openaiService.cleanEmail(content);
+  const ignore = await openaiService.verifyEmail(subject, cleaned);
 
   if (ignore) {
-    await emailService.ignoreEmail(email.uid);
+    await emailService.ignoreEmail(uid);
   } else {
-    await emailService.allowEmail(email.uid);
+    await emailService.allowEmail(uid);
   }
 }
