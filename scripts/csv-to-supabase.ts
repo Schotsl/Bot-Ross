@@ -4,7 +4,7 @@ import fs from "fs";
 import path from "path";
 import csvParser from "csv-parser";
 
-import { Review } from "../types";
+import { Review, ReviewState } from "../types";
 import { createClient } from "@supabase/supabase-js";
 
 // Make sure to have a .env file with the following variables otherwise throw an error
@@ -40,6 +40,7 @@ function processFile(path: string) {
             // Turn the object into array and get the first value
             package: Object.values(data)[0] as string,
 
+            state: ReviewState.AI_REPLIED,
             rating: data["Star Rating"] as number,
             review: data["Review Text"] as string,
             response: data["Developer Reply Text"] as string,
@@ -65,7 +66,7 @@ fs.readdir(directory, async (error, filenames) => {
   // Create a new supabase client
   const supabase = createClient(
     process.env.SUPABASE_URL!,
-    process.env.SUPABASE_KEY!,
+    process.env.SUPABASE_KEY!
   );
 
   for (const filename of filenames) {
@@ -74,7 +75,7 @@ fs.readdir(directory, async (error, filenames) => {
       const fileData = await processFile(filePath);
 
       // Upsert the data into the database
-      await supabase.from("reviews").upsert(fileData);
+      await supabase.from("reviews").insert(fileData);
 
       console.log(`✅ Processed ${filename}`);
     }

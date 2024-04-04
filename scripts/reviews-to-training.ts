@@ -3,6 +3,7 @@ import "dotenv/config";
 import fs from "fs";
 
 import { createClient } from "@supabase/supabase-js";
+import { ReviewState } from "../types";
 
 // Make sure to have a .env file with the following variables otherwise throw an error
 if (!process.env.SUPABASE_URL) {
@@ -16,13 +17,13 @@ if (!process.env.SUPABASE_KEY) {
 // Create a new supabase client
 const supabase = createClient(
   process.env.SUPABASE_URL!,
-  process.env.SUPABASE_KEY!,
+  process.env.SUPABASE_KEY!
 );
 
 const reviews = await supabase
   .from("reviews")
   .select("*")
-  .eq("generative", false);
+  .eq("state", ReviewState.USER_REPLIED);
 
 const reviewsData = reviews.data || [];
 const trainingData = reviewsData.map((review) => {
