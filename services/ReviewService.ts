@@ -22,13 +22,13 @@ class ReviewService {
       publisherJson.client_id,
       undefined,
       publisherJson.private_key,
-      ["https://www.googleapis.com/auth/androidpublisher"]
+      ["https://www.googleapis.com/auth/androidpublisher"],
     );
 
     // Create a new supabase client
     this.supabaseClient = createClient(
       process.env.SUPABASE_URL!,
-      process.env.SUPABASE_KEY!
+      process.env.SUPABASE_KEY!,
     );
   }
 
@@ -40,7 +40,7 @@ class ReviewService {
 
     // Filter out reviews without comments
     const latestFiltered = latestReviews.data.reviews!.filter(
-      (review) => review.comments![0].userComment && review.reviewId
+      (review) => review.comments![0].userComment && review.reviewId,
     );
 
     const latestIds = latestFiltered.map((review) => review.reviewId);
@@ -55,8 +55,12 @@ class ReviewService {
 
     // Filter out the reviews that already exist
     const newReviews = latestReviews.data.reviews!.filter(
-      (review) => !existingIds.includes(review.reviewId)
+      (review) => !existingIds.includes(review.reviewId),
     );
+
+    if (newReviews.length === 0) {
+      return;
+    }
 
     const mappedReviews = newReviews.map((review) => {
       const comment = review.comments![0].userComment!;
@@ -75,6 +79,8 @@ class ReviewService {
   }
 
   async connect() {
+    console.log("🛜 Connecting to PlayStore API...");
+
     // Ensure JWT is authorized
     await this.jwtClient.authorize();
 
@@ -83,8 +89,12 @@ class ReviewService {
       auth: this.jwtClient,
     });
 
-    // Fetch reviews every hour
+    console.log("🛜 Connected to PlayStore API");
+
+    // Fetch reviews every hour and once on startup
     setInterval(this.fetchReviews.bind(this), 3600000);
+
+    this.fetchReviews();
   }
 
   async replyReview(review: Review) {

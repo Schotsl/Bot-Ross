@@ -17,7 +17,7 @@ if (!process.env.SUPABASE_KEY) {
 // Create a new supabase client
 const supabase = createClient(
   process.env.SUPABASE_URL!,
-  process.env.SUPABASE_KEY!
+  process.env.SUPABASE_KEY!,
 );
 
 const reviews = await supabase
