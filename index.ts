@@ -75,7 +75,7 @@ emailService.callback = async (
 reviewService.callback = async (reviews: Review[]) => {
   for (const review of reviews) {
     review.response = await openaiService.respondReview(review);
-    review.discord = await discordService.requestApproval(review);
+    review.discord = await discordService.sendApproval(review);
 
     await supabase.from("reviews").upsert(review);
   }
@@ -83,14 +83,20 @@ reviewService.callback = async (reviews: Review[]) => {
 
 discordService.callbackReplied = async (review: Review) => {
   console.log(`📝 Replied to review ${review.id}`);
+
   await reviewService.replyReview(review);
-  await supabase.from("reviews").upsert(review);
+  await discordService.deleteApproval(review);
+
+  await supabase.from("reviews").upsert({ ...review, discord: null });
 };
 
 discordService.callbackApproved = async (review: Review) => {
   console.log(`✅ Approved review ${review.id}`);
+
   await reviewService.replyReview(review);
-  await supabase.from("reviews").upsert(review);
+  await discordService.deleteApproval(review);
+
+  await supabase.from("reviews").upsert({ ...review, discord: null });
 };
 
 const emails = await emailService.fetchEmails();
