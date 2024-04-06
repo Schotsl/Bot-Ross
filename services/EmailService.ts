@@ -106,9 +106,6 @@ class EmailService {
       useLabels: true,
       uid: true,
     });
-
-    // Move the email to the "Ignore" mailbox
-    await this.client!.messageMove({ uid }, "Ignore", { uid: true });
   }
 
   async fetchEmails(filter = ["Scanned"]) {
