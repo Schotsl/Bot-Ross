@@ -47,7 +47,7 @@ if (!process.env.DISCORD_TOKEN) {
 
 const supabase = createClient(
   process.env.SUPABASE_URL!,
-  process.env.SUPABASE_KEY!,
+  process.env.SUPABASE_KEY!
 );
 
 console.log("🎉 Starting Bot-Ross");
@@ -64,7 +64,7 @@ await discordService.connect();
 emailService.callback = async (
   uid: string,
   subject: string,
-  content: string,
+  content: string
 ) => {
   console.log(`📧 Received email with subject: ${subject}`);
 
@@ -122,8 +122,12 @@ for (const email of emails) {
   const ignore = await generativeService.verifyEmail(subject, content);
 
   if (ignore) {
+    console.log(`🚫 Ignoring email with UID: ${uid}`);
+
     await emailService.ignoreEmail(uid);
   } else {
+    console.log(`✅ Allowing email with UID: ${uid}`);
+
     await emailService.allowEmail(uid);
   }
 }
