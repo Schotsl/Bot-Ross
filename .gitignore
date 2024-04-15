@@ -12,6 +12,3 @@ playstore.json
 
 # Script files
 training.jsonl
-
-# Docker Wireguard configuration
-wireguard.conf

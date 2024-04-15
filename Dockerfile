@@ -1,15 +1,16 @@
-FROM alpine:latest
+FROM oven/bun:alpine
+
+ENV HTTP_PROXY "https://127.0.0.1"
+ENV HTTPS_PROXY "http://35.185.196.38:3128"
+
+ENV NO_PROXY "localhost,127.0.0.1"
 
 WORKDIR /app
 
 COPY . .
 
-# Install WireGuard, other necessary tools and Bun
-RUN apk add --no-cache wireguard-tools iptables
-RUN apk add --no-cache curl bash && \
-  curl https://bun.sh/install | bash && \
-  bun install
+RUN bun install
 
 EXPOSE 3000
 
-CMD wg-quick up /app/wireguard.conf && bun run index.ts
+CMD ["bun", "run", "index.ts"]
