@@ -1,14 +1,17 @@
-# Ignore MacOS files
+# MacOS files
 .DS_Store
 
-# Ignore Node.js files
+# Node.js files
 node_modules
 
-# Ignore environment files
+# Environment files
 .env
 
-# Ignore Google service account files
+# Google service account files
 playstore.json
 
-# Ignore script files
+# Script files
 training.jsonl
+
+# Docker Wireguard configuration
+wireguard.conf
