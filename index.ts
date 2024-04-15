@@ -1,9 +1,9 @@
 import "dotenv/config";
 
-import OpenAIService from "./services/OpenAIService";
 import EmailService from "./services/EmailService";
 import ReviewService from "./services/ReviewService";
 import DiscordService from "./services/DiscordService";
+import GenerativeService from "./services/GenerativeService";
 
 import { Review } from "./types";
 import { createClient } from "@supabase/supabase-js";
@@ -26,6 +26,10 @@ if (!process.env.IMAP_PASSWORD) {
 }
 
 if (!process.env.OPENAI_API_KEY) {
+  throw new Error("OPENAI_API_KEY is not defined");
+}
+
+if (!process.env.GEMINI_API_KEY) {
   throw new Error("GEMINI_API_KEY is not defined");
 }
 
@@ -49,9 +53,9 @@ const supabase = createClient(
 console.log("🎉 Starting Bot-Ross");
 
 const emailService = new EmailService();
-const openaiService = new OpenAIService();
 const reviewService = new ReviewService();
 const discordService = new DiscordService();
+const generativeService = new GenerativeService();
 
 await emailService.connect();
 await reviewService.connect();
@@ -64,8 +68,7 @@ emailService.callback = async (
 ) => {
   console.log(`📧 Received email with subject: ${subject}`);
 
-  const cleaned = await openaiService.cleanEmail(content);
-  const ignore = await openaiService.verifyEmail(subject, cleaned);
+  const ignore = await generativeService.verifyEmail(subject, content);
 
   if (ignore) {
     console.log(`🚫 Ignoring email with UID: ${uid}`);
@@ -82,7 +85,7 @@ reviewService.callback = async (reviews: Review[]) => {
   console.log(`📝 Received ${reviews.length} reviews`);
 
   for (const review of reviews) {
-    review.response = await openaiService.respondReview(review);
+    review.response = await generativeService.respondReview(review);
     review.discord = await discordService.sendApproval(review);
 
     await supabase.from("reviews").upsert(review);
@@ -116,8 +119,7 @@ for (const email of emails) {
 
   console.log(`📧 Processing email with subject: ${subject}`);
 
-  const cleaned = await openaiService.cleanEmail(content);
-  const ignore = await openaiService.verifyEmail(subject, cleaned);
+  const ignore = await generativeService.verifyEmail(subject, content);
 
   if (ignore) {
     await emailService.ignoreEmail(uid);
