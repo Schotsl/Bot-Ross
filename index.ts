@@ -47,7 +47,7 @@ if (!process.env.DISCORD_TOKEN) {
 
 const supabase = createClient(
   process.env.SUPABASE_URL!,
-  process.env.SUPABASE_KEY!
+  process.env.SUPABASE_KEY!,
 );
 
 console.log("🎉 Starting Bot-Ross");
@@ -64,7 +64,7 @@ await discordService.connect();
 emailService.callback = async (
   uid: string,
   subject: string,
-  content: string
+  content: string,
 ) => {
   console.log(`📧 Received email with subject: ${subject}`);
 
