@@ -88,7 +88,11 @@ reviewService.callback = async (reviews: Review[]) => {
     review.response = await generativeService.respondReview(review);
     review.discord = await discordService.sendApproval(review);
 
-    await supabase.from("reviews").upsert(review);
+    const { error } = await supabase.from("reviews").upsert(review);
+
+    if (error) {
+      throw error;
+    }
   }
 };
 
@@ -98,7 +102,13 @@ discordService.callbackReplied = async (review: Review) => {
   await reviewService.replyReview(review);
   await discordService.deleteApproval(review);
 
-  await supabase.from("reviews").upsert({ ...review, discord: null });
+  const { error } = await supabase
+    .from("reviews")
+    .upsert({ ...review, discord: null });
+
+  if (error) {
+    throw error;
+  }
 };
 
 discordService.callbackApproved = async (review: Review) => {
@@ -107,7 +117,13 @@ discordService.callbackApproved = async (review: Review) => {
   await reviewService.replyReview(review);
   await discordService.deleteApproval(review);
 
-  await supabase.from("reviews").upsert({ ...review, discord: null });
+  const { error } = await supabase
+    .from("reviews")
+    .upsert({ ...review, discord: null });
+
+  if (error) {
+    throw error;
+  }
 };
 
 const emails = await emailService.fetchEmails();

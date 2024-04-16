@@ -46,12 +46,16 @@ class ReviewService {
     const latestIds = latestFiltered.map((review) => review.reviewId);
 
     // Check if the review already exists in the database
-    const existingReviews = await this.supabaseClient
+    const { data, error } = await this.supabaseClient
       .from("reviews")
       .select("id")
       .in("id", latestIds);
 
-    const existingIds = existingReviews.data!.map((review) => review.id);
+    if (error) {
+      throw error;
+    }
+
+    const existingIds = data!.map((review) => review.id);
 
     // Filter out the reviews that already exist
     const newReviews = latestReviews.data.reviews!.filter(

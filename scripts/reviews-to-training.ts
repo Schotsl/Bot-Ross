@@ -20,13 +20,16 @@ const supabase = createClient(
   process.env.SUPABASE_KEY!,
 );
 
-const reviews = await supabase
+const { data, error } = await supabase
   .from("reviews")
   .select("*")
   .eq("state", ReviewState.USER_REPLIED);
 
-const reviewsData = reviews.data || [];
-const trainingData = reviewsData.map((review) => {
+if (error) {
+  throw error;
+}
+
+const trainingData = data.map((review) => {
   return {
     messages: [
       { role: "system", content: process.env.PROMPT_REVIEW_RESPONSE! },

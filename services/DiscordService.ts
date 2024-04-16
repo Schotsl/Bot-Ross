@@ -57,12 +57,16 @@ class DiscordService {
     // Check what the message if replying to
     const id = message.reference?.messageId;
 
-    const { data } = await this.supabaseClient
+    const { data, error } = await this.supabaseClient
       .from("reviews")
       .select("*")
       .eq("discord", id)
       .eq("state", ReviewState.AI_PENDING)
       .single();
+
+    if (error) {
+      throw error;
+    }
 
     // Make sure I'm the one replying
     if (!data || message.author.id !== "219765969571151872") {
@@ -81,12 +85,16 @@ class DiscordService {
     reaction: MessageReaction | PartialMessageReaction,
     user: User | PartialUser,
   ) {
-    const { data } = await this.supabaseClient
+    const { data, error } = await this.supabaseClient
       .from("reviews")
       .select("*")
       .eq("discord", reaction.message.id)
       .eq("state", ReviewState.AI_PENDING)
       .single();
+
+    if (error) {
+      throw error;
+    }
 
     // Make sure I'm the one replying
     if (!data || user.id !== "219765969571151872") {

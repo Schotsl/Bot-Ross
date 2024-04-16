@@ -75,7 +75,11 @@ fs.readdir(directory, async (error, filenames) => {
       const fileData = await processFile(filePath);
 
       // Upsert the data into the database
-      await supabase.from("reviews").insert(fileData);
+      const { error } = await supabase.from("reviews").insert(fileData);
+
+      if (error) {
+        throw error;
+      }
 
       console.log(`✅ Processed ${filename}`);
     }
