@@ -35,7 +35,7 @@ class DiscordService {
     });
 
     this.discordClient.once(Events.ClientReady, this.onReady.bind(this));
-    this.discordClient.on(Events.MessageCreate, this.onReply.bind(this));
+    this.discordClient.on(Events.MessageCreate, this.onMessage.bind(this));
     this.discordClient.on(
       Events.MessageReactionAdd,
       this.onReaction.bind(this),
@@ -53,7 +53,12 @@ class DiscordService {
     console.log(`🛜 Connected to Discord as ${this.discordClient.user?.tag}`);
   }
 
-  private async onReply(message: Message<boolean>) {
+  private async onMessage(message: Message<boolean>) {
+    // Return if the message is not a reply
+    if (!message.reference) {
+      return;
+    }
+
     // Check what the message if replying to
     const id = message.reference?.messageId;
 
